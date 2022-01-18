@@ -392,13 +392,7 @@ class PreferencesController {
       })
   }
 
-  updateAddressBook(customContactObject, remove = false) {
-    return this.addToAddressBook(customContactObject, remove)
-      .then((contactList) => {
-        this.store.updateState({ addressBook: contactList })
-        return Promise.resolve()
-      })
-  }
+  
 
   /**
    * Setter for the `currentAccountTab` property

@@ -1561,3 +1561,65 @@ input:checked + .slider:before {
   background-clip: content-box;
 
 }
+
+/* Trasaction-details-screen-css */
+.details {
+  margin-left: 17px;
+    color: #2149B9;
+    font-size: 14px;
+}
+
+.flexbox {
+  background-color: #FAFAFA;
+  padding: 8px 12px;
+  margin: 10px 15px;
+  display: block;
+}
+
+
+.trasaction-details-from-to {
+  font-family: inter-medium;
+  font-size: 12px;
+  color: #848484;
+}
+
+.trasaction-details-from-to-accounts {
+  font-family: inter-regular;
+  font-size: 14px;
+  color: #2A2A2A;
+}
+
+.trasaction-details-amount {
+  padding-bottom: 17px;
+  border-bottom: 1px solid #E3E7EB;
+  display: flex;
+ justify-content: space-between;
+ width: 100%;
+max-width: 331px;
+margin-top: 18px;
+font-size: 14px;
+font-family: inter-medium;
+
+}
+
+.transaction-log-heading{
+  margin-left: 17px;
+    margin-top: 25px;
+    color: #2149B9;
+    opacity: 1;
+    font-size: 14px;
+    width: 91%;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #E3E7EB;
+}
+
+.transaction-log-main{
+  font-size: 12px;
+  padding: 6px 6px 50px 6px;
+}
+
+.transaction-border {
+  border-left: 2px solid #2049B9;
+  height: 30px;
+  margin-left: 11px;
+}

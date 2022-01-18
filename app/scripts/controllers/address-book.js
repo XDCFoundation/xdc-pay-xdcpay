@@ -48,6 +48,15 @@ class AddressBookController {
     })
   }
 
+  updateAddressBook(addedContactObj, remove = false) {
+    console.log(addedContactObj,'<Delete contact-->')
+    return this._addToAddressBook(addedContactObj, remove)
+      .then((addressBook) => {
+        this.store.updateState({ addressBook})
+        return Promise.resolve()
+      })
+  }
+
   /**
    * Performs the logic to add the address and name into the address book. The pushed object is an object of two
    * fields. Current behavior does not set an upper limit to the number of addresses.
@@ -58,21 +67,24 @@ class AddressBookController {
    * @returns {Promise<array>} Promises the updated addressBook array
    *
    */
-  _addToAddressBook (address, name) {
+  _addToAddressBook (addedContactObj,name,address,remove = false) {
     const addressBook = this._getAddressBook()
     const {identities} = this._preferencesStore.getState()
 
     const addressBookIndex = addressBook.findIndex((element) => { return element.address.toLowerCase() === address.toLowerCase() || element.name === name })
     const identitiesIndex = Object.keys(identities).findIndex((element) => { return element.toLowerCase() === address.toLowerCase() })
     // trigger this condition if we own this address--no need to overwrite.
-    if (identitiesIndex !== -1) {
+    if (identitiesIndex !== -1 && !remove) {
       return Promise.resolve(addressBook)
     // trigger this condition if we've seen this address before--may need to update nickname.
-    } else if (addressBookIndex !== -1) {
-      addressBook.splice(addressBookIndex, 1)
-    } else if (addressBook.length > 15) {
-      addressBook.shift()
     }
+    if (addressBookIndex !== -1 && remove ) {
+      addressBook.splice(addressBookIndex, 1)
+    }
+    if (addressBook.length > 15  && !remove) {
+      addressBook.push(addedContactObj)
+    }
+   
 
 
     addressBook.push({

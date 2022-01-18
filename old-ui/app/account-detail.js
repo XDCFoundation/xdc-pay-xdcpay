@@ -362,7 +362,7 @@ AccountDetailScreen.prototype.tabSections = function () {
 
     h(TabBar, {
       tabs: [
-        {content: 'Sent', key: 'history', id: 'wallet-view__tab-history'},
+        {content: 'Transactions', key: 'history', id: 'wallet-view__tab-history'},
         {content: 'Tokens', key: 'tokens', id: 'wallet-view__tab-tokens'},
       ],
       defaultTab: currentAccountTab || 'history',
@@ -409,6 +409,11 @@ AccountDetailScreen.prototype.transactionList = function () {
     shapeShiftTxList,
     viewPendingTx: (txId) => {
       this.props.dispatch(actions.viewPendingTx(txId))
+    },
+    viewTxDetails: (txId) => {
+
+      this.props.dispatch(actions.transactionDetails(txId))
+
     },
   })
 }

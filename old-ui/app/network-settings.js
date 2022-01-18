@@ -42,7 +42,7 @@ class NetworkSettings extends React.Component {
           }} key={networkObj.chainId}>  <svg height="16px" width="26px" position="absolute" left="17px">
               <circle style={{ cx: '10' ,cy:"10", r:"6" , fill:networkObj.colorCode ? networkObj.colorCode : '#E58A0F' }} key={networkObj.isPermanent}/>
        </svg>  {networkObj.name}
-            <img src={networkObj.isPermanent ? '/images/Assets/Lock.png' : '/images/Assets/Delete.svg'}
+            <img src={networkObj.isPermanent ? '/images/Assets/Lock.svg' : '/images/Assets/Delete.svg'}
                  style={{position: 'absolute', right: '30px', cursor: networkObj.isPermanent ? 'normal' : 'pointer'}}
                  onClick={() => !networkObj.isPermanent && this.onDeleteRPCNetwork(networkObj)}/>
             <img src="/images/Assets/Arrow.svg" onClick={() => state.dispatch(actions.viewNetwork(networkObj))}

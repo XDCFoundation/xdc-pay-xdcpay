@@ -66,6 +66,10 @@ TransactionList.prototype.render = function () {
               showTx: (txId) => {
                 this.props.viewPendingTx(txId)
               },
+              showTransctionDetails: (txId) => {
+                this.props.viewTxDetails(txId)
+              },
+             
             })
           })
         : h('.flex-center.full-flex-height', {

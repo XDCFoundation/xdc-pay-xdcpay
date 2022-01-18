@@ -39,9 +39,18 @@ export default class AddContact extends React.Component {
     await this.props.dispatch(actions.addToAddressBook(contactAddress, contactName))
     this.props.dispatch(actions.Contacts())
   }
+  onDeleteClicked = async (viewContactObj) => {
+    this.props.dispatch(actions.displayWarning(''))
+    console.log(viewContactObj,'</+-+/>')
+    await this.props.dispatch(actions.delContact(viewContactObj))
+    this.props.dispatch(actions.Contacts())
+
+
+  }
   static contextTypes = {
     t: PropTypes.func,
   }
+
   render () {
     // eslint-disable-next-line react/prop-types
     const { t } = this.context
@@ -55,6 +64,7 @@ export default class AddContact extends React.Component {
         warningMsg={warning}
         onBackClick={this.onBackClick}
         onStateChange={this.onStateChange}
+        onDeleteClicked={this.onDeleteClicked}
         onAddContactClicked={this.onAddContactClicked}
 
       />

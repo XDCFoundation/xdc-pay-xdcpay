@@ -22,7 +22,8 @@ class ContactDetails extends React.Component {
     } = this.props
     const transactionAddress = contactObj.address.replace("xdc","0x")
     const currentContactTxn = transactions.filter((txnObj) => txnObj.txParams.to.trim() === transactionAddress.trim())
-    console.log(amountTo,'<<>>')
+    const info = transactions[5].txParams.gas
+    console.log(info,'<<>>')
     return (
       <div
         className="flex-column flex-grow"

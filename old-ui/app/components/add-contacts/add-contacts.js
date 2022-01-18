@@ -6,7 +6,7 @@ const actions = require('../../../../ui/app/actions')
 
 const AddContactComponent = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { onStateChange, onAddContactClicked, warningMsg, onBackClick, t,viewContactObj, state } = props
+  const { onStateChange, onAddContactClicked, warningMsg, onBackClick, t,viewContactObj,onDeleteClicked, state } = props
 
   const { contactAddress, contactName } = state
   
@@ -31,7 +31,7 @@ const AddContactComponent = (props) => {
         <h2 style={{fontFamily: 'Inter-bold', fontSize:'15px', marginLeft:'28px'}}>
           {`${viewContactObj ? 'Edit' : 'Add'} Contact`}
         </h2>
-        <h2 style={{color:'#FF0035', fontSize:'15px' , fontFamily:"Inter-Medium", marginRight:'15px', cursor:'pointer'}}  onClick={() => state.dispatch(actions.delContact(viewContactObj))}>
+        <h2 style={{color:'#FF0035', fontSize:'15px' , fontFamily:"Inter-Medium", marginRight:'15px', cursor:'pointer'}}  onClick={() => onDeleteClicked(viewContactObj)}>
         {`${viewContactObj ? 'Delete' : ' '}`}
         </h2>
       </div>

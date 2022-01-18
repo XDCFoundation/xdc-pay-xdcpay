@@ -411,7 +411,7 @@ module.exports = class XdcController extends EventEmitter {
       setProviderType: nodeify(networkController.setProviderType, networkController),
       setCustomRpc: nodeify(this.setCustomRpc, this),
       delCustomRpc: nodeify(this.delCustomRpc, this),
-      delContact : nodeify(this.delContact,this),
+      delSelectedContact : nodeify(this.delSelectedContact,this),
 
       // PreferencesController
       setSelectedAddress: nodeify(preferencesController.setSelectedAddress, preferencesController),
@@ -429,6 +429,7 @@ module.exports = class XdcController extends EventEmitter {
 
       // AddressController
       setAddressBook: nodeify(addressBookController.setAddressBook, addressBookController),
+
 
       // KeyringController
       setLocked: nodeify(keyringController.setLocked, keyringController),
@@ -1700,16 +1701,16 @@ module.exports = class XdcController extends EventEmitter {
     return customRPCObject
   }
 
-  /**
-   * A method for selecting a custom URL for an ethereum RPC provider.
-   * @param {string} customContactObject - A custom RPC Object for a valid Ethereum RPC API.
-   * @returns {Promise<String>} - The RPC Target URL confirmed.
-   */
-   async setContact(customContactObject) {
-    this.networkController.setContactTarget(customContactObject.name)
-    await this.preferencesController.updateAddressBook(customContactObject)
-    return customContactObject
-  }
+  // /**
+  //  * A method for selecting a custom URL for an ethereum RPC provider.
+  //  * @param {string} customContactObject - A custom RPC Object for a valid Ethereum RPC API.
+  //  * @returns {Promise<String>} - The RPC Target URL confirmed.
+  //  */
+  //  async setContact(customContactObject) {
+  //   this.networkController.setContactTarget(customContactObject.name)
+  //   await this.preferencesController.updateAddressBook(customContactObject)
+  //   return customContactObject
+  // }
 
   /**
    * A method for deleting a selected custom URL.
@@ -1721,12 +1722,13 @@ module.exports = class XdcController extends EventEmitter {
 
 
   /**
-   * A method for deleting a selected custom URL.
-   * @param {string} customContactObject - A RPC URL to delete.
+   * A method for deleting a selected Contact.
+   * @param {string} addedContactObj - Address to delete.
+   * @param {string} name - Name to delete.
    */
-  async delContact(customContactObject) {
-     await this.addressBookController.deleteCon()
-    // await this.preferencesController.updateAddressBook(customContactObject, true)
+  async delSelectedContact(addedContactObj) {
+    console.log(addedContactObj,'******')
+     await this.addressBookController.updateAddressBook(addedContactObj, true)
   }
 
   /**

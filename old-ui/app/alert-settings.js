@@ -37,7 +37,7 @@ class AlertSettings extends React.Component{
                 // borderBottom: '1px solid #E3E7EB',
             }}>
                 <span style={{ fontWeight: "bold", fontSize: "14px", color: "#2149B9" }}>Browsing a website with an unconnected account selected</span>
-                <p style={{fontSize:'14px',marginTop:'11px', marginBottom:'20px'}}>This alert is shown in the popup when you are browsing a connected web3 site, but the currently selected account is not connected.</p>
+                <p style={{fontSize:'14px',marginTop:'11px', marginBottom:'20px',fontFamily:'Inter-Medium'}}>This alert is shown in the popup when you are browsing a connected web3 site, but the currently selected account is not connected.</p>
                
                 <label className="switch">
                 <input type="checkbox"  onChange={this.handleCheckBox} />

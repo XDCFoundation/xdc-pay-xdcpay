@@ -410,9 +410,8 @@ module.exports = class XdcController extends EventEmitter {
       // network management
       setProviderType: nodeify(networkController.setProviderType, networkController),
       setCustomRpc: nodeify(this.setCustomRpc, this),
-      setContact: nodeify(this.setContact,this),
       delCustomRpc: nodeify(this.delCustomRpc, this),
-      delContact : nodeify(this.delContact,this),
+      delSelectedContact : nodeify(this.delSelectedContact,this),
      
 
       // PreferencesController
@@ -431,6 +430,7 @@ module.exports = class XdcController extends EventEmitter {
 
       // AddressController
       setAddressBook: nodeify(addressBookController.setAddressBook, addressBookController),
+      updateAddressBook : nodeify(addressBookController.updateAddressBook, addressBookController),
 
       // KeyringController
       setLocked: nodeify(keyringController.setLocked, keyringController),
@@ -1721,14 +1721,15 @@ module.exports = class XdcController extends EventEmitter {
     await this.preferencesController.updateFrequentRpcList(rpcTarget, true)
   }
 
-   /**
-   * A method for deleting a selected custom URL.
-   * @param {string} customContactObject - A RPC URL to delete.
+  /**
+   * A method for deleting a selected Contact.
+   * @param {string} addedContactObj - Address to delete.
+   * * @param {string} name - Name to delete.
    */
-    async delContact(customContactObject) {
-      await this.preferencesController.updateFrequentContactList(customContactObject, true)
-  }
-  
+   async delSelectedContact(addedContactObj) {
+    await this.addressBookController.updateAddressBook(addedContactObj, true)
+   // await this.preferencesController.updateAddressBook(customContactObject, true)
+ }
   /**
    * Sets whether or not to use the blockie identicon format.
    * @param {boolean} val - True for bockie, false for jazzicon.
