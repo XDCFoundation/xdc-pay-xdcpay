@@ -164,7 +164,10 @@ ExportAccountView.prototype.render = function () {
         },
       }, [
         h('button.btn-violet', {
-          onClick: () => exportAsFile(`XDCPay ${nickname} Private Key`, plainKey),
+          onClick: () => {
+            exportAsFile(`XDCPay ${nickname} Private Key`, plainKey)
+            this.props.dispatch(actions.goHome())
+          },
           style: {
             // marginTop: '56px',
             fontSize: '0.9em',

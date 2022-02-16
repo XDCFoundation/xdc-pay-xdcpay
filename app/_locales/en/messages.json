@@ -370,8 +370,8 @@
   "exchangeRate": {
     "message": "Exchange Rate"
   },
-  "expandView": {
-    "message": "Expand View"
+  "expandedView": {
+    "message": "Expanded View"
   },
   "exportPrivateKey": {
     "message": "Export Private Key"
@@ -411,12 +411,12 @@
   "gas": {
     "message": "Gas",
     "description": "Short indication of gas cost"
-  },
+  },  
   "gasFee": {
     "message": "Gas Fee"
   },
   "gasLimit": {
-    "message": "Gas Limit"
+    "message": "Gas Limit (Units)"
   },
   "gasLimitCalculation": {
     "message": "We calculate the suggested gas limit based on network success rates."
@@ -861,7 +861,7 @@
     "message": "Reset Account"
   },
   "resetAccountDescription": {
-    "message": "Resetting your account will clear your transaction history."
+    "message": "Resetting your account will clear your transaction history. This will not change the balances in your accounts or require you to re-enter your Secret Recovery Phrase."
   },
   "restoreFromSeed": {
     "message": "Restore account?"
@@ -889,6 +889,9 @@
   },
   "revealSeedWordsDescription": {
     "message": "If you ever change browsers or move computers, you will need this seed phrase to access your accounts. Save them somewhere safe and secret."
+  },
+  "getYourSeedWords": {
+    "message": "Get your secret seed words by entering your password."
   },
   "revealSeedWordsWarningTitle": {
     "message": "DO NOT share this phrase with anyone!"
@@ -1179,7 +1182,7 @@
     "message": "Transaction updated with a gas price of $1 on $2."
   },
   "transactions": {
-    "message": "transactions"
+    "message": "Transactions"
   },
   "transactionError": {
     "message": "Transaction Error. Exception thrown in contract code."
@@ -1318,21 +1321,14 @@
   "yourPrivateSeedPhrase": {
     "message": "Your private seed phrase"
   },
-  "Transactions":{
-    "message": "General Settings"
-  },
-  
-  "connectedSites":{
-    "message": "General Settings"
+  "transactions":{
+    "message": "Transactions"
   },
   "viewOnBlockExplorer":{
-    "message": "General Settings"
+    "message": "View on Block Explorer"
   },
   "tokens":{
-    "message": "General Settings"
-  },
-  "Settings":{
-    "message": "General Settings"
+    "message": "Tokens"
   },
   "generalSettings":{
     "message": "General Settings"
@@ -1341,83 +1337,103 @@
     "message": "General Settings"
   },
   "advanceSettings":{
-    "message": "General Settings"
+    "message": "Advance Settings"
   },
   "securityandPrivacySettings":{
-    "message": "General Settings"
+    "message": "Security and Privacy Settings"
   },
-  "revealSecretSeedWords":{
-    "message": "General Settings"
-  },
-
   "autoLockTimer":{
-    "message": "General Settings"
+    "message": "Auto-Lock Timer"
+  },
+  "autoLockTimerDesc":{
+    "message": "Set the idle time in minutes before the wallet will be locked."
   },
   "showIncomingTransactions":{
-    "message": "General Settings"
+    "message": "Show Incoming Transactions"
+  },
+  "showIncomingTransactionsDesc":{
+    "message": "Select this to use XDC Observatory to show incoming transactions in the transactions list."
+  },
+  "alertMsg" : {
+   "message" : "This alert is shown in the popup when you are browsing a connected web3 site, but the currently selected account is not connected."
   },
   "reveal":{
-    "message": "General Settings"
+    "message": "Reveal"
   },
   "contacts":{
-    "message": "General Settings"
+    "message": "Contacts"
   },
   "addContact":{
-    "message": "General Settings"
+    "message": "Add Contact"
   },
   "walletAddress":{
-    "message": "General Settings"
+    "message": "Wallet Address"
   },
   "contactDetails":{
-    "message": "General Settings"
+    "message": "Contact Details"
   },
   "userName":{
-    "message": "General Settings"
+    "message": "User Name"
   },
   "alertSettings":{
-    "message": "General Settings"
+    "message": "Alert Settings"
+  },
+  "unconnectedAccountWarning" :{
+   "message" : "Browsing a website with an unconnected account selected."
   },
   "networkSettings":{
-    "message": "General Settings"
+    "message": "Network Settings"
   },
   "addNetwork":{
-    "message": "General Settings"
+    "message": "Add Network"
   },
   "networkName":{
-    "message": "General Settings"
+    "message": "Network Name"
   },
   "chainID":{
-    "message": "General Settings"
+    "message": "Chain ID"
   },
   "currencySymbol":{
-    "message": "General Settings"
+    "message": "Currency Symbol (Optional)"
   },
   "blockExplorer":{
-    "message": "General Settings"
+    "message": "Block Explorer (Optional)"
   },
   "Add":{
-    "message": "General Settings"
+    "message": "Add"
   },
   "Update":{
-    "message": "General Settings"
+    "message": "Update"
   },
   "About":{
-    "message": "General Settings"
+    "message": "About"
   },
   "Link":{
-    "message": "General Settings"
+    "message": "Link"
   },
   "visitOurWebsite":{
-    "message": "General Settings"
+    "message": "Visit Our Website"
   },
   "contactUs":{
-    "message": "General Settings"
+    "message": "Contact Us"
   },
   "maxTransactionFee":{
-    "message": "General Settings"
+    "message": "Max Transaction Fee"
   },
   "Edit":{
-    "message": "General Settings"
+    "message": "Edit"
+  },
+  "connectedSites":{
+    "message":"Connected Sites"
+  },
+  "advancedGasControls": {
+    "message": "Advanced gas controls"
+  },
+  "advancedGasControlsDesc" : {
+    "message":  "Select this to show gas price and limit controls directly on the send and confirm screens."
+  },
+  "infoDesc" : {
+    "message" : "The XDCPay is an extension for accessing XDC’s XDPoS enabled distributed applications or “Dapps” in your browser!"
   }
-  
-}
+  }
+ 

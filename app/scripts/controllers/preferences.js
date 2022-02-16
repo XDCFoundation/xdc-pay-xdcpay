@@ -1,6 +1,7 @@
 const ObservableStore = require('obs-store')
 const normalizeAddress = require('eth-sig-util').normalize
 const { isValidAddress } = require('ethereumjs-util')
+const { checkExistingAddresses } = require('../../../old-ui/app/components/add-token/util')
 const extend = require('xtend')
 
 
@@ -42,6 +43,8 @@ class PreferencesController {
       preferences: {
         useETHAsPrimaryCurrency: true,
       },
+      showGasFields: true,
+      showTokens: true,
     }, opts.initState)
 
     this.diagnostics = opts.diagnostics
@@ -77,6 +80,28 @@ class PreferencesController {
   setUseBlockie(val) {
     this.store.updateState({ useBlockie: val })
   }
+
+  /**
+   * Setter for the `setgasFields` property
+   *
+   * @param {boolean} set Whether or not the user prefers blockie indicators
+   *
+   */
+   setGasFields(set) {
+    this.store.updateState({ showGasFields: set })
+  }
+
+  /**
+   * Setter for the `setgasFields` property
+   *
+   * @param {boolean} set Whether or not the user prefers blockie indicators
+   *
+   */
+   showTokens(set) {
+    this.store.updateState({ showTokens: set })
+  }
+
+  
 
   getSuggestedTokens() {
     return this.store.getState().suggestedTokens
@@ -392,8 +417,6 @@ class PreferencesController {
       })
   }
 
-  
-
   /**
    * Setter for the `currentAccountTab` property
    *
@@ -602,14 +625,19 @@ class PreferencesController {
    * doesn't fulfill requirements
    *
    */
-  _validateERC20AssetParams(opts) {
-    const { rawAddress, symbol, decimals } = opts
-    if (!rawAddress || !symbol || !decimals) throw new Error(`Cannot suggest token without address, symbol, and decimals`)
-    if (!(symbol.length < 6)) throw new Error(`Invalid symbol ${symbol} more than five characters`)
+   _validateERC20AssetParams(opts) {
+    const { rawAddress, symbol, decimals,tokens,address} = opts
+    if (!rawAddress || !symbol ) throw new Error(`Cannot suggest token without address, symbol, and decimals`)
+    if (!(symbol.length > 0)) throw new Error(`Invalid symbol `)
     const numDecimals = parseInt(decimals, 10)
     if (isNaN(numDecimals) || numDecimals > 36 || numDecimals < 0) {
       throw new Error(`Invalid decimals ${decimals} must be at least 0, and not over 36`)
-    }
+     }
+    //  const check = checkExistingAddresses(rawAddress,tokens)
+  console.log("Check working", check,tokens,rawAddress,address)
+  // if (check) {
+  //   throw new Error(`Token has already been added. `)
+  // }
     if (!isValidAddress(rawAddress)) throw new Error(`Invalid address ${rawAddress}`)
   }
 }

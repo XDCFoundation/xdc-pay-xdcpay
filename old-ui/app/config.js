@@ -635,11 +635,11 @@ ConfigScreen.prototype.render = function () {
           }),
         ]),
 
-        h('.settings', {onClick: () => state.dispatch(actions.alertSettings())}, ['Alert Settings',
-          h('img', {
-            src: '/images/Assets/Arrow.svg',
-          }),
-        ]),
+        // h('.settings', {onClick: () => state.dispatch(actions.alertSettings())}, ['Alert Settings',
+        //   h('img', {
+        //     src: '/images/Assets/Arrow.svg',
+        //   }),
+        // ]),
 
         h('.settings', {onClick: () => state.dispatch(actions.networkSettings())}, ['Network Settings',
           h('img', {

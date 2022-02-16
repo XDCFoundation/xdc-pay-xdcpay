@@ -1,24 +1,24 @@
 const EventEmitter = require('events')
 const log = require('loglevel')
 const EthQuery = require('ethjs-query')
-const Web3 = require('web3');
+const Web3 = require('web3')
 
 /**
 
-  Event emitter utility class for tracking the transactions as they<br>
-  go from a pending state to a confirmed (mined in a block) state<br>
-<br>
-  As well as continues broadcast while in the pending state
-<br>
-@param config {object} - non optional configuration object consists of:
-    @param {Object} config.provider - A network provider.
-    @param {Object} config.nonceTracker see nonce tracker
-    @param {function} config.getPendingTransactions a function for getting an array of transactions,
-    @param {function} config.publishTransaction a async function for publishing raw transactions,
+ Event emitter utility class for tracking the transactions as they<br>
+ go from a pending state to a confirmed (mined in a block) state<br>
+ <br>
+ As well as continues broadcast while in the pending state
+ <br>
+ @param config {object} - non optional configuration object consists of:
+ @param {Object} config.provider - A network provider.
+ @param {Object} config.nonceTracker see nonce tracker
+ @param {function} config.getPendingTransactions a function for getting an array of transactions,
+ @param {function} config.publishTransaction a async function for publishing raw transactions,
 
 
-@class
-*/
+ @class
+ */
 
 class PendingTransactionTracker extends EventEmitter {
   constructor (config) {
@@ -33,8 +33,8 @@ class PendingTransactionTracker extends EventEmitter {
   }
 
   /**
-    checks the network for signed txs and releases the nonce global lock if it is
-  */
+   checks the network for signed txs and releases the nonce global lock if it is
+   */
   async updatePendingTxs () {
     // in order to keep the nonceTracker accurate we block it while updating pending transactions
     const nonceGlobalLock = await this.nonceTracker.getGlobalLock()
@@ -49,10 +49,10 @@ class PendingTransactionTracker extends EventEmitter {
   }
 
   /**
-    Will resubmit any transactions who have not been confirmed in a block
-    @param block {object} - a block object
-    @emits tx:warning
-  */
+   Will resubmit any transactions who have not been confirmed in a block
+   @param block {object} - a block object
+   @emits tx:warning
+   */
   resubmitPendingTxs (blockNumber) {
     const pending = this.getPendingTransactions()
     // only try resubmitting if their are transactions to resubmit
@@ -90,12 +90,12 @@ class PendingTransactionTracker extends EventEmitter {
   }
 
   /**
-    resubmits the individual txMeta used in resubmitPendingTxs
-    @param txMeta {Object} - txMeta object
-    @param latestBlockNumber {string} - hex string for the latest block number
-    @emits tx:retry
-    @returns txHash {string}
-  */
+   resubmits the individual txMeta used in resubmitPendingTxs
+   @param txMeta {Object} - txMeta object
+   @param latestBlockNumber {string} - hex string for the latest block number
+   @emits tx:retry
+   @returns txHash {string}
+   */
   async _resubmitTx (txMeta, latestBlockNumber) {
     if (!txMeta.firstRetryBlockNumber) {
       this.emit('tx:block-update', txMeta, latestBlockNumber)
@@ -121,12 +121,12 @@ class PendingTransactionTracker extends EventEmitter {
   }
 
   /**
-    Ask the network for the transaction to see if it has been include in a block
-    @param txMeta {Object} - the txMeta object
-    @emits tx:failed
-    @emits tx:confirmed
-    @emits tx:warning
-  */
+   Ask the network for the transaction to see if it has been include in a block
+   @param txMeta {Object} - the txMeta object
+   @emits tx:failed
+   @emits tx:confirmed
+   @emits tx:warning
+   */
   async _checkPendingTx (txMeta) {
     const txHash = txMeta.hash
     const txId = txMeta.id
@@ -151,10 +151,10 @@ class PendingTransactionTracker extends EventEmitter {
     // get latest transaction status
     try {
       // const txParams = await this.query.getTransactionReceipt(txHash)
-      const txParams = await this.web3Query.eth.getTransaction(txHash , (error, data) => {
+      const txParams = await this.web3Query.eth.getTransaction(txHash, (error, data) => {
         if (data && data.blockNumber) {
           this.emit('tx:confirmed', txId)
-        } else if (error){
+        } else if (error) {
           txMeta.warning = {
             error: error.message,
             message: 'There was a problem loading this transaction.',
@@ -176,10 +176,10 @@ class PendingTransactionTracker extends EventEmitter {
   }
 
   /**
-    checks to see if a confirmed txMeta has the same nonce
-    @param txMeta {Object} - txMeta object
-    @returns {boolean}
-  */
+   checks to see if a confirmed txMeta has the same nonce
+   @param txMeta {Object} - txMeta object
+   @returns {boolean}
+   */
 
 
   async _checkIfNonceIsTaken (txMeta) {

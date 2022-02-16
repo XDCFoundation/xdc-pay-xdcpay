@@ -37,7 +37,7 @@ class ConfirmScreen extends Component {
 			</div>
 			{this.props.withDescription ? (
 				<div style={{
-					margin: '0px 30px 20px',
+					margin: '30px 30px 0px ',
 				}}>
 					<div className="error">{this.props.description}</div>
 				</div>

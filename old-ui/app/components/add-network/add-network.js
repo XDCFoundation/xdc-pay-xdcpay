@@ -2,8 +2,8 @@ import React from 'react'
 
 const AddNetworkComponent = (props) => {
   // eslint-disable-next-line react/prop-types
-  const {onBackClick, onStateChange, onAddNetworkClicked, warningMsg, viewNetworkObj, state,t} = props
-  const { networkName, rpcUrl, chainId, currencySymbol, explorerLink } = state
+  const {onBackClick, onStateChange, onAddNetworkClicked, warningMsg, viewNetworkObj, state, t} = props
+  const {networkName, rpcUrl, chainId, currencySymbol, explorerLink} = state
 
   const isPermanentNetwork = viewNetworkObj && viewNetworkObj.isPermanent
 
@@ -19,37 +19,42 @@ const AddNetworkComponent = (props) => {
         <div style={{marginBottom: '24px', border: '1px solid #C7CDD8', borderRadius: '4px', width: '265px'}}>
           <input disabled={isPermanentNetwork} className="input large-input" type="text" name="networkName"
                  value={networkName}
-                 onChange={onStateChange} style={{border: 'none', color: '#2A2A2A'}}/>
+                 onChange={onStateChange} style={{border: 'none', color: '#2A2A2A', width: '260px'}}/>
         </div>
         <label className="word" style={{fontFamily: 'Inter-Medium'}}>New RPC URL</label>
         <br/>
-        <div style={{marginBottom: '24px', border: '1px solid #C7CDD8', borderRadius: '4px', width: '265px'}}>
+        <div style={{
+          marginBottom: warningMsg ? '12px' : '24px',
+          border: '1px solid #C7CDD8',
+          borderRadius: '4px',
+          width: '265px',
+        }}>
           <input disabled={isPermanentNetwork} className="input large-input" id="new_rpc" type="text" name="rpcUrl"
                  value={rpcUrl}
-                 onChange={onStateChange} style={{border: 'none', color: '#2A2A2A'}}/>
+                 onChange={onStateChange} style={{border: 'none', color: '#2A2A2A', width: '260px'}}/>
         </div>
-        {warningMsg && <div className="error">{warningMsg}</div>}
         <label className="word" style={{fontFamily: 'Inter-Medium'}}>Chain ID</label>
         <br/>
         <div style={{marginBottom: '24px', border: '1px solid #C7CDD8', borderRadius: '4px', width: '265px'}}>
-          <input disabled={isPermanentNetwork} className="input large-input" type="text"
-                 style={{border: 'none', color: '#2A2A2A'}}
+          <input disabled={isPermanentNetwork} className="input large-input" type="number"
+                 style={{border: 'none', color: '#2A2A2A', width: '260px'}}
                  name="chainId" onChange={onStateChange} value={chainId}/>
         </div>
         <label className="word" style={{fontFamily: 'Inter-Medium'}}>Currency Symbol (Optional)</label>
         <br/>
         <div style={{marginBottom: '24px', border: '1px solid #C7CDD8', borderRadius: '4px', width: '265px'}}>
           <input disabled={isPermanentNetwork} className="input large-input" type="text"
-                 style={{border: 'none', color: '#2A2A2A'}}
+                 style={{border: 'none', color: '#2A2A2A', width: '260px'}}
                  name="currencySymbol" onChange={onStateChange} value={currencySymbol}/>
         </div>
         <label className="word" style={{fontFamily: 'Inter-Medium'}}>Block Explorer (Optional)</label>
         <br/>
-        <div style={{marginBottom: '24px', border: '1px solid #C7CDD8', borderRadius: '4px', width: '265px'}}>
+        <div style={{marginBottom: '14px', border: '1px solid #C7CDD8', borderRadius: '4px', width: '265px'}}>
           <input disabled={isPermanentNetwork} className="input large-input" type="text"
-                 style={{border: 'none', color: '#2A2A2A'}}
+                 style={{border: 'none', color: '#2A2A2A', width: '260px'}}
                  name="explorerLink" onChange={onStateChange} value={explorerLink}/>
         </div>
+        {warningMsg && <div className="error">{warningMsg}</div>}
         {isPermanentNetwork ? '' :
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <div className="button" onClick={onBackClick}
@@ -64,7 +69,7 @@ const AddNetworkComponent = (props) => {
                    height: '40px',
                    border: 'none',
                    color: '#2a2a2a',
-              }}> {`${t(cancel)}` }
+                 }}> {`Cancel`}
             </div>
 
             <div className="button"

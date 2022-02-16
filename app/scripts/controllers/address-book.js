@@ -1,5 +1,6 @@
 const ObservableStore = require('obs-store')
 const extend = require('xtend')
+const log = require('loglevel')
 
 class AddressBookController {
 
@@ -35,26 +36,18 @@ class AddressBookController {
    *
    * @param {string} address A hex address of a new account that the user is sending to.
    * @param {string} name The name the user wishes to associate with the new account
+   * @param {boolean} remove boolean variable in case it's a delete method call
    * @returns {Promise<void>} Promise resolves with undefined
    *
    */
-  setAddressBook (address, name) {
-    return this._addToAddressBook(address, name)
+  setAddressBook (name, address, remove = false) {
+    return this._addToAddressBook(name, address, remove)
     .then((addressBook) => {
       this.store.updateState({
         addressBook,
       })
       return Promise.resolve()
     })
-  }
-
-  updateAddressBook(addedContactObj, remove = false) {
-    console.log(addedContactObj,'<Delete contact-->')
-    return this._addToAddressBook(addedContactObj, remove)
-      .then((addressBook) => {
-        this.store.updateState({ addressBook})
-        return Promise.resolve()
-      })
   }
 
   /**
@@ -64,10 +57,11 @@ class AddressBookController {
    * @private
    * @param {string} address A hex address of a new account that the user is sending to.
    * @param {string} name The name the user wishes to associate with the new account
+   * @param {boolean} remove boolean variable in case it's a delete method call
    * @returns {Promise<array>} Promises the updated addressBook array
    *
    */
-  _addToAddressBook (addedContactObj,name,address,remove = false) {
+  _addToAddressBook (name, address, remove = false) {
     const addressBook = this._getAddressBook()
     const {identities} = this._preferencesStore.getState()
 
@@ -78,19 +72,12 @@ class AddressBookController {
       return Promise.resolve(addressBook)
     // trigger this condition if we've seen this address before--may need to update nickname.
     }
-    if (addressBookIndex !== -1 && remove ) {
+    if (addressBookIndex !== -1) {
       addressBook.splice(addressBookIndex, 1)
     }
-    if (addressBook.length > 15  && !remove) {
-      addressBook.push(addedContactObj)
+    if (addressBook.length < 15 && !remove) {
+      addressBook.push({name, address})
     }
-   
-
-
-    addressBook.push({
-      address: address,
-      name,
-    })
     return Promise.resolve(addressBook)
   }
 

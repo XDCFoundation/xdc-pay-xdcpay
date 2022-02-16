@@ -24,7 +24,7 @@ const getExplorerAccountLinkFor = (account, network) => {
 		return `${devLink(prefix)}/address/${account}`
 	}
 	else if (prefix === 'xinfin') {
-		return `${xdcLink(prefix)}/addr/${account}`
+		return `https://observer.xdc.org/address-details/${account}`
 	}
 	else
 	return `${xdcLink(prefix)}/address/${account}`
@@ -38,7 +38,7 @@ const getExplorerTxLinkFor = (hash, network) => {
 		return `${devLink(prefix)}/tx/${account}`
 	}
 	else if (prefix === 'xinfin') {
-		return `${xdcLink(prefix)}/tx/${account}`
+		return `https://observer.xdc.org/address-details/${account}`
 	}
 	else
 	return `${xdcLink(prefix)}/tx/${hash}`
@@ -46,14 +46,14 @@ const getExplorerTxLinkFor = (hash, network) => {
 
 
 
-const getExplorerTokenLinkFor = (tokenAddress, account, network) => {
+const getExplorerTokenLinkFor = (tokenAddress, account, network,symbol) => {
 	const prefix = getExplorerPrefix(network)
 	// const chain = getExplorerChain(network)
 	if (prefix === 'devnetscan') {
 		return `${devLink(prefix)}/tokens/${tokenAddress}`
 	}
 	else if (prefix === 'xinfin') {
-		return `${xdcLink(prefix)}/token/${tokenAddress}`
+		return `https://observer.xdc.org/token-data/${tokenAddress}/${symbol}`
 	}
 	else
 	return `${xdcLink(prefix)}/tokens/${tokenAddress}`

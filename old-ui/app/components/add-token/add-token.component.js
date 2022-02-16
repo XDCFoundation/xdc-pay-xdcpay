@@ -251,10 +251,11 @@ class AddTokenScreen extends Component {
           h('input.large-input#token_decimals', {
             placeholder: '0',
             value: customDecimals,
+            readOnly: true,
             type: 'number',
             min: 0,
             max: 36,
-            onChange: e => this.handleCustomDecimalsChange(e.target.value),
+            // onChange: e => this.handleCustomDecimalsChange(e.target.value),
             style: {
               width: '100%',
               marginTop: '-4px',
@@ -397,9 +398,9 @@ class AddTokenScreen extends Component {
     }
 
     const symbolLen = symbol.trim().length
-    const validSymbol = symbolLen > 0 && symbolLen < 10
+    const validSymbol = symbolLen > 0 
     if (!validSymbol) {
-      msg += 'Symbol must be between 0 and 10 characters.'
+      msg += 'Symbol can not be empty.'
     }
 
     let ownAddress = identitiesList.includes(standardAddress)
@@ -577,8 +578,8 @@ class AddTokenScreen extends Component {
     const symbolLength = customSymbol.length
     let customSymbolError = null
 
-    if (symbolLength <= 0 || symbolLength >= 10) {
-      customSymbolError = 'Symbol must be between 0 and 10 characters.' /* this.context.t('symbolBetweenZeroTen')*/
+    if (symbolLength <= 0 ) {
+      customSymbolError = 'Symbol can not be empty.' /* this.context.t('symbolBetweenZeroTen')*/
     }
 
     this.setState({ customSymbol, customSymbolError })

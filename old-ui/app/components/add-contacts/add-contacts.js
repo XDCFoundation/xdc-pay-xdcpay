@@ -1,7 +1,4 @@
-import { config } from 'bluebird'
 import React from 'react'
-import { setGasPrice } from '../../../../ui/app/actions'
-const actions = require('../../../../ui/app/actions')
 
 
 const AddContactComponent = (props) => {
@@ -9,7 +6,7 @@ const AddContactComponent = (props) => {
   const { onStateChange, onAddContactClicked, warningMsg, onBackClick, t,viewContactObj,onDeleteClicked, state } = props
 
   const { contactAddress, contactName } = state
-  
+
   return (
     <div
       className="flex-column flex-grow"
@@ -35,7 +32,6 @@ const AddContactComponent = (props) => {
         {`${viewContactObj ? 'Delete' : ' '}`}
         </h2>
       </div>
-      {warningMsg && <div className="error">{warningMsg}</div>}
       <div style={{margin: '25px 42px'}}>
         <label className="word" style={{fontFamily: 'Inter-Medium'}}>
           {`Wallet Address`}
@@ -55,12 +51,12 @@ const AddContactComponent = (props) => {
             value={contactAddress}
             placeholder="Contact's Wallet Address"
             onChange={onStateChange}
-            style={{width: '252px', border: 'none', color: '#2A2A2A'}}
+            style={{width: '266px', border: 'none', color: '#2A2A2A'}}
           />
-          <img
+          {/* <img
             src="/images/Assets/Scan.svg"
             style={{position: 'absolute', right: '49px', top: '161px'}}
-          />
+          /> */}
         </div>
         <label className="word" style={{fontFamily: 'Inter-Medium'}}>
           {`Username`}
@@ -72,7 +68,7 @@ const AddContactComponent = (props) => {
             border: '1px solid #e2e2e2',
             borderRadius: '4px',
           }}
-        >
+          >
           <input
             className="input large-input"
             placeholder="Contact's Name"
@@ -81,8 +77,9 @@ const AddContactComponent = (props) => {
             value={contactName}
             onChange={onStateChange}
             style={{width: '265px', border: 'none', color: '#2A2A2A'}}
-          />
+            />
         </div>
+        {warningMsg && <div className="error">{warningMsg}</div>}
         <div style={{display: 'flex', justifyContent: 'space-around'}}>
           <div
             className="button"

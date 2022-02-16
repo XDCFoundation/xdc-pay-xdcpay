@@ -20,7 +20,9 @@ class FiatValue extends Component {
      
       try {
           
-        const response = await fetch("https://9bzlasmblf.execute-api.us-east-2.amazonaws.com/prod/getCoinMarketCap/USD",{method:"get"})
+        const response = await fetch("https://1lzur2qul1.execute-api.us-east-2.amazonaws.com/prod/getCoinMarketCap/USD",{method:"get", headers: new Headers({
+          'X-API-KEY': 'UYIQSLAYpd1i6aOAXL1okajcWJhoDQJr5KX82Zlu'
+        })})
         const parsedResponse = await response.json()
         console.log(parsedResponse,"parsedResponse")
         if (parsedResponse && parsedResponse.responseData && parsedResponse.responseData.length) {

@@ -4,36 +4,36 @@ const PersistentForm = require('../../../lib/persistent-form')
 const connect = require('react-redux').connect
 const h = require('react-hyperscript')
 const actions = require('../../../../ui/app/actions')
-import { props } from 'bluebird'
-import { construct } from 'ramda'
-import React, { useState, useEffect } from "react";
-import PasswordStrengthMeter from '../../components/PasswordStrengthMeter'
-
+import {props} from 'bluebird'
+import {construct} from 'ramda'
+import React, {useState, useEffect} from 'react'
+import PasswordStrengthMeter, {checkPassword} from '../../components/PasswordStrengthMeter'
 
 
 // RestoreVaultScreen.prototype.render = function () {
-class RestoreVaultScreen extends React.Component{
+class RestoreVaultScreen extends React.Component {
 
   constructor (props) {
     super(props)
     this.animationEventEmitter = new EventEmitter()
     this.state = {
-      password: ' ',
+      password: '',
+      passwordStrength: 0,
     }
   }
+
   onPasswordChange = (e) => {
     this.setState({password: e.target.value})
+    this.setState({passwordStrength: checkPassword(e.target.value)})
   }
 
-  render() {
+  render () {
 
-   
-    
 
     var state = this.props
-    this.persistentFormParentId = 'restore-vault-form';
-    
-    const password = this.state.password;
+    this.persistentFormParentId = 'restore-vault-form'
+
+    const password = this.state.password
     return h('div', {
       style: {
         width: '100%',
@@ -44,7 +44,7 @@ class RestoreVaultScreen extends React.Component{
           width: '100%',
           height: '38px',
           background: '#E3E7EB',
-          marginTop: '-38px',
+          marginTop: '-43px',
         }
       },
         h('img', { style: { marginTop: '8px', marginLeft: '9px' }, src: "/images/Assets/xdc-icon-16X16.png" }),
@@ -65,7 +65,7 @@ class RestoreVaultScreen extends React.Component{
             paddingTop: 40,
           },
         }, [
-          h('.page-subtitle', { style: { fontWeight: 600 } }, 'Restore Vault'),
+          h('.page-subtitle', {style: {fontWeight: 600}}, 'Restore Vault'),
         ]),
 
         // wallet seed entry
@@ -77,7 +77,7 @@ class RestoreVaultScreen extends React.Component{
         //   },
         // }, 'Wallet Seed'),
         h('textarea.twelve-word-phrase1', {
-          style: { marginTop: '24px' },
+          style: {marginTop: '24px'},
           placeholder: 'Enter your secret twelve word phrase here to restore your vault.',
         }),
 
@@ -100,8 +100,8 @@ class RestoreVaultScreen extends React.Component{
 
         h(
           PasswordStrengthMeter, {
-          password: password,
-        },
+            password: password,
+          },
         ),
 
         // confirm password
@@ -160,8 +160,8 @@ class RestoreVaultScreen extends React.Component{
             style: {
               width: '120px',
               height: '40px',
-              background: '#03BE46'
-            }
+              background: '#03BE46',
+            },
           }, 'Restore'),
 
         ]),
@@ -187,24 +187,23 @@ RestoreVaultScreen.prototype.createOnEnter = function (event) {
 
 RestoreVaultScreen.prototype.createNewVaultAndRestore = function () {
   // check password
-  var passwordBox = document.getElementById('password-box')
-  var password = passwordBox.value
-  
+  const passwordBox = document.getElementById('password-box')
+  const password = passwordBox.value
   var passwordConfirmBox = document.getElementById('password-box-confirm')
   var passwordConfirm = passwordConfirmBox.value
-  if (password.length < 8) {
-    this.warning = 'Password is not long enough'
+  if (this.state.passwordStrength < 2) {
+    this.warning = 'Password strength is poor'
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }
   if (password !== passwordConfirm) {
-    this.warning = 'Passwords don\'t match'
+    this.warning = 'Password does not match'
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }
   // check seed
-  var seedBox = document.querySelector('textarea.twelve-word-phrase1')
-  var seed = seedBox.value.trim()
+  const seedBox = document.querySelector('textarea.twelve-word-phrase1')
+  const seed = seedBox.value.trim()
   // var seed = seedBox.value.split('  ')
   // true if the string has more than a space between words.
   if (seed.split('  ').length > 1) {
@@ -234,11 +233,11 @@ module.exports = connect(mapStateToProps)(RestoreVaultScreen)
 
 // inherits(RestoreVaultScreen, PersistentForm)
 // function RestoreVaultScreen () {
-  
+
 //   PersistentForm.call(this)
 // }
 
-function mapStateToProps(state) {  
+function mapStateToProps (state) {
   return {
     currentView: state.appState.currentView,
     warning: state.appState.warning,

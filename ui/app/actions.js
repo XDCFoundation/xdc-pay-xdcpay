@@ -34,6 +34,7 @@ var actions = {
   goHome: goHome,
   goConfig: goConfig,
   GO_CONFIG: 'GO_CONFIG',
+  
   // modal state
   MODAL_OPEN: 'UI_MODAL_OPEN',
   MODAL_CLOSE: 'UI_MODAL_CLOSE',
@@ -141,6 +142,10 @@ var actions = {
   LOCK_METAMASK: 'LOCK_METAMASK',
   UPDATE_GASFIELDS: 'UPDATE_GASFIELDS',
   UPDATE_TOKENSLIST: 'UPDATE_TOKENSLIST',
+  UPDATE_VALIDATION_NAME: 'UPDATE_VALIDATION_NAME',
+  UPDATE_VALIDATION_ADDRESS: 'UPDATE_VALIDATION_ADDRESS',
+  isValidName: isValidName,
+  isValidAddress: isValidAddress,
   showTokens: showTokens,
   showGasFields: showGasFields,
   tryUnlockMetamask: tryUnlockMetamask,
@@ -177,7 +182,6 @@ var actions = {
   showSendContractPage,
   ADD_TO_ADDRESS_BOOK: 'ADD_TO_ADDRESS_BOOK',
   addToAddressBook: addToAddressBook,
-  delContact : delContact,
   REQUEST_ACCOUNT_EXPORT: 'REQUEST_ACCOUNT_EXPORT',
   requestExportAccount: requestExportAccount,
   EXPORT_ACCOUNT: 'EXPORT_ACCOUNT',
@@ -512,6 +516,13 @@ function connectedSites () {
 function transitionBackward () {
   return {
     type: this.TRANSITION_BACKWARD,
+  }
+}
+
+function transactionDetails(txnId) {
+  return {
+    type: actions.TRANSACTION_DETAILS,
+    value: txnId
   }
 }
 
@@ -1830,15 +1841,51 @@ function updateMetamaskState (newState) {
 }
 
 function showGasFields (newState) {
-  return {
-    type: actions.UPDATE_GASFIELDS,
-    value: newState,
+  return (dispatch) => {
+    log.debug(`background.showGasFields`)
+    background.setGasFields(newState, (err, result) => {
+      if (err) {
+        log.error(err)
+        return dispatch(
+          actions.displayWarning('Had a problem changing networks!'),
+        )
+      }
+      dispatch({
+        type: actions.UPDATE_GASFIELDS,
+          value: newState,
+
+      })
+    })
   }
 }
 
-function showTokens (newState) {
+function showTokens(newState) {
+  return (dispatch) => {
+    log.debug(`background.showTokens`)
+    background.showTokens(newState, (err, result) => {
+      if (err) {
+        log.error(err)
+        return dispatch(
+          actions.displayWarning('Had a problem changing networks!'),
+        )
+      }
+      dispatch({
+        type: actions.UPDATE_TOKENSLIST,
+        value: newState,
+      })
+    })
+  }
+}
+
+function isValidName (newState) {
   return {
-    type: actions.UPDATE_TOKENSLIST,
+    type: actions.UPDATE_VALIDATION_NAME,
+    value: newState,
+  }
+}
+function isValidAddress (newState) {
+  return {
+    type: actions.UPDATE_VALIDATION_ADDRESS,
     value: newState,
   }
 }
@@ -2187,7 +2234,7 @@ function addTokens (tokens) {
 
 function removeSuggestedTokens () {
   return (dispatch) => {
-    dispatch(actions.showLoadingIndication())
+    // dispatch(actions.showLoadingIndication())
     return new Promise((resolve, reject) => {
       background.removeSuggestedTokens((err, suggestedTokens) => {
         dispatch(actions.hideLoadingIndication())
@@ -2429,6 +2476,8 @@ function delRpcTarget (oldRPCObj) {
         log.error(err)
         return dispatch(self.displayWarning('Had a problem removing network!'))
       }
+        dispatch(actions.setProviderType('xdc'))
+
       dispatch(actions.displayWarning(''))
       dispatch(actions.setSelectedToken())
     })
@@ -2437,29 +2486,14 @@ function delRpcTarget (oldRPCObj) {
 
 
 // Calls the addressBookController to add a new address.
-function addToAddressBook (recipient, nickname = '') {
+function addToAddressBook (name, address = '', toRemove = false) {
   log.debug(`background.addToAddressBook`)
   return (dispatch) => {
-    background.setAddressBook(recipient, nickname, (err, result) => {
+    background.setAddressBook(name, address, toRemove, (err, result) => {
       if (err) {
         log.error(err)
         return dispatch(self.displayWarning('Address book failed to update'))
       }
-    })
-  }
-}
-
-function delContact (viewContactObj) {
-  return (dispatch) => {
-    log.debug(`background.updateAddressBook: ${viewContactObj}`)
-    console.log(viewContactObj,'{-+-}')
-    background.delSelectedContact(viewContactObj, (err, result) => {
-      if (err) {
-        log.error(err)
-        return dispatch(self.displayWarning('Had a problem removing Contact!'))
-      }
-      dispatch(actions.displayWarning(' ! WARNING '))
-      
     })
   }
 }

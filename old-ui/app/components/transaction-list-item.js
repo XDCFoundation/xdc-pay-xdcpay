@@ -124,9 +124,9 @@ TransactionListItem.prototype.render = function () {
         if (isPending) {
           this.props.showTx(transaction.id)
         }
-        else {
-          this.props.showTransctionDetails(transaction.id)
-        }
+        // else {
+        //   this.props.showTransctionDetails(transaction.id)
+        // }
         event.stopPropagation()
         // if (!transaction.hash || !isLinkable) return
         // const url = ethNetProps.explorerLinks.getExplorerTxLinkFor(transaction.hash, numericNet)

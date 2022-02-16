@@ -59,7 +59,7 @@ class SendTransactionScreen extends PersistentForm {
         <SendHeader title={`Send ${this.state.token.symbol} Tokens`} />
         <SendProfile isToken={true} token={token} />
         
-        <ErrorComponent error={error} />
+      
         <section className="flex-row flex-center">
           <EnsInput
             name="address"
@@ -90,6 +90,7 @@ class SendTransactionScreen extends PersistentForm {
               width: '265px',
             }}
           />
+           <div style={{width:'265px'}}> <ErrorComponent error={error} /></div>
           <button style={{
               width: '265px',
               height: '40px',
@@ -252,7 +253,7 @@ class SendTransactionScreen extends PersistentForm {
 
     this.props.hideWarning()
 
-    this.props.addToAddressBook(recipient, nickname)
+    // this.props.addToAddressBook(recipient, nickname)
 
     const txParams = {
       from: this.props.address,

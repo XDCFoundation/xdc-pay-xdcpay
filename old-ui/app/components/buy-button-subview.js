@@ -20,7 +20,7 @@ const { toChecksumAddress } = require('../util')
 class BuyButtonSubview extends Component {
   render() {
     return (
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", maxHeight:'574px',overflowX:'scroll' }}>
         {this.headerSubview()}
         {this.primarySubview()}
       </div>
@@ -119,7 +119,7 @@ class BuyButtonSubview extends Component {
 
       default:
         return (
-          <div className="flex-column" style={{ margin: "0px 20px 20px 20px" }}>
+          <div className="flex-column" style={{ margin: "0px 20px " }}>
             {this._getBuyOptionsView(network)}
           </div>
         );
@@ -139,7 +139,7 @@ class BuyButtonSubview extends Component {
     const exchanges = getExchanges({ network });
     return exchanges.map((exchange, ind) => {
       return (
-        <p
+        <div
           style={{
             border: "1px solid #C7CDD8",
             height: "57px",
@@ -147,6 +147,7 @@ class BuyButtonSubview extends Component {
             padding: "11px",
             // fontFamily: "Inter",
             fontSize: "14px",
+            marginBottom: '10px',
             color: "black",
             textAlign: "left",
             fontFamily: "Inter-Semibold",
@@ -163,7 +164,7 @@ class BuyButtonSubview extends Component {
             style={{width: "7px" }}
             src="/images/Assets/RightArrow.svg"
           />
-        </p>
+        </div>
       );
     });
   }

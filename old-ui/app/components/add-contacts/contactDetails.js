@@ -22,8 +22,14 @@ class ContactDetails extends React.Component {
     } = this.props
     const transactionAddress = contactObj.address.replace("xdc","0x")
     const currentContactTxn = transactions.filter((txnObj) => txnObj.txParams.to.trim() === transactionAddress.trim())
-    const info = transactions[5].txParams.gas
-    console.log(info,'<<>>')
+
+    function shorten(b, amountL = 7, /*amountR = 4,*/ stars = 3) {
+      return `${b.slice(0, amountL)}${'.'.repeat(stars)}${b.slice(
+        b.length - 4,
+        b.length,
+      )}`
+    }
+    
     return (
       <div
         className="flex-column flex-grow"
@@ -62,7 +68,7 @@ class ContactDetails extends React.Component {
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Identicon
                 overflow="none"
-                address={contactObj.address}
+                address={contactObj.address.replace("xdc","0x")}
                 diameter={69}
                 style={{
                   display: 'flex',
@@ -81,7 +87,7 @@ class ContactDetails extends React.Component {
                   fontWeight: '600',
                   marginTop: '5px',
                   color: '#2a2a2a',
-                  
+
                 }}
               >
                 {contactObj.name}
@@ -96,17 +102,17 @@ class ContactDetails extends React.Component {
                   fontFamily: 'Inter-Medium',
                 }}
               >
-                Wallet contactAddress
+                Wallet Address
               </div>
-              <div style={{display: 'flex', justifyContent: 'center',alignItems:'baseline' ,wordBreak:'break-all',padding:'3px 47px'}}>
-                <div style={{fontSize:'14px',fontFamily:'Inter-Medium' }}>{contactObj.address}</div>
+              <div style={{display: 'flex', justifyContent: 'center',alignItems:'baseline' ,wordBreak:'break-all',padding:'0 0 24px 0px '}}>
+                <div style={{fontSize:'14px',fontFamily:'Inter-Medium' }}>{shorten(contactObj.address)}</div>
                 <CopyButton value={contactObj.address} isWhite={true}/>
               </div>
             </div>
           </div>
           <div>
             <TransactionList
-              
+
               transactions={currentContactTxn}
               network={network}
               unapprovedMsgs={unapprovedMsgs}

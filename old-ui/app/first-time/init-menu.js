@@ -3,7 +3,7 @@ const connect = require('react-redux').connect
 const h = require('react-hyperscript')
 const actions = require('../../../ui/app/actions')
 const React = require('react')
-import PasswordStrengthMeter from '../../../old-ui/app/components/PasswordStrengthMeter'
+import PasswordStrengthMeter, {checkPassword} from '../../../old-ui/app/components/PasswordStrengthMeter'
 
 class InitializeMenuScreen extends React.Component {
   constructor (props) {
@@ -11,7 +11,8 @@ class InitializeMenuScreen extends React.Component {
     this.animationEventEmitter = new EventEmitter()
     this.state = {
       class: 'JIII',
-      password: ' ',
+      password: '',
+      passwordStrength: 0,
     }
   }
 
@@ -30,6 +31,7 @@ class InitializeMenuScreen extends React.Component {
 
   onPasswordChange = (e) => {
     this.setState({password: e.target.value})
+    this.setState({passwordStrength: checkPassword(e.target.value)})
   }
 
   createVaultOnEnter = (event) => {
@@ -42,15 +44,16 @@ class InitializeMenuScreen extends React.Component {
   createNewVaultAndKeychain = () => {
     const passwordBox = document.getElementById('password-box')
     const password = passwordBox.value
+
     const passwordConfirmBox = document.getElementById('password-box-confirm')
     const passwordConfirm = passwordConfirmBox.value
-    if (password.length < 8) {
-      this.warning = 'Password is not long enough'
+    if (this.state.passwordStrength < 2) {
+      this.warning = 'Password strength is poor'
       this.props.dispatch(actions.displayWarning(this.warning))
       return
     }
     if (password !== passwordConfirm) {
-      this.warning = 'Passwords don\'t match'
+      this.warning = 'Password does not match'
       this.props.dispatch(actions.displayWarning(this.warning))
       return
     }

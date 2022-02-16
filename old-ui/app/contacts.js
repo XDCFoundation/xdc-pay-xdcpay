@@ -36,36 +36,41 @@ class Contacts extends React.Component {
                onClick={() => state.dispatch(actions.showAddContactsPage())}
           />
         </div>
-        <div className="list">
-          {contactList.map((contactObj, index) => (
-            <div key={index} 
-                 style={{
-                   borderBottom: '1px solid #E3E7EB',
-                   fontFamily: 'inter-medium',
-                   fontSize: '14px',
-                 }}>
-              {index === 0 || contactList[index].name.charAt(0).toLowerCase() !== contactList[index - 1].name.charAt(0).toLowerCase() ?
-                <div style={{
-                  backgroundColor: '#F4F6FA',
-                  height: '24px',
-                  width: '100%',
-                  padding: '0 21px',
-                }}>{contactList[index].name.charAt(0).toUpperCase()}
-                </div> : ''}
-              <div style={{padding: '10px 20px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
-                <Identicon
-                  overflow="none"
-                  address={contactObj.address}
-                  diameter={27}
-                  style={{marginLeft: '10px', cursor: 'pointer', overflow: 'inherit'}}
-                />
-                <div style={{width: 'fit-content',cursor:'pointer',}} onClick={() => state.dispatch(actions.contactDetails(contactObj))}>
-                  {contactObj.name}
+        <div className="list" >
+          {contactList.length ?            
+              contactList.map((contactObj, index) => (
+                <div key={index}
+                  style={{
+                    borderBottom: '1px solid #E3E7EB',
+                    fontFamily: 'inter-medium',
+                    fontSize: '14px',
+                  }}>
+                  {index === 0 || contactList[index].name.charAt(0).toLowerCase() !== contactList[index - 1].name.charAt(0).toLowerCase() ?
+                    <div style={{
+                      backgroundColor: '#F4F6FA',
+                      height: '24px',
+                      width: '100%',
+                      padding: '0 21px',
+                    }}>{contactList[index].name.charAt(0).toUpperCase()}
+                    </div> : ''}
+                  <div style={{ padding: '10px 20px', display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                    <Identicon
+                      overflow="none"
+                      address={contactObj.address.replace("xdc","0x")}
+                      diameter={27}
+                      style={{ marginLeft: '10px', cursor: 'pointer', overflow: 'inherit' }}
+                    />
+                    <div style={{ width: 'fit-content', cursor: 'pointer',padding:'3px 0 0 0' }} onClick={() => state.dispatch(actions.contactDetails(contactObj))}>
+                      {contactObj.name}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              ))
+            : <p style={{ margin: '182px 113px',
+            color: '#9FA9BA',
+            fontSize: '14px',}}>
+              No Contacts Added
+              </p> }  </div>
       </div>
     )
   }
@@ -75,6 +80,7 @@ function mapStateToProps (state) {
   return {
     metamask: state.metamask,
     warning: state.appState.warning,
+    identities: state.metamask.identities,
   }
 }
 module.exports = connect(mapStateToProps)(Contacts)

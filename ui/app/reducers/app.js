@@ -30,10 +30,10 @@ function reduceApp (state, action) {
   // confirm seed words
   var seedWords = state.metamask.seedWords
   var seedConfView = {
-    name: 'createVaultComplete',
+    name: 'createVaultComplete' ,
     seedWords,
   }
-
+  
   // default state
   var appState = extend({
     shouldClose: false,
@@ -476,8 +476,8 @@ function reduceApp (state, action) {
       log.debug('----qwerty----')
       return extend(appState, {
         currentView: {
-          name: seedWords ? 'reveal-seed' : 'reveal-seed',
-          seedWords: action.value,
+          name: 'reveal-seed' ,
+          context: appState.currentView.context,
         },
         transForward: true,
         isLoading: false,
@@ -1051,6 +1051,15 @@ function reduceApp (state, action) {
           inputValues: action.inputValues,
         },
       })
+
+      case actions.TRANSACTION_DETAILS: {
+        return extend(appState, {
+          currentView: {
+            name: 'transaction-details',
+            context: appState.currentView.context,
+          }
+        })
+      }
 
     default:
       return appState

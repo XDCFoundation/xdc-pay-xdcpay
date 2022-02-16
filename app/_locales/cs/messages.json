@@ -8,6 +8,9 @@
   "accountDetails": {
     "message": "Detaily účtu"
   },
+  "accountOptions": {
+    "message": "Nastavení účtu"
+  },
   "accountName": {
     "message": "Název účtu"
   },
@@ -308,7 +311,7 @@
     "message": "Poplatek za palivo"
   },
   "gasLimit": {
-    "message": "Limit paliva"
+    "message": "Limit plynu (jednotky)"
   },
   "gasLimitCalculation": {
     "message": "Počítáme doporučený limit paliva na základě úspěšnosti v síti."
@@ -637,6 +640,9 @@
   "revealSeedWordsWarning": {
     "message": "Nebnovujte slova klíčové fráze na veřejnosti! Tato slova mohou být použita k odcizení veškerých vyašich účtů."
   },
+  "reveal":{
+    "message": "Odhalit"
+  },
   "revert": {
     "message": "Zvrátit"
   },
@@ -823,6 +829,9 @@
   "tokenSymbol": {
     "message": "Symbol tokenu"
   },
+  "tokens":{
+    "message": "Tokeny"
+  },
   "tokenWarning1": {
     "message": "Mějte přehled o tokenech, které jste koupili s účtem Nifty Walletu. Pokud jste koupili tokeny s jiným účtem, tyto tokeny se zde nezobrazí."
   },
@@ -914,5 +923,113 @@
   },
   "youSign": {
     "message": "Podepisujete"
+  },
+  "expandedView": {
+    "message": "Rozšířené zobrazení"
+  },
+  "contacts":{
+    "message" : "Kontakty"
+  },
+  "addContact":{
+    "message": "Přidat kontakt"
+  },
+  "walletAddress":{
+    "message": "Adresa peněženky"
+  },
+  "connectedSites":{
+    "message":"Připojené weby"
+  },
+  "userName":{
+    "message": "Uživatelské jméno"
+  },
+  "contactDetails":{
+    "message": "Kontaktní údaje"
+  },
+  "alertSettings":{
+    "message": "Nastavení upozornění"
+  },
+  "unconnectedAccountWarning" :{
+    "message" : "Procházení webu s vybraným nepřipojeným účtem."
+   },
+   "alertMsg" : {
+    "message" : "Toto upozornění se zobrazí ve vyskakovacím okně, když prohlížíte připojený web3, ale aktuálně vybraný účet není připojen."
+   },
+  "viewOnBlockExplorer":{
+    "message": "Zobrazit v Průzkumníku bloků"
+  },
+  "hideTokensWithoutBalance":{
+    "message": "Skrýt tokeny bez zůstatku"
+  },
+  "advanceSettings":{
+    "message": "Pokročilé nastavení"
+  },
+  "resetAccountDescription": {
+    "message": "Resetováním účtu se vymaže historie transakcí. To nezmění zůstatky na vašich účtech ani nebude vyžadovat opětovné zadání vaší tajné obnovovací fráze."
+   },
+   "advancedGasControls": {
+    "message": "Pokročilé ovládání plynu"
+  },
+  "advancedGasControlsDesc" : {
+    "message":  "Tuto možnost vyberte, chcete-li přímo na obrazovkách odeslání a potvrzení zobrazit ovládací prvky ceny plynu a limitů."
+  },
+  "securityandPrivacySettings":{
+    "message": "Nastavení zabezpečení a soukromí"
+  },
+  "getYourSeedWords": {
+    "message": "Získejte svá tajná počáteční slova zadáním hesla."
+  },
+  "autoLockTimer":{
+    "message": "Časovač automatického zámku"
+  },
+  "autoLockTimerDesc":{
+    "message": "Nastavte dobu nečinnosti v minutách, než bude peněženka uzamčena."
+  },
+  "showIncomingTransactions":{
+    "message": "Zobrazit příchozí transakce"
+  },
+  "showIncomingTransactionsDesc":{
+    "message": "Vyberte tuto možnost, chcete-li použít XDC Observatory k zobrazení příchozích transakcí v seznamu transakcí."
+  },
+  "networkSettings":{
+    "message": "Nastavení sítě"
+  },
+  "addNetwork":{
+    "message": "Přidat síť"
+  },
+  "networkName":{
+    "message": "Jméno sítě"
+  },
+  "chainID":{
+    "message": "ID řetězce"
+  },
+  "currencySymbol":{
+    "message": "Symbol měny (volitelné)"
+  },
+  "blockExplorer":{
+    "message": "Block Explorer (volitelné)"
+  },
+  "Add":{
+    "message": "Přidat"
+  },
+  "Update":{
+    "message": "Aktualizace"
+  },
+  "About":{
+    "message": "okolo"
+  },
+  "infoDesc" : {
+    "message" : "XDCPay je rozšíření pro přístup k XDC XDPoS povoleným distribuovaným aplikacím nebo „Dapps“ ve vašem prohlížeči!"
+  },
+  "Link":{
+    "message": "Odkaz"
+  },
+  "contactUs":{
+    "message": "Kontaktujte nás"
+  },
+  "maxTransactionFee":{
+    "message": "Maximální transakční poplatek"
+  },
+  "Edit":{
+    "message": "Upravit"
   }
 }

@@ -248,7 +248,7 @@ App.prototype.renderPrimary = function () {
   }
 
   // show seed words screen
-  if (props.seedWords) {
+  if (props.seedWords && props.currentView.name !== 'reveal-seed') {
     log.debug('rendering seed words')
     return props.currentView.name === 'confirmRecoveryPhrase' ? h(ConfirmRecoveryPhrase, {key: 'confirm-recovery-phrase'}) : h(HDCreateVaultComplete, {key: 'HDCreateVaultComplete'})
   }

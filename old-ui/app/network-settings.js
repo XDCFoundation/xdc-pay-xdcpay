@@ -7,9 +7,6 @@ class NetworkSettings extends React.Component {
   onDeleteRPCNetwork = (networkObj) => {
     const state = this.props
     state.dispatch(actions.delRpcTarget(networkObj))
-    if (state.metamask.network === networkObj.chainId) {
-      state.dispatch(actions.setProviderType('xdc'))
-    }
   }
 
   render () {

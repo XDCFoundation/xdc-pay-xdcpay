@@ -4,6 +4,7 @@ const actions = require('../../../../ui/app/actions')
 const React = require('react')
 const CopyButton = require('../../components/copy/copy-button')
 const { toChecksumAddress } = require('../../util')
+const hexToBn = require('../../../../app/scripts/lib/hex-to-bn')
 
 
 class TransactionDetails extends React.Component {
@@ -27,11 +28,25 @@ class TransactionDetails extends React.Component {
       transactions,
     } = this.props
     // const currentContactTxn = transactions.filter((txnObj) => txnObj.txReceipt.to === address)
-    const To = transactions[5].txParams.to
-    const Gas = transactions[0].txParams.gas
-    const Value = transactions[0].txParams.value
-    // const To = transactions.filter((txnObj) => txnObj.txParams.to === transaction,selected)
-    console.log(To, '//')
+     // const To = transactions.filter((txnObj) => txnObj.txParams.to === transaction,selected)
+    //  const To = transactions.values((txnObj)  => txnObj.txParams.to)
+
+    const To = transactions[1].txParams.to
+    
+
+    var value = transactions[1].txParams.value
+    value = parseInt(value, 16)
+    value = value / (Math.pow(10, 18));
+    
+    var gas = transactions[1].txParams.gas
+     gas = parseInt(gas, 16); 
+
+    var gasPrice = transactions[1].txParams.gasPrice
+     gasPrice = parseInt(gasPrice, 18);
+    //  gasPrice= gasPrice / (Math.pow(10, 18));
+   
+    console.log(gas, '//')
+    console.log(gasPrice, '///')
 
 
     return (
@@ -69,18 +84,18 @@ class TransactionDetails extends React.Component {
         {/* all trasaction details  */}
         <div className='trasaction-details-amount'>
           <div style={{ marginLeft: '17px' }}>Amount</div>
-          <div style={{ marginLeft: '170px' }}>{Value}</div>
+          <div style={{ marginRight: '6px' , marginLeft:'auto'}}>{value}</div>
           <h1 style={{ color: '#848484' }}>XDC</h1>
         </div>
 
         <div className='trasaction-details-amount'>
           <div style={{ marginLeft: '16px' }}>Gas Limit</div>
-          <div>{Gas}</div>
+          <div>{gas}</div>
         </div>
 
         <div className='trasaction-details-amount'>
           <div style={{ marginLeft: '16px' }}>Gas Price (GWEI)</div>
-          <div>1.00</div>
+          <div>{gasPrice}</div>
         </div>
 
         <div className='trasaction-details-amount'>

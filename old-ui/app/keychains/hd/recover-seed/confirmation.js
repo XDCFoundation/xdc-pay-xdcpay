@@ -4,7 +4,7 @@ const Component = require('react').Component
 const connect = require('react-redux').connect
 const h = require('react-hyperscript')
 const actions = require('../../../../../ui/app/actions')
-
+const log = require('loglevel')
 module.exports = connect(mapStateToProps)(RevealSeedConfirmation)
 
 inherits(RevealSeedConfirmation, Component)
@@ -20,7 +20,7 @@ function mapStateToProps (state) {
 
 RevealSeedConfirmation.prototype.render = function () {
   const props = this.props
-
+  const warning = props.warning
   return (
 
     h('.initialize-screen.flex-column.flex-center.flex-grow', {
@@ -63,6 +63,13 @@ RevealSeedConfirmation.prototype.render = function () {
             height: '40px',
           },
         }),
+
+        h('.error-login', {
+          style: {
+            display: warning ? 'block' : 'none',
+            marginTop: '20px',
+          }, 
+        }, 'Incorrect Password',warning),
 
         // (props.warning) && (
         //   h('span.error', {
@@ -136,6 +143,10 @@ RevealSeedConfirmation.prototype.checkConfirmation = function (event) {
 
 RevealSeedConfirmation.prototype.revealSeedWords = function () {
   var password = document.getElementById('password-box').value
-  console.log(password,'12345')
-  this.props.dispatch(actions.requestRevealSeed1(password))
+  console.log(password, '12345')
+  try {
+    this.props.dispatch(actions.requestRevealSeed1(password))
+  }catch (e) {
+    log.error(e)
+  }
 }

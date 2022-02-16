@@ -16,10 +16,11 @@ Network.prototype.render = function () {
   const props = this.props
   const { provider, network: networkNumber, networkList, frequentRpcList } = props
   let displayName, hoverText
-  if (provider.type === 'rpc') {
+    
+  if (provider.type === 'rpc' && frequentRpcList  ) {
     displayName = frequentRpcList.find((netObj) => netObj.rpcURL === provider.rpcTarget) ? frequentRpcList.find((netObj) => netObj.rpcURL === provider.rpcTarget).name : ''
     hoverText = `Private Network (${provider.rpcTarget})`
-  } else {
+  } else if(networkList) {
     displayName = networkList.find((netObj) => netObj.providerType === provider.type) ? networkList.find((netObj) => netObj.providerType === provider.type).name : ''
     hoverText = ethNetProps.props.getNetworkDisplayName(networkList.find((netObj) => netObj.providerType === provider.type).chainId)
   }

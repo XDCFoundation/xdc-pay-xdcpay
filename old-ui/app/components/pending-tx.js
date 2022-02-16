@@ -39,7 +39,7 @@ async function getconversionRate() {
    
     try {
         
-      const response = await fetch("https://9bzlasmblf.execute-api.us-east-2.amazonaws.com/prod/getCoinMarketCap/USD",{method:"get"})
+      const response = await fetch("https://1lzur2qul1.execute-api.us-east-2.amazonaws.com/prod/getCoinMarketCap/USD",{method:"get"})
       const parsedResponse = await response.json()
       console.log(parsedResponse,"parsedResponse")
       if (parsedResponse && parsedResponse.responseData && parsedResponse.responseData.length) {
@@ -228,7 +228,8 @@ PendingTx.prototype.render = function () {
               provider: provider,
               isUnlocked: isUnlocked,
             }) : null,
-            h('button.btn-violet', {
+            
+            showGasFields ? h('button.btn-violet', {
               onClick: (event) => {
                 this.resetGasFields()
                 event.preventDefault()
@@ -240,8 +241,8 @@ PendingTx.prototype.render = function () {
                 background: '#ffffff',
                 fontWeight: 'bold',
               },
-            }, 'Reset'),
-          ]),
+            }, 'Reset') : null,
+          ]), 
 
           isError ? h('div', {
             style: {

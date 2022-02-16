@@ -29,10 +29,10 @@ revealSeed.prototype.render = function () {
 
 
 
+  console.log('---Correct Screen---')
 
 
   return (
-
     h('.initialize-screen.flex-column.flex-center.flex-grow', [
 
       // subtitle and nav

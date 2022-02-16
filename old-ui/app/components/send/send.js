@@ -248,7 +248,7 @@ SendTransactionScreen.prototype.onSubmit = function () {
 
   this.props.dispatch(actions.hideWarning())
 
-  this.props.dispatch(actions.addToAddressBook(recipient, nickname))
+  // this.props.dispatch(actions.addToAddressBook(recipient, nickname))
 
   var txParams = {
     from: this.props.address.replace('xdc', '0x'),

@@ -376,6 +376,8 @@ module.exports = class XdcController extends EventEmitter {
       setCurrentCurrency: this.setCurrentCurrency.bind(this),
       setCurrentCoin: this.setCurrentCoin.bind(this),
       setUseBlockie: this.setUseBlockie.bind(this),
+      setGasFields: this.setGasFields.bind(this),
+      showTokens: this.showTokens.bind(this),
       setCurrentLocale: this.setCurrentLocale.bind(this),
       markAccountsFound: this.markAccountsFound.bind(this),
       markPasswordForgotten: this.markPasswordForgotten.bind(this),
@@ -411,7 +413,6 @@ module.exports = class XdcController extends EventEmitter {
       setProviderType: nodeify(networkController.setProviderType, networkController),
       setCustomRpc: nodeify(this.setCustomRpc, this),
       delCustomRpc: nodeify(this.delCustomRpc, this),
-      delSelectedContact : nodeify(this.delSelectedContact,this),
 
       // PreferencesController
       setSelectedAddress: nodeify(preferencesController.setSelectedAddress, preferencesController),
@@ -1700,7 +1701,6 @@ module.exports = class XdcController extends EventEmitter {
     await this.preferencesController.updateFrequentRpcList(customRPCObject)
     return customRPCObject
   }
-
   // /**
   //  * A method for selecting a custom URL for an ethereum RPC provider.
   //  * @param {string} customContactObject - A custom RPC Object for a valid Ethereum RPC API.
@@ -1713,22 +1713,22 @@ module.exports = class XdcController extends EventEmitter {
   // }
 
   /**
+   * A method for selecting a custom URL for an ethereum RPC provider.
+   * @param {string} customContactObject - A custom RPC Object for a valid Ethereum RPC API.
+   * @returns {Promise<String>} - The RPC Target URL confirmed.
+   */
+   async setContact(customContactObject) {
+    this.networkController.setContactTarget(customContactObject.name)
+    await this.preferencesController.updateAddressBook(customContactObject)
+    return customContactObject
+  }
+
+  /**
    * A method for deleting a selected custom URL.
    * @param {string} customRPCObject - A RPC URL to delete.
    */
   async delCustomRpc(customRPCObject) {
     await this.preferencesController.updateFrequentRpcList(customRPCObject, true)
-  }
-
-
-  /**
-   * A method for deleting a selected Contact.
-   * @param {string} addedContactObj - Address to delete.
-   * @param {string} name - Name to delete.
-   */
-  async delSelectedContact(addedContactObj) {
-    console.log(addedContactObj,'******')
-     await this.addressBookController.updateAddressBook(addedContactObj, true)
   }
 
   /**
@@ -1744,6 +1744,35 @@ module.exports = class XdcController extends EventEmitter {
       cb(err)
     }
   }
+
+  /**
+   * Sets whether or not to use the blockie identicon format.
+   * @param {boolean} set - True for bockie, false for jazzicon.
+   * @param {Function} cb - A callback function called when complete.
+   */
+   setGasFields(set, cb) {
+    try {
+      this.preferencesController.setGasFields(set)
+      cb(null)
+    } catch (err) {
+      cb(err)
+    }
+  }
+
+  /**
+   * Sets whether or not to use the blockie identicon format.
+   * @param {boolean} set - True for bockie, false for jazzicon.
+   * @param {Function} cb - A callback function called when complete.
+   */
+   showTokens(set, cb) {
+    try {
+      this.preferencesController.showTokens(set)
+      cb(null)
+    } catch (err) {
+      cb(err)
+    }
+  }
+
 
   /**
    * A method for setting a user's current locale, affecting the language rendered.
