@@ -58,7 +58,7 @@ class AdvanceSettings extends React.Component{
             <h2 style={{ marginLeft:'88px',fontFamily:'Inter-bold'}}>Advance Settings</h2>
             </div>
             <div style={{
-                padding: ' 15px 17px 20px 15px ',
+                padding: ' 14px 17px 14px 17px ',
                 borderBottom: '1px solid #E3E7EB',
             }}>
                 <span style={{ fontWeight: "bold", fontSize: "14px", color: "#2149B9" }}>{`${t('stateLogs')}`}</span><br />
@@ -79,7 +79,7 @@ class AdvanceSettings extends React.Component{
                 
                 </div>
                 <div style={{
-                padding: ' 15px 17px 20px 15px ',
+                padding: ' 14px 17px 14px 17px ',
                 borderBottom: '1px solid #E3E7EB',
             }}>
                     <span style={{ fontWeight: "bold", fontSize: "14px", color: "#2149B9" }}>{`${t('resetAccount')}` }</span><br />
@@ -92,8 +92,8 @@ class AdvanceSettings extends React.Component{
                 </div>
                       
                <div style={{
-                    padding: ' 15px 17px 20px 15px ',
-                    borderBottom: '1px solid #E3E7EB',
+                    padding: ' 14px 17px 14px 17px',
+                    // borderBottom: '1px solid #E3E7EB',
                 }}>
                 <span style={{ fontWeight: "bold", fontSize: "14px", color: "#2149B9" }}>Advanced gas controls</span><br />
                 <p style={{fontSize:'14px',marginBottom:'15px',fontFamily:'Inter-medium'}}>Select this to show gas price and limit controls directly on the send and confirm screens.</p>

@@ -64,7 +64,7 @@ class GeneralSettings extends React.Component {
           <img src="/images/Assets/BackArrow.svg" style={{marginLeft: '34px', cursor: 'pointer'}} onClick={() => {
             state.dispatch(actions.goConfig())
           }}/>
-          <h2 style={{ marginLeft: '88px', fontFamily: 'Inter-Bold' }}>{`${t('generalSettings')}`}</h2>
+          <h2 style={{ marginLeft: '88px', fontFamily: 'Inter-Bold' }}>General Settings</h2>
         </div>
         <div style={{borderTop: '1px solid #E3E7EB', padding: '20px 40px'}}>
           {currentConversionInformation(metamaskState, state,t)}
@@ -73,7 +73,7 @@ class GeneralSettings extends React.Component {
           {currentLanguage(metamaskState, onLanguageSelect,t)}
         </div>
         <div style={{padding: '20px 40px', borderTop: '1px solid #E3E7EB'}}>
-          <div style={{color: '#2149B9', fontSize: '14px', fontFamily: 'Inter-Medium'}}>{`${t('hideTokensWithoutBalance')}`}  
+          <div style={{color: '#2149B9', fontSize: '14px', fontFamily: 'Inter-Medium'}}>Hide Tokens Without Balance  
           </div>
           <br/>
           <label className="switch">

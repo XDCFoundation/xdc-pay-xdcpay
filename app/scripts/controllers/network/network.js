@@ -33,9 +33,9 @@ const {
   POA_SOKOL_CODE,
   GOERLI_TESTNET_CODE,
   CLASSIC_CODE,
-  XDC_CODE,
-  XDC_TESTNET_CODE,
-  XDC_DEVNET_CODE
+  XDC_RPC_ENDPOINT,
+  XDC_TESTNET_RPC_ENDPOINT,
+  XDC_DEVNET_RPC_ENDPOINT,
 } = require('./enums')
 const INFURA_PROVIDER_TYPES = [ROPSTEN, RINKEBY, KOVAN, MAINNET]
 
@@ -183,11 +183,11 @@ module.exports = class NetworkController extends EventEmitter {
     } else if (type === CLASSIC) {
       this._configureStandardProvider({ rpcUrl: ethNetProps.RPCEndpoints(CLASSIC_CODE)[0] })
     } else if (type === XDC) {
-      this._configureStandardProvider({ rpcUrl: ethNetProps.RPCEndpoints(XDC_CODE)[0] })
+      this._configureStandardProvider({ rpcUrl: XDC_RPC_ENDPOINT })
     } else if (type === XDC_TESTNET) {
-      this._configureStandardProvider({ rpcUrl: ethNetProps.RPCEndpoints(XDC_TESTNET_CODE)[0] })
+      this._configureStandardProvider({ rpcUrl: XDC_TESTNET_RPC_ENDPOINT })
     } else if (type === XDC_DEVNET) {
-      this._configureStandardProvider({ rpcUrl: ethNetProps.RPCEndpoints(XDC_DEVNET_CODE)[0] })
+      this._configureStandardProvider({ rpcUrl: XDC_DEVNET_RPC_ENDPOINT })
     } else if (type === LOCALHOST) {
       this._configureLocalhostProvider()
       // url-based rpc endpoints

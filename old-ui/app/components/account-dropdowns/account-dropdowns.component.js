@@ -66,7 +66,7 @@ class AccountDropdowns extends Component {
     this.optionsMenuToggleClassName = 'account-dropdown'
     this.web3 = new Web3(global.ethereumProvider)
   }
-
+  
   renderAccounts () {
     const {identities, selected, keyrings, network} = this.props
     console.log(identities, 'renderAccounts')
@@ -250,7 +250,7 @@ class AccountDropdowns extends Component {
               className="account-options-icon"
               src="/images/Assets/ViewOnExplorer.svg"
             />
-            View on block explorer
+            {network==50?'View on observer':"View on block explorer"}
           </DropdownMenuItem>
           <DropdownMenuItem
             closeMenu={() => {
@@ -309,8 +309,11 @@ class AccountDropdowns extends Component {
 
   viewOnBlockExplorer = () => {
     const {selected, network, networkList} = this.props
-    const networkData = networkList.find(networkObj => networkObj.chainId === network)
-    const address = networkData && networkData.providerType === 'rpc' ? 'address' : 'addr'
+    let networkData=0
+    networkList.find((networkObj) =>{ if(networkObj.chainId == network){
+      networkData=networkObj
+    }})
+    const address = networkData && networkData.providerType === 'rpc' ? 'address' : networkData.providerType==='xdc'?'address-details':'address'
     const accountAddress = networkData && networkData.providerType === 'rpc' ? selected : selected.replace('0x', 'xdc')
     const url = networkData ? `${networkData.blockExplorer}/${address}/${accountAddress}` : ethNetProps.explorerLinks.getExplorerAccountLinkFor(
       selected.replace('0x', 'xdc'),

@@ -377,6 +377,7 @@ module.exports = class XdcController extends EventEmitter {
       setCurrentCoin: this.setCurrentCoin.bind(this),
       setUseBlockie: this.setUseBlockie.bind(this),
       setGasFields: this.setGasFields.bind(this),
+      setIsRevealingSeedWords: this.setIsRevealingSeedWords.bind(this),
       showTokens: this.showTokens.bind(this),
       setCurrentLocale: this.setCurrentLocale.bind(this),
       markAccountsFound: this.markAccountsFound.bind(this),
@@ -1753,6 +1754,19 @@ module.exports = class XdcController extends EventEmitter {
    setGasFields(set, cb) {
     try {
       this.preferencesController.setGasFields(set)
+      cb(null)
+    } catch (err) {
+      cb(err)
+    }
+  }
+  /**
+   * Sets whether or not to use the blockie identicon format.
+   * @param {boolean} set - True for bockie, false for jazzicon.
+   * @param {Function} cb - A callback function called when complete.
+   */
+  setIsRevealingSeedWords(set, cb) {
+    try {
+      this.preferencesController.setIsRevealingSeedWords(set)
       cb(null)
     } catch (err) {
       cb(err)

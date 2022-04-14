@@ -3,7 +3,7 @@ const Component = require('react').Component
 const h = require('react-hyperscript')
 const connect = require('react-redux').connect
 const actions = require('../../ui/app/actions')
-const { checkExistingAddresses } = require('./components/add-token/util')
+const {checkExistingAddresses} = require('./components/add-token/util')
 const Tooltip = require('./components/tooltip.js')
 const ethUtil = require('ethereumjs-util')
 const Copyable = require('./components/copy/copyable')
@@ -40,20 +40,22 @@ AddSuggestedTokenScreen.prototype.render = function () {
 
       // subtitle and nav
       h('.section-title.flex-row.flex-center', [
-        h('h2.page-subtitle',{ style: {
-          display: 'flex',
-          justifyContent: 'Center',
-          color: '#2A2A2A',
-          marginTop: '4px',
-          fontWeight: 'bold',
-        },
-      }, 'Add Suggested Token' ),
+        h('h2.page-subtitle', {
+          style: {
+            display: 'flex',
+            justifyContent: 'Center',
+            color: '#2A2A2A',
+            marginTop: '4px',
+            fontWeight: 'bold',
+          },
+        }, 'Add Suggested Token'),
       ]),
 
       h('.error', {
         style: {
           display: warning ? 'block' : 'none',
-          padding: '0 20px',
+          padding: '10px 20px',
+          margin: '15px 51px 0 51px ',
           textAlign: 'center',
         },
       }, warning),
@@ -66,40 +68,41 @@ AddSuggestedTokenScreen.prototype.render = function () {
           },
         }, [
 
-          h('div', 
-                [
-                h('span',{
-                  style: { fontWeight: 'bold',fontSize: '12px',},
-                }, 'Token Contract Address  '),
-                
-              ]),
-            
+          h('div',
+            [
+              h('span', {
+                style: {fontWeight: 'bold', fontSize: '12px'},
+              }, 'Token Contract Address  '),
+
+            ]),
+
           // ),
 
           h('div', {
-            style: {display: 'flex',margin:'8px 0 17px 0'},
-          }, [
-            h(Copyable, {
-              value: toChecksumAddress(network, address),
-            }, [
+            style: {display: 'flex', margin: '8px 0 17px 0'},
+          }, 
+            // h(Copyable, {
+            //   value: toChecksumAddress(network, address),
+            // },
+              [
               h('span#token-address', {
                 style: {
                   width: '100%',
                   border: '2px solid #c7cdd8',
                   borderRadius: '4px',
-                  padding:'4px',
+                  padding: '4px',
                 },
               }, addressSummary(network, address, 24, 4, false)),
             ]),
-          ]),
+          
 
           h('div', [
             h('span', {
-              style: { fontWeight: 'bold',fontSize: '12px',},
+              style: {fontWeight: 'bold', fontSize: '12px'},
             }, 'Token Symbol'),
           ]),
 
-          h('div', {style: {display: 'flex',margin:'4px 0 17px 0'}}, [
+          h('div', {style: {display: 'flex', margin: '4px 0 17px 0'}}, [
             h('p#token_symbol', {
               style: {
                 width: '100%',
@@ -112,54 +115,54 @@ AddSuggestedTokenScreen.prototype.render = function () {
 
           h('div', [
             h('span', {
-              style: { fontWeight: 'bold',fontSize: '12px',},
+              style: {fontWeight: 'bold', fontSize: '12px'},
             }, 'Decimals of Precision'),
           ]),
 
-          h('div', {style: {display: 'flex',margin:'4px 0 17px 0'}}, [
+          h('div', {style: {display: 'flex', margin: '4px 0 17px 0'}}, [
             h('p#token_decimals', {
               type: 'number',
               style: {
-              width: '100%',
-              border: '2px solid #c7cdd8',
+                width: '100%',
+                border: '2px solid #c7cdd8',
                 borderRadius: '4px',
-              padding:'4px'
+                padding: '4px',
               },
             }, decimals),
           ]),
-          h('div', { style: { display: 'flex', justifyContent: 'space-between',marginTop:'42px' } }, [
-            
+          h('div', {style: {display: 'flex', justifyContent: 'space-between', marginTop: '42px'}}, [
+
             h('button', {
               style: {
                 alignSelf: 'center',
                 backgroundColor: 'red',
                 width: '120px',
-              height: '40px',
+                height: '40px',
               },
               onClick: (event) => {
                 dispatch(actions.removeSuggestedTokens())
               },
             }, 'Cancel'),
-            
+
             h('button', {
               style: {
                 alignSelf: 'center',
                 width: '120px',
-              height: '40px',
+                height: '40px',
               },
               onClick: (event) => {
-                const valid = this.validateInputs({ address, symbol, decimals })
+                const valid = this.validateInputs({address, symbol, decimals})
                 if (!valid) return
-                
+
                 dispatch(actions.addToken(address.trim(), symbol.trim(), decimals))
-                .then(() => {
-                  dispatch(actions.removeSuggestedTokens())
-                })
+                  .then(() => {
+                    dispatch(actions.removeSuggestedTokens())
+                  })
               },
             }, 'Add'),
           ]),
-          ]),
         ]),
+      ]),
     ])
   )
 }
@@ -169,24 +172,22 @@ AddSuggestedTokenScreen.prototype.componentWillMount = function () {
 }
 
 AddSuggestedTokenScreen.prototype.validateInputs = function (opts) {
-  const { network, identities,tokens } = this.props
+  const {network, identities, tokens} = this.props
   let msg = ''
   const identitiesList = Object.keys(identities)
-  const { address, symbol, decimals } = opts
+  const {address, symbol, decimals} = opts
   const standardAddress = ethUtil.addHexPrefix(address).toLowerCase()
 
   const validAddress = isValidAddress(address, network)
   if (!validAddress) {
     msg += 'Address is invalid.'
   }
-  
-  const check = checkExistingAddresses(address, tokens)
-  console.log("Check working", check,tokens,address)
-  if (check) {
+  const isTokenAlreadyExists = checkExistingAddresses(address, tokens)
+  if (isTokenAlreadyExists) {
     msg += 'Token has already been added.'
   }
   const validDecimals = decimals >= 0 && decimals < 36
-  if (validDecimals) {
+  if (!validDecimals) {
     msg += 'Decimals must be at least 0 and not over 36. '
   }
 
@@ -203,14 +204,14 @@ AddSuggestedTokenScreen.prototype.validateInputs = function (opts) {
     msg = 'Personal address detected. Input the token contract address.'
   }
 
-  const isValid = validAddress && validDecimals && !ownAddress
+  const isValid = validAddress && validDecimals && !ownAddress && !isTokenAlreadyExists
 
   if (!isValid) {
     this.setState({
       warning: msg,
     })
   } else {
-    this.setState({ warning: null })
+    this.setState({warning: null})
   }
 
   return isValid
@@ -234,7 +235,7 @@ AddSuggestedTokenScreen.prototype.validateInputs = function (opts) {
         warning,
         customAddressError: warning /* this.context.t('tokenAlreadyAdded')*/,
       })
-  
+
       break
   }
 }

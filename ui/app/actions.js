@@ -34,7 +34,7 @@ var actions = {
   goHome: goHome,
   goConfig: goConfig,
   GO_CONFIG: 'GO_CONFIG',
-  
+
   // modal state
   MODAL_OPEN: 'UI_MODAL_OPEN',
   MODAL_CLOSE: 'UI_MODAL_CLOSE',
@@ -421,7 +421,7 @@ var actions = {
   connectedSites,
   CONNECTED_SITES: 'CONNECTED_SITES',
   transactionDetails: transactionDetails,
-  TRANSACTION_DETAILS : 'TRANSACTION_DETAILS'
+  TRANSACTION_DETAILS: 'TRANSACTION_DETAILS',
 }
 
 module.exports = actions
@@ -519,10 +519,10 @@ function transitionBackward () {
   }
 }
 
-function transactionDetails(txnId) {
+function transactionDetails (txnId) {
   return {
     type: actions.TRANSACTION_DETAILS,
-    value: txnId
+    value: txnId,
   }
 }
 
@@ -1778,9 +1778,17 @@ function showNewVaultSeed (seed) {
 }
 
 function showNewVaultSeed1 (seed) {
-  return {
-    type: actions.SHOW_NEW_VAULT_SEED1,
-    value: seed,
+  return (dispatch) => {
+    log.debug(`background.setIsRevealingSeedWords`)
+    background.setIsRevealingSeedWords(true, (err, result) => {
+      if (err) {
+        log.error(err)
+      }
+    })
+    dispatch({
+      type: actions.SHOW_NEW_VAULT_SEED1,
+      value: seed,
+    })
   }
 }
 
@@ -1852,14 +1860,14 @@ function showGasFields (newState) {
       }
       dispatch({
         type: actions.UPDATE_GASFIELDS,
-          value: newState,
+        value: newState,
 
       })
     })
   }
 }
 
-function showTokens(newState) {
+function showTokens (newState) {
   return (dispatch) => {
     log.debug(`background.showTokens`)
     background.showTokens(newState, (err, result) => {
@@ -1883,6 +1891,7 @@ function isValidName (newState) {
     value: newState,
   }
 }
+
 function isValidAddress (newState) {
   return {
     type: actions.UPDATE_VALIDATION_ADDRESS,
@@ -2134,7 +2143,6 @@ function viewContact (contactObj) {
     value: contactObj,
   }
 }
-
 
 
 function alertSettings () {
@@ -2476,7 +2484,7 @@ function delRpcTarget (oldRPCObj) {
         log.error(err)
         return dispatch(self.displayWarning('Had a problem removing network!'))
       }
-        dispatch(actions.setProviderType('xdc'))
+      dispatch(actions.setProviderType('xdc'))
 
       dispatch(actions.displayWarning(''))
       dispatch(actions.setSelectedToken())
@@ -2532,7 +2540,7 @@ function hideModal (payload) {
   }
 }
 
-function transactionDetails() {
+function transactionDetails () {
   return {
     type: actions.TRANSACTION_DETAILS,
   }

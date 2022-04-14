@@ -209,8 +209,9 @@ PendingTx.prototype.render = function () {
           h('.flex-row.flex-center', {
             style: {
               marginTop: '26px',
-              marginBottom: '24px',
+              marginBottom: '14px',
               fontWeight: 'bold',
+              marginLeft:'2px',
             },
           }, [
             !isNotification ? h('img.cursor-pointer', {
@@ -300,7 +301,7 @@ PendingTx.prototype.render = function () {
           h('.flex-row.flex-center', {
             style: {
               maxWidth: '100%',
-              padding: showRejectAll ? '0 0 20px 0' : '0 0 20px 0',
+              padding: showRejectAll ? '0 0 8px 0' : '0 0 8px 0',
               background: '#FFFFFF',
               position: 'relative',
             },
@@ -383,8 +384,9 @@ PendingTx.prototype.render = function () {
           h('.table-box', {
             style: {
               overflowY: 'scroll',
-              height: '265px',
+              height:  isError ? '175px' :'329px',
               width: 'fit-content',
+              margin: isError ? '0 0 19px 0' : 0,
             },
           }, [
 
@@ -479,7 +481,7 @@ PendingTx.prototype.render = function () {
                 fontFamily: 'Inter-Regular',
               },
             }, [
-              h('.cell.label', { style: { marginTop: '20px' }, }, 'Max Total'),
+              h('.cell.label', 'Max Total'),
               h('.cell.value', {
                 style: {
                   display: 'flex',
@@ -532,7 +534,6 @@ PendingTx.prototype.render = function () {
           style: {
             display: 'flex',
             justifyContent: 'flex-end',
-            marginTop: '20px',
           },
         }, [
           h('button.cancel.btn-red', {
@@ -685,6 +686,7 @@ PendingTx.prototype.miniAccountPanelForRecipient = function (isToken, tokensTran
 
       h('span.font-small', {
         style: {
+          display:'none',
           fontFamily: 'Inter-SemiBold',
           color: '#ffffff',
         },

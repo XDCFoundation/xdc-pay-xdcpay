@@ -1321,9 +1321,6 @@
   "yourPrivateSeedPhrase": {
     "message": "Your private seed phrase"
   },
-  "transactions":{
-    "message": "Transactions"
-  },
   "viewOnBlockExplorer":{
     "message": "View on Block Explorer"
   },

@@ -109,7 +109,7 @@ module.exports = class AppBar extends Component {
             <img
               height={24}
               width={24}
-              src={'./images/Assets/XDC-icon@2x.png'}
+              src={'./images/Assets/XDC-Icon@2x.png'}
               style={{
                 marginLeft: '3px',
               }}

@@ -33,7 +33,7 @@ const RemoveTokenScreen = require('./remove-token')
 const AddSuggestedTokenScreen = require('./add-suggested-token')
 const Import = require('./accounts/import')
 const ForgetDeviceScreen = require('./components/connect-hardware/forget-screen')
-import { transactionDetails } from '../../ui/app/actions'
+import {transactionDetails} from '../../ui/app/actions'
 import ConnectHardwareForm from './components/connect-hardware/index'
 import TransactionList from './components/transaction-list'
 import createVaultComplete from './keychains/hd/create-vault-complete'
@@ -102,7 +102,8 @@ function mapStateToProps (state) {
     selectedAddress: state.metamask.selectedAddress,
     transForward: state.appState.transForward,
     isMascara: state.metamask.isMascara,
-    isOnboarding: Boolean(!noActiveNotices || seedWords || !isInitialized),
+    isRevealingSeedWords: state.metamask.isRevealingSeedWords,
+    isOnboarding: Boolean(!noActiveNotices || (seedWords && !state.metamask.isRevealingSeedWords) || !isInitialized),
     seedWords: state.metamask.seedWords,
     unapprovedTxs: state.metamask.unapprovedTxs,
     unapprovedMsgs: state.metamask.unapprovedMsgs,
@@ -141,6 +142,7 @@ App.prototype.render = function () {
     `Connecting to selected network` : null
   log.debug('Main ui render function')
 
+  log.debug('rendering currentView--', currentView)
   const confirmMsgTx = (props.currentView.name === 'confTx' && Object.keys(props.unapprovedTxs).length === 0)
 
   return (
@@ -185,6 +187,7 @@ App.prototype.renderLoadingIndicator = function ({isLoading, isLoadingNetwork, l
 App.prototype.renderPrimary = function () {
   log.debug('rendering primary')
   var props = this.props
+  log.debug('rendering currentView', props.currentView)
   const {isMascara, isOnboarding} = props
 
   if (isMascara && isOnboarding) {
@@ -248,7 +251,7 @@ App.prototype.renderPrimary = function () {
   }
 
   // show seed words screen
-  if (props.seedWords && props.currentView.name !== 'reveal-seed') {
+  if (props.seedWords && props.currentView.name !== 'reveal-seed' && !props.isRevealingSeedWords) {
     log.debug('rendering seed words')
     return props.currentView.name === 'confirmRecoveryPhrase' ? h(ConfirmRecoveryPhrase, {key: 'confirm-recovery-phrase'}) : h(HDCreateVaultComplete, {key: 'HDCreateVaultComplete'})
   }
@@ -438,10 +441,10 @@ App.prototype.renderPrimary = function () {
     case 'connected-sites':
       log.debug('rendering confirm password changing screen')
       return h(ConnectedSites, {key: 'connected-sites'})
-    
+
     case 'transaction-details':
       log.debug('rendering the transaction details screen')
-      return h(TransactionDetails, {key:'transaction-details'})
+      return h(TransactionDetails, {key: 'transaction-details'})
 
 
     default:

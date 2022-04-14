@@ -54,7 +54,7 @@ const AddNetworkComponent = (props) => {
                  style={{border: 'none', color: '#2A2A2A', width: '260px'}}
                  name="explorerLink" onChange={onStateChange} value={explorerLink}/>
         </div>
-        {warningMsg && <div className="error">{warningMsg}</div>}
+        {warningMsg && <div className="error" style={{ margin: '-7px 0 7px 0 ',width:'265px' }}>{warningMsg}</div>}
         {isPermanentNetwork ? '' :
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <div className="button" onClick={onBackClick}
@@ -83,7 +83,7 @@ const AddNetworkComponent = (props) => {
                    width: '120px',
                    height: '40px',
                    border: 'none',
-                   marginRight: '-6px',
+                   marginRight: '-8px',
 
                  }}
                  onClick={(event) => {

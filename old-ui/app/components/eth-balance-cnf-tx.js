@@ -30,6 +30,7 @@ EthBalanceComponent.prototype.render = function () {
         height: '32px',
         width: '265px',
         padding: '10px',
+        marginBottom:'8px'
     },
     }, [
       h('div', {

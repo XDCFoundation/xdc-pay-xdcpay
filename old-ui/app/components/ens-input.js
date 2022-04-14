@@ -20,6 +20,12 @@ function EnsInput () {
 
 EnsInput.prototype.render = function () {
   const props = this.props
+  function shorten(b, amountL = 18, /*amountR = 4,*/ stars = 3) {
+    return `${b.slice(0, amountL)}${'.'.repeat(stars)}${b.slice(
+      b.length - 4,
+      b.length,
+    )}`
+  }
 
   function onInputChange () {
     const network = this.props.network
@@ -61,8 +67,11 @@ EnsInput.prototype.render = function () {
         onChange: onInputChange.bind(this),
       }),
       // The address book functionality.
+
+        
+        
       h('datalist#addresses',
-        [
+      [
           // Corresponds to the addresses owned.
           Object.keys(props.identities).map((key) => {
             const identity = props.identities[key]
@@ -75,7 +84,7 @@ EnsInput.prototype.render = function () {
           // Corresponds to previously sent-to addresses.
           props.addressBook.map((identity) => {
             return h('option', {
-              value: identity.address,
+              value: shorten(identity.address),
               label: identity.name,
               key: identity.address,
             })
@@ -83,7 +92,7 @@ EnsInput.prototype.render = function () {
         ]),
       this.ensIcon(),
     ])
-  )
+    )
 }
 
 EnsInput.prototype.componentDidMount = function () {

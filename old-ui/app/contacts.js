@@ -30,7 +30,7 @@ class Contacts extends React.Component {
         >
           <img src="/images/Assets/BackArrow.svg" style={{marginLeft: '17px', cursor: 'pointer'}}
                onClick={() => state.dispatch(actions.goConfig())}/>
-          <h2 style={{fontFamily: 'Inter-bold'}}>Contacts</h2>
+          <h2 style={{fontFamily: 'Inter-bold',color:"#2A2A2A"}}>Contacts</h2>
           <img src="/images/Assets/Add.svg"
                style={{cursor: 'pointer', marginRight: '11px'}}
                onClick={() => state.dispatch(actions.showAddContactsPage())}

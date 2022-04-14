@@ -52,8 +52,8 @@ const LedgerBridgeKeyring = require('eth-ledger-bridge-keyring')
 const EthQuery = require('eth-query')
 const ethUtil = require('ethereumjs-util')
 const sigUtil = require('eth-sig-util')
-const { importTypes } = require('../../old-ui/app/accounts/import/enums')
-const { LEDGER, TREZOR } = require('../../old-ui/app/components/connect-hardware/enum')
+const {importTypes} = require('../../old-ui/app/accounts/import/enums')
+const {LEDGER, TREZOR} = require('../../old-ui/app/components/connect-hardware/enum')
 
 const {
   POA_CODE,
@@ -63,7 +63,8 @@ const {
   MAINNET_CODE,
   XDC_CODE,
   XDC_TESTNET_CODE,
-  XDC_DEVNET_CODE} = require('./controllers/network/enums')
+  XDC_DEVNET_CODE,
+} = require('./controllers/network/enums')
 const accountsPerPage = 5
 
 module.exports = class XdcController extends EventEmitter {
@@ -72,7 +73,7 @@ module.exports = class XdcController extends EventEmitter {
    * @constructor
    * @param {Object} opts
    */
-   constructor (opts) {
+  constructor (opts) {
     super()
 
     this.defaultMaxListeners = 20
@@ -236,7 +237,7 @@ module.exports = class XdcController extends EventEmitter {
     this.networkController.lookupNetwork()
     this.messageManager = new MessageManager()
     this.personalMessageManager = new PersonalMessageManager()
-    this.typedMessageManager = new TypedMessageManager({ networkController: this.networkController })
+    this.typedMessageManager = new TypedMessageManager({networkController: this.networkController})
     this.publicConfigStore = this.initPublicConfigStore()
 
     this.store.updateStructure({
@@ -346,7 +347,7 @@ module.exports = class XdcController extends EventEmitter {
     const isInitialized = !!vault
 
     return {
-      ...{ isInitialized },
+      ...{isInitialized},
       ...this.memStore.getFilteredFlatState(),
       ...{
         // TODO: Remove usages of lost accounts
@@ -377,6 +378,7 @@ module.exports = class XdcController extends EventEmitter {
       setCurrentCoin: this.setCurrentCoin.bind(this),
       setUseBlockie: this.setUseBlockie.bind(this),
       setGasFields: this.setGasFields.bind(this),
+      setIsRevealingSeedWords: this.setIsRevealingSeedWords.bind(this),
       showTokens: this.showTokens.bind(this),
       setCurrentLocale: this.setCurrentLocale.bind(this),
       markAccountsFound: this.markAccountsFound.bind(this),
@@ -412,7 +414,7 @@ module.exports = class XdcController extends EventEmitter {
       // network management
       setProviderType: nodeify(networkController.setProviderType, networkController),
       setCustomRpc: nodeify(this.setCustomRpc, this),
-      setContact: nodeify(this.setContact,this),
+      setContact: nodeify(this.setContact, this),
       delCustomRpc: nodeify(this.delCustomRpc, this),
 
       // PreferencesController
@@ -431,7 +433,7 @@ module.exports = class XdcController extends EventEmitter {
 
       // AddressController
       setAddressBook: nodeify(addressBookController.setAddressBook, addressBookController),
-      updateAddressBook : nodeify(addressBookController.updateAddressBook, addressBookController),
+      updateAddressBook: nodeify(addressBookController.updateAddressBook, addressBookController),
 
       // KeyringController
       setLocked: nodeify(keyringController.setLocked, keyringController),
@@ -613,7 +615,7 @@ module.exports = class XdcController extends EventEmitter {
    * Sets the first address in the state to the selected address
    */
   selectFirstIdentity () {
-    const { identities } = this.preferencesController.store.getState()
+    const {identities} = this.preferencesController.store.getState()
     const address = Object.keys(identities)[0]
     this.preferencesController.setSelectedAddress(address)
   }
@@ -657,14 +659,14 @@ module.exports = class XdcController extends EventEmitter {
     const keyring = await this.getKeyringForDevice(deviceName, hdPath)
     let accounts = []
     switch (page) {
-        case -1:
-          accounts = await keyring.getPreviousPage()
-          break
-        case 1:
-          accounts = await keyring.getNextPage()
-          break
-        default:
-          accounts = await keyring.getFirstPage()
+      case -1:
+        accounts = await keyring.getPreviousPage()
+        break
+      case 1:
+        accounts = await keyring.getNextPage()
+        break
+      default:
+        accounts = await keyring.getFirstPage()
     }
 
     // Merge with existing accounts
@@ -728,12 +730,12 @@ module.exports = class XdcController extends EventEmitter {
           accounts = await keyring.getNextPage()
           page++
           this.findAccountInLedger({accounts, keyring, page, addressToUnlock, hdPath})
-          .then(accounts => {
-            resolve(accounts)
-          })
-          .catch(e => {
-            reject(e)
-          })
+            .then(accounts => {
+              resolve(accounts)
+            })
+            .catch(e => {
+              reject(e)
+            })
         } else {
           resolve(accounts)
         }
@@ -807,9 +809,9 @@ module.exports = class XdcController extends EventEmitter {
       this.preferencesController.setSelectedAddress(hdAccounts[indexInPage].address)
     }
 
-    const { identities } = this.preferencesController.store.getState()
-    return { ...keyState, identities }
-   }
+    const {identities} = this.preferencesController.store.getState()
+    return {...keyState, identities}
+  }
 
 
   //
@@ -1048,16 +1050,16 @@ module.exports = class XdcController extends EventEmitter {
     // sets the status op the message to 'approved'
     // and removes the xdcId for signing
     return this.messageManager.approveMessage(msgParams)
-    .then((cleanMsgParams) => {
-      // signs the message
-      return this.keyringController.signMessage(cleanMsgParams)
-    })
-    .then((rawSig) => {
-      // tells the listener that the message has been signed
-      // and can be returned to the dapp
-      this.messageManager.setMsgStatusSigned(msgId, rawSig)
-      return this.getState()
-    })
+      .then((cleanMsgParams) => {
+        // signs the message
+        return this.keyringController.signMessage(cleanMsgParams)
+      })
+      .then((rawSig) => {
+        // tells the listener that the message has been signed
+        // and can be returned to the dapp
+        this.messageManager.setMsgStatusSigned(msgId, rawSig)
+        return this.getState()
+      })
   }
 
   /**
@@ -1106,16 +1108,16 @@ module.exports = class XdcController extends EventEmitter {
     // sets the status op the message to 'approved'
     // and removes the xdcId for signing
     return this.personalMessageManager.approveMessage(msgParams)
-    .then((cleanMsgParams) => {
-      // signs the message
-      return this.keyringController.signPersonalMessage(cleanMsgParams)
-    })
-    .then((rawSig) => {
-      // tells the listener that the message has been signed
-      // and can be returned to the dapp
-      this.personalMessageManager.setMsgStatusSigned(msgId, rawSig)
-      return this.getState()
-    })
+      .then((cleanMsgParams) => {
+        // signs the message
+        return this.keyringController.signPersonalMessage(cleanMsgParams)
+      })
+      .then((rawSig) => {
+        // tells the listener that the message has been signed
+        // and can be returned to the dapp
+        this.personalMessageManager.setMsgStatusSigned(msgId, rawSig)
+        return this.getState()
+      })
   }
 
   /**
@@ -1166,10 +1168,10 @@ module.exports = class XdcController extends EventEmitter {
       let signature
       switch (version) {
         case 'V1':
-          signature = sigUtil.signTypedDataLegacy(privKey, { data: cleanMsgParams.data })
+          signature = sigUtil.signTypedDataLegacy(privKey, {data: cleanMsgParams.data})
           break
         case 'V3':
-          signature = sigUtil.signTypedData(privKey, { data: JSON.parse(cleanMsgParams.data) })
+          signature = sigUtil.signTypedData(privKey, {data: JSON.parse(cleanMsgParams.data)})
           break
       }
       this.typedMessageManager.setMsgStatusSigned(msgId, signature)
@@ -1207,9 +1209,9 @@ module.exports = class XdcController extends EventEmitter {
    * @param  {} migratorOutput
    */
   restoreOldVaultAccounts (migratorOutput) {
-    const { serialized } = migratorOutput
+    const {serialized} = migratorOutput
     return this.keyringController.restoreKeyring(serialized)
-    .then(() => migratorOutput)
+      .then(() => migratorOutput)
   }
 
   /**
@@ -1244,7 +1246,7 @@ module.exports = class XdcController extends EventEmitter {
    * @param  {Account[]} lostAccounts -
    * @returns {Keyring[]} An array of the restored keyrings.
    */
-  importLostAccounts ({ lostAccounts }) {
+  importLostAccounts ({lostAccounts}) {
     const privKeys = lostAccounts.map(acct => acct.privateKey)
     return this.keyringController.restoreKeyring({
       type: 'Simple Key Pair',
@@ -1374,7 +1376,7 @@ module.exports = class XdcController extends EventEmitter {
   sendPhishingWarning (connectionStream, hostname) {
     const mux = setupMultiplex(connectionStream)
     const phishingStream = mux.createStream('phishing')
-    phishingStream.write({ hostname })
+    phishingStream.write({hostname})
   }
 
   /**
@@ -1398,7 +1400,7 @@ module.exports = class XdcController extends EventEmitter {
         this.emit('controllerConnectionChanged', this.activeControllerConnections)
         // report any error
         if (err) log.error(err)
-      }
+      },
     )
     dnode.on('remote', (remote) => {
       // push updates to popup
@@ -1421,14 +1423,14 @@ module.exports = class XdcController extends EventEmitter {
     const blockTracker = this.blockTracker
 
     // create filter polyfill middleware
-    const filterMiddleware = createFilterMiddleware({ provider, blockTracker })
+    const filterMiddleware = createFilterMiddleware({provider, blockTracker})
     // create subscription polyfill middleware
-    const subscriptionManager = createSubscriptionManager({ provider, blockTracker })
+    const subscriptionManager = createSubscriptionManager({provider, blockTracker})
     subscriptionManager.events.on('notification', (message) => engine.emit('notification', message))
 
     // metadata
-    engine.push(createOriginMiddleware({ origin }))
-    engine.push(createLoggerMiddleware({ origin }))
+    engine.push(createOriginMiddleware({origin}))
+    engine.push(createLoggerMiddleware({origin}))
     // filter and subscription polyfills
     engine.push(filterMiddleware)
     engine.push(subscriptionManager.middleware)
@@ -1439,10 +1441,10 @@ module.exports = class XdcController extends EventEmitter {
     engine.push(this.createTypedDataMiddleware('eth_signTypedData_v1', 'V1').bind(this))
     engine.push(this.createTypedDataMiddleware('eth_signTypedData_v3', 'V3', true).bind(this))
     // forward to xdc primary provider
-    engine.push(createProviderMiddleware({ provider }))
+    engine.push(createProviderMiddleware({provider}))
 
     // setup connection
-    const providerStream = createEngineStream({ engine })
+    const providerStream = createEngineStream({engine})
 
     pump(
       outStream,
@@ -1452,7 +1454,7 @@ module.exports = class XdcController extends EventEmitter {
         // cleanup filter polyfill middleware
         filterMiddleware.destroy()
         if (err) log.error(err)
-      }
+      },
     )
   }
 
@@ -1474,7 +1476,7 @@ module.exports = class XdcController extends EventEmitter {
       (err) => {
         configStream.destroy()
         if (err) log.error(err)
-      }
+      },
     )
   }
 
@@ -1523,7 +1525,7 @@ module.exports = class XdcController extends EventEmitter {
    */
   async getGasPrice () {
     return new Promise(async (resolve, reject) => {
-      const { networkController } = this
+      const {networkController} = this
 
 
       const networkIdStr = networkController.store.getState().network
@@ -1559,8 +1561,8 @@ module.exports = class XdcController extends EventEmitter {
    * @returns {string} A hex representation of the suggested wei gas price.
    */
   getGasPriceFromBlocks (networkId) {
-    const { recentBlocksController } = this
-    const { recentBlocks } = recentBlocksController.store.getState()
+    const {recentBlocksController} = this
+    const {recentBlocks} = recentBlocksController.store.getState()
     const isPOA = networkId === POA_SOKOL_CODE || networkId === POA_CODE || networkId === DAI_CODE
 
     // Return 1 gwei if using a XinFin Network or if there are no blocks have been observed:
@@ -1574,15 +1576,15 @@ module.exports = class XdcController extends EventEmitter {
       }
       const filteredGasPrices = block.gasPrices.filter((block) => block !== '0x00')
       return filteredGasPrices
-      .map(hexPrefix => hexPrefix.substr(2))
-      .map(hex => new BN(hex, 16))
-      .sort((a, b) => {
-        return a.gt(b) ? 1 : -1
-      })[0]
+        .map(hexPrefix => hexPrefix.substr(2))
+        .map(hex => new BN(hex, 16))
+        .sort((a, b) => {
+          return a.gt(b) ? 1 : -1
+        })[0]
     })
-    .map(number => number && number.div(GWEI_BN).toNumber()).filter(number => typeof number !== 'undefined' && number !== 0)
+      .map(number => number && number.div(GWEI_BN).toNumber()).filter(number => typeof number !== 'undefined' && number !== 0)
 
-    if (networkId === XDC_CODE || networkId === XDC_TESTNET_CODE || networkId === XDC_DEVNET_CODE)  {
+    if (networkId === XDC_CODE || networkId === XDC_TESTNET_CODE || networkId === XDC_DEVNET_CODE) {
       if (lowestPrices.length === 0) {
         lowestPrices.push(1)
       }
@@ -1619,7 +1621,7 @@ module.exports = class XdcController extends EventEmitter {
         reject(error)
       }
     })
-   }
+  }
 
   /**
    * Returns the nonce that will be associated with a transaction once approved
@@ -1627,7 +1629,7 @@ module.exports = class XdcController extends EventEmitter {
    * @returns Promise<number>
    */
   async getPendingNonce (address) {
-    const { nonceDetails, releaseLock} = await this.txController.nonceTracker.getNonceLock(address)
+    const {nonceDetails, releaseLock} = await this.txController.nonceTracker.getNonceLock(address)
     const pendingNonce = nonceDetails.params.highestSuggested
 
     releaseLock()
@@ -1697,17 +1699,18 @@ module.exports = class XdcController extends EventEmitter {
    * @param {string} customRPCObject - A custom RPC Object for a valid Ethereum RPC API.
    * @returns {Promise<String>} - The RPC Target URL confirmed.
    */
-   async setCustomRpc (customRPCObject) {
+  async setCustomRpc (customRPCObject) {
     this.networkController.setRpcTarget(customRPCObject.rpcURL)
     await this.preferencesController.updateFrequentRpcList(customRPCObject)
     return customRPCObject
   }
+
   /**
    * A method for selecting a custom URL for an ethereum RPC provider.
    * @param {string} customContactObject - A custom RPC Object for a valid Ethereum RPC API.
    * @returns {Promise<String>} - The RPC Target URL confirmed.
    */
-   async setContact(customContactObject) {
+  async setContact (customContactObject) {
     this.networkController.setContactName(customContactObject.name)
     await this.preferencesController.updateFrequentContactList(customContactObject)
     return customContactObject
@@ -1721,9 +1724,9 @@ module.exports = class XdcController extends EventEmitter {
   async delCustomRpc (rpcTarget) {
     await this.preferencesController.updateFrequentRpcList(rpcTarget, true)
   }
-  
+
 //  @param {bool} set Remove selected url
-//  async setGasFields(set = true) { 
+//  async setGasFields(set = true) {
 //    return this._setGasFields(set)
 //     .then((showGasFields) => {
 //       this.store.updateState({
@@ -1751,7 +1754,7 @@ module.exports = class XdcController extends EventEmitter {
    * @param {boolean} set - True for bockie, false for jazzicon.
    * @param {Function} cb - A callback function called when complete.
    */
-   setGasFields(set, cb) {
+  setGasFields (set, cb) {
     try {
       this.preferencesController.setGasFields(set)
       cb(null)
@@ -1760,13 +1763,22 @@ module.exports = class XdcController extends EventEmitter {
     }
   }
 
-  
+  setIsRevealingSeedWords (set, cb) {
+    try {
+      this.preferencesController.setIsRevealingSeedWords(set)
+      cb(null)
+    } catch (err) {
+      cb(err)
+    }
+  }
+
+
   /**
    * Sets whether or not to use the blockie identicon format.
    * @param {boolean} set - True for bockie, false for jazzicon.
    * @param {Function} cb - A callback function called when complete.
    */
-   showTokens(set, cb) {
+  showTokens (set, cb) {
     try {
       this.preferencesController.showTokens(set)
       cb(null)
@@ -1825,17 +1837,17 @@ module.exports = class XdcController extends EventEmitter {
     this.tokenRatesController.isActive = active
   }
 
- /**
-  * Creates RPC engine middleware for processing eth_signTypedData requests
-  *
-  * @param {Object} req - request object
-  * @param {Object} res - response object
-  * @param {Function} - next
-  * @param {Function} - end
-  */
+  /**
+   * Creates RPC engine middleware for processing eth_signTypedData requests
+   *
+   * @param {Object} req - request object
+   * @param {Object} res - response object
+   * @param {Function} - next
+   * @param {Function} - end
+   */
   createTypedDataMiddleware (methodName, version, reverse) {
     return async (req, res, next, end) => {
-      const { method, params } = req
+      const {method, params} = req
       if (method === methodName) {
         const promise = this.typedMessageManager.addUnapprovedMessageAsync({
           data: reverse ? params[1] : params[0],

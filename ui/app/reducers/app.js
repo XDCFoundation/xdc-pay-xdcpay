@@ -8,6 +8,9 @@ module.exports = reduceApp
 
 function reduceApp (state, action) {
   log.debug('App Reducer got ' + action.type)
+  log.debug('state.metamask.isRevealingSeedWords ' + state.metamask.isRevealingSeedWords)
+  log.debug('state.currentView.appState ', state.appState.currentView)
+  log.debug('state.metamask.selectedAddress ', state.metamask.selectedAddress)
   // clone and defaults
   const selectedAddress = state.metamask.selectedAddress
   const hasUnconfActions = checkUnconfActions(state)
@@ -29,11 +32,12 @@ function reduceApp (state, action) {
 
   // confirm seed words
   var seedWords = state.metamask.seedWords
+  var isRevealingSeedWords = state.metamask.isRevealingSeedWords
   var seedConfView = {
-    name: 'createVaultComplete' ,
+    name: 'createVaultComplete',
     seedWords,
   }
-  
+
   // default state
   var appState = extend({
     shouldClose: false,
@@ -57,7 +61,7 @@ function reduceApp (state, action) {
     alertMessage: null,
     qrCodeData: null,
     networkDropdownOpen: false,
-    currentView: seedWords ? seedConfView : defaultView,
+    currentView: seedWords && !isRevealingSeedWords ? seedConfView : defaultView,
     accountDetail: {
       subview: 'transactions',
     },
@@ -476,7 +480,7 @@ function reduceApp (state, action) {
       log.debug('----qwerty----')
       return extend(appState, {
         currentView: {
-          name: 'reveal-seed' ,
+          name: 'reveal-seed',
           context: appState.currentView.context,
         },
         transForward: true,
@@ -1021,14 +1025,14 @@ function reduceApp (state, action) {
           context: appState.currentView.context,
         },
       })
-    
-    
+
+
     case actions.TRANSACTION_DETAILS: {
       return extend(appState, {
         currentView: {
           name: 'transaction-details',
           context: appState.currentView.context,
-        }
+        },
       })
     }
 
@@ -1052,14 +1056,14 @@ function reduceApp (state, action) {
         },
       })
 
-      case actions.TRANSACTION_DETAILS: {
-        return extend(appState, {
-          currentView: {
-            name: 'transaction-details',
-            context: appState.currentView.context,
-          }
-        })
-      }
+    case actions.TRANSACTION_DETAILS: {
+      return extend(appState, {
+        currentView: {
+          name: 'transaction-details',
+          context: appState.currentView.context,
+        },
+      })
+    }
 
     default:
       return appState

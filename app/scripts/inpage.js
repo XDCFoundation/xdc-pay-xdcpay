@@ -51,6 +51,7 @@ const proxiedInpageProvider = new Proxy(inpageProvider, {
 })
 
 window.ethereum = proxiedInpageProvider
+window.xdc = proxiedInpageProvider
 
 //
 // setup web3
