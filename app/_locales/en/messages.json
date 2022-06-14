@@ -219,10 +219,10 @@
     "message": "Copy"
   },
   "copyAddress": {
-    "message": "Copy Address to clipboard"
+    "message": "Copy Address to Clipboard"
   },
   "copyToClipboard": {
-    "message": "Copy to clipboard"
+    "message": "Copy to Clipboard"
   },
   "copyButton": {
     "message": " Copy "

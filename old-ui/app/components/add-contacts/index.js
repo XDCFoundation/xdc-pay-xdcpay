@@ -23,6 +23,7 @@ export default class AddContact extends React.Component {
   onBackToContacts = () => {
     // eslint-disable-next-line react/prop-types
     this.props.backToContacts ? this.props.backToContacts() : this.props.dispatch(actions.Contacts())
+    this.props.dispatch(actions.displayWarning(''))
   }
 
   onStateChange = (event) => {
@@ -31,8 +32,8 @@ export default class AddContact extends React.Component {
 
   onAddContactClicked = async () => {
     const {network, selectedAddress, addressBook} = this.props
-    this.props.dispatch(actions.displayWarning(''))
-    const {contactAddress, contactName} = this.state
+    const { contactAddress, contactName } = this.state
+    console.log(contactAddress,contactName,'state working')
     const address = contactAddress.replace('xdc', '0x')
     if (!contactAddress || !contactAddress.trim().length || !isValidAddress(address, network)) {
       return this.props.dispatch(actions.displayWarning('Contact address is invalid.'))
@@ -51,9 +52,9 @@ export default class AddContact extends React.Component {
   }
 
   onDeleteClicked = async (viewContactObj) => {
-    this.props.dispatch(actions.displayWarning(''))
     await this.props.dispatch(actions.addToAddressBook(viewContactObj.name, viewContactObj.address, true))
     this.onBackToContacts()
+    this.props.dispatch(actions.displayWarning(''))
   }
 
   static contextTypes = {

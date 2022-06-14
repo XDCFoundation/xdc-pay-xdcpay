@@ -51,13 +51,13 @@ revealSeed.prototype.render = function () {
         'Secret Seed Words',
       ]),
 
-      h('div', {
+      h('div.errorWidthSecretWords', {
         style: {
           fontSize: '12px',
           textAlign: 'center',
-          width: '265px',
+          // width: '265px',
           height: '61px',
-          marginTop: '25px',
+          // marginTop: '25px',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center'

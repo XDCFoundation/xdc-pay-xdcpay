@@ -41,7 +41,7 @@ TransactionList.prototype.render = function () {
         }
       `),
 
-      h('.tx-list', [
+      h('.tx-list',[
 
         txsToRender.length
           ? txsToRender.map((transaction, i) => {

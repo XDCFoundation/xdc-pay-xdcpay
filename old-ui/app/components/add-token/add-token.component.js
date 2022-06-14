@@ -129,6 +129,7 @@ class AddTokenScreen extends Component {
               left: '18px',
               cursor: 'pointer',
               width: '14px',
+              marginTop:'5px'
             },
             src: "/images/Assets/Close.svg",
 

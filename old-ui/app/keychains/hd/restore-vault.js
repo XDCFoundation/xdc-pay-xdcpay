@@ -216,8 +216,13 @@ RestoreVaultScreen.prototype.createNewVaultAndRestore = function () {
   const password = passwordBox.value
   var passwordConfirmBox = document.getElementById('password-box-confirm')
   var passwordConfirm = passwordConfirmBox.value
-  if (this.state.passwordStrength < 2) {
+  if (this.state.passwordStrength > 0 && this.state.passwordStrength < 2) {
     this.warning = 'Password strength is poor'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
+  if (password.trim().length === 0) {
+    this.warning = 'Enter Password'
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }
@@ -233,6 +238,11 @@ RestoreVaultScreen.prototype.createNewVaultAndRestore = function () {
   // true if the string has more than a space between words.
   if (seed.split('  ').length > 1) {
     this.warning = 'There can only be a space between words'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
+  if (seed.length === 0) {
+    this.warning = 'Please enter seed words'
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }

@@ -733,7 +733,7 @@ app sections
 
 
 .errorDeleteImport{
-  margin: 0 0 0 260px;
+  /* margin: 0 0 0 260px; */
   /* border: 1px solid #ff1345 !important; */
   color: #ff0035 !important;
   font-size: 12px;
@@ -751,7 +751,7 @@ app sections
 }
 @media only screen and (max-width:600px){
   .errorDeleteImport {
-    margin: 0 0 9px 0;
+    /* margin: 0 0 9px 0; */
     /* border: 1px solid #ff1345 !important; */
     color: #ff0035 !important;
     font-size: 12px;
@@ -767,6 +767,12 @@ app sections
     font-family: Inter-Regular;
   }
 }
+
+.justify-Center{
+  display: flex;
+  justify-content: center;
+}
+
 
 .error-login {
   color: #ff0035 !important;
@@ -803,6 +809,20 @@ app sections
     width: 265px;
   }
 }
+
+.errorWidthSecretWords{
+  width: 620px;
+  margin: 25px 0 25px 0 ;
+  padding: 0 33px;
+}
+@media only screen and (max-width:600px){
+  .errorWidthSecretWords{
+    width: 265px;
+    margin: 25px 0 0 0 ;
+    padding: 0 0;
+  }
+}
+
 .warning {
   color: #60db97;
 }
@@ -2392,13 +2412,13 @@ input:checked+.slider:before {
 }
 
 .trasaction-details-amount {
-  padding: 0 12px 17px 0;
+  padding: 0 0px 17px 0px;
   border-bottom: 1px solid #e3e7eb;
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  /* width: 534.25px; */
   min-width: 331px;
-  margin: 18px 0 0 0;
+  margin: 18px 19px 0 19px;
   font-size: 14px;
   font-family: inter-medium;
 }

@@ -181,7 +181,7 @@ export default class ExpandedTransactionDetails extends React.Component {
           style={{
             display: "flex",
             width: "100%",
-            minHeight: "842px"
+            minHeight: "745px"
           }}
         >
           <div
@@ -216,7 +216,7 @@ export default class ExpandedTransactionDetails extends React.Component {
 
               {/* all trasaction details  */}
               <div className="trasaction-details-amount">
-                <div style={{ marginLeft: "16px" }}>Amount</div>
+                <div >Amount</div>
                 <div style={{ marginRight: "6px", marginLeft: "auto" }}>
                   {value}
                 </div>
@@ -224,17 +224,17 @@ export default class ExpandedTransactionDetails extends React.Component {
               </div>
 
               <div className="trasaction-details-amount">
-                <div style={{ marginLeft: "16px" }}>Gas Limit</div>
+                <div >Gas Limit</div>
                 <div>{gas}</div>
               </div>
 
               <div className="trasaction-details-amount">
-                <div style={{ marginLeft: "16px" }}>Gas Price (GWEI)</div>
+                <div >Gas Price (GWEI)</div>
                 <div>{gasPrice}</div>
               </div>
 
               <div className="trasaction-details-amount">
-                <div style={{ marginLeft: "16px" }}>Total</div>
+                <div >Total</div>
                 <div style={{ marginRight: "6px", marginLeft: "auto" }}>
                   {value}
                 </div>

@@ -466,9 +466,9 @@ class PreferencesController {
     if (remove && index !== -1) {
       rpcList.splice(index, 1)
     }
-    // if (index == -1 && !remove && customRPCObject.rpcURL !== 'http://localhost:8545') {
-    //   rpcList.push(customRPCObject)
-    // }
+    if (index == -1 && !remove && customRPCObject.rpcURL !== ('https://localhost:8545' || 'http://localhost:8545')) {
+      rpcList.push(customRPCObject)
+    }
     return Promise.resolve(rpcList)
   }
 
