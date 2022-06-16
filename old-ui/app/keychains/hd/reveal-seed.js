@@ -48,7 +48,7 @@ revealSeed.prototype.render = function () {
       }, [
         h('img', { style: { marginRight: '3px' }, src: '/images/Assets/Check-Green.svg' }),
 
-        'Secret Seed Words',
+        'Secret Seed Phrase',
       ]),
 
       h('div.errorWidthSecretWords', {
