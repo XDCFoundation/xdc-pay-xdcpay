@@ -46,6 +46,7 @@ class NetworkSettings extends React.Component {
             src="/images/Assets/Add.svg"
             style={{cursor: 'pointer', marginRight:'16px'}}
             onClick={() => {
+              this.props.dispatch(actions.displayWarning(''))
               state.onAddNetworkClicked ? state.onAddNetworkClicked() : state.dispatch(actions.showAddNetworkPage())
             }}
           />

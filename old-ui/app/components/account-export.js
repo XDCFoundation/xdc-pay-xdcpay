@@ -58,12 +58,12 @@ ExportAccountView.prototype.render = function () {
           },
           [
             h(
-              "p.error",
+              "div.error.importError",
               {
                 style: {
                   color: "#333333",
-                  marginBottom: "0px",
-                  marginTop: "30px",
+                  // marginBottom: "0px",
+                  // marginTop: "30px",
                 },
               },
               warning

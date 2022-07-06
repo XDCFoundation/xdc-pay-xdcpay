@@ -38,11 +38,7 @@ class ConfirmScreen extends Component {
           <h2 className="page-subtitle">{this.props.subtitle}</h2>
         </div>
         {this.props.withDescription ? (
-          <div
-            style={{
-              margin: "30px 30px 0px "
-            }}
-          >
+          <div className='justify-Center' style={{margin: '30px 30px 0px', }}>
             <div className="error errorDeleteImport">{this.props.description}</div>
           </div>
         ) : null}

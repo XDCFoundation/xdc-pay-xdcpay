@@ -6,26 +6,31 @@ import Identicon from "../../ui/app/components/identicon";
 class Contacts extends React.Component {
   onAddContact = () => {
     // eslint-disable-next-line react/prop-types
+    this.props.dispatch(actions.displayWarning(""));
     this.props.onAddContactClicked
       ? this.props.onAddContactClicked()
       : this.props.dispatch(actions.showAddContactsPage());
   };
 
-  ViewContactDetails = (contactObj) => {
+  ViewContactDetails = contactObj => {
+    this.props.dispatch(actions.displayWarning(""));
     this.props.onViewContactDetails
       ? this.props.onViewContactDetails(contactObj)
       : this.props.dispatch(actions.contactDetails(contactObj));
   };
 
   onBackToContacts = () => {
+    this.props.dispatch(actions.displayWarning(""));
     // eslint-disable-next-line react/prop-types
-    this.props.backToContacts ? this.props.backToContacts() : this.props.dispatch(actions.Contacts())
-  }
+    this.props.backToContacts
+      ? this.props.backToContacts()
+      : this.props.dispatch(actions.Contacts());
+  };
 
   render() {
     const state = this.props;
     const contactList = state.metamask.addressBook;
-    contactList.sort(function (a, b) {
+    contactList.sort(function(a, b) {
       if (a.name.toLowerCase() < b.name.toLowerCase()) {
         return -1;
       }
@@ -36,29 +41,23 @@ class Contacts extends React.Component {
     });
 
     return (
-      <div
-        className="flex-column flex-grow"
-        style={{
-          maxHeight: "837px",
-          overflowY: "auto"
-        }}
-      >
+      <div className="flex-column flex-grow">
         <div
           className="section-title flex-row titleAdd"
           style={{
             borderBottom: "1px solid #E3E7EB",
             paddingBottom: "17px",
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-between"
           }}
         >
           <img
             src="/images/Assets/BackArrow.svg"
             className="image-display"
-            style={{ marginLeft: "17px", cursor: "pointer", }}
+            style={{ marginLeft: "17px", cursor: "pointer" }}
             onClick={() => state.dispatch(actions.goConfig())}
           />
-          <h2 style={{ fontFamily: "Inter-bold", color: "#2A2A2A",  }}>
+          <h2 style={{ fontFamily: "Inter-bold", color: "#2A2A2A" }}>
             Contacts
           </h2>
           <img
@@ -68,7 +67,10 @@ class Contacts extends React.Component {
             // state.dispatch(actions.showAddContactsPage())}
           />
         </div>
-        <div className="list">
+        <div className="list"  style={{
+          maxHeight: "697px",
+          overflowY: "auto"
+        }}>
           {contactList.length ? (
             contactList.map((contactObj, index) => (
               <div
@@ -76,7 +78,7 @@ class Contacts extends React.Component {
                 style={{
                   borderBottom: "1px solid #E3E7EB",
                   fontFamily: "inter-medium",
-                  fontSize: "14px",
+                  fontSize: "14px"
                 }}
               >
                 {index === 0 ||
@@ -87,7 +89,7 @@ class Contacts extends React.Component {
                       backgroundColor: "#F4F6FA",
                       height: "24px",
                       width: "100%",
-                      padding: "0 21px",
+                      padding: "0 21px"
                     }}
                   >
                     {contactList[index].name.charAt(0).toUpperCase()}
@@ -100,7 +102,7 @@ class Contacts extends React.Component {
                     padding: "10px 20px",
                     display: "flex",
                     flexDirection: "row",
-                    gap: "10px",
+                    gap: "10px"
                   }}
                 >
                   <Identicon
@@ -110,14 +112,14 @@ class Contacts extends React.Component {
                     style={{
                       marginLeft: "10px",
                       cursor: "pointer",
-                      overflow: "inherit",
+                      overflow: "inherit"
                     }}
                   />
                   <div
                     style={{
                       width: "fit-content",
                       cursor: "pointer",
-                      padding: "3px 0 0 0",
+                      padding: "3px 0 0 0"
                     }}
                     onClick={() => {
                       this.ViewContactDetails(contactObj);
@@ -129,13 +131,14 @@ class Contacts extends React.Component {
               </div>
             ))
           ) : (
-            <div className="noContactsTitle"
+            <div
+              className="noContactsTitle"
               style={{
                 // margin: "182px 113px",
                 color: "#9FA9BA",
                 fontSize: "14px",
-                display: 'flex',
-                justifyContent: 'center',
+                display: "flex",
+                justifyContent: "center"
               }}
             >
               No Contacts Added
@@ -151,7 +154,7 @@ function mapStateToProps(state) {
   return {
     metamask: state.metamask,
     warning: state.appState.warning,
-    identities: state.metamask.identities,
+    identities: state.metamask.identities
   };
 }
 

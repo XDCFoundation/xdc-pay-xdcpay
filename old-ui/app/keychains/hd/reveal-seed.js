@@ -48,16 +48,16 @@ revealSeed.prototype.render = function () {
       }, [
         h('img', { style: { marginRight: '3px' }, src: '/images/Assets/Check-Green.svg' }),
 
-        'Secret Seed Words',
+        'Secret Seed Phrase',
       ]),
 
-      h('div', {
+      h('div.errorWidthSecretWords', {
         style: {
           fontSize: '12px',
           textAlign: 'center',
-          width: '265px',
+          // width: '265px',
           height: '61px',
-          marginTop: '25px',
+          // marginTop: '25px',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center'

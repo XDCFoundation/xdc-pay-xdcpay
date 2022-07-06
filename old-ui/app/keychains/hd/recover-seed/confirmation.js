@@ -51,7 +51,7 @@ RevealSeedConfirmation.prototype.render = function () {
           },
           
         },),
-        h('.page-subtitle', 'Secret Seed Words'),
+        h('.page-subtitle', 'Secret Seed Phrase'),
       ]),
 
       h('div.cover', {
@@ -63,7 +63,7 @@ RevealSeedConfirmation.prototype.render = function () {
         },
       }, [
 
-        h('.errorReveal', 'Do not recover your seed words in a public place! These words can be used to steal all your accounts.'),
+        h('.errorReveal', 'Do not recover your seed phrase in a public place! These words can be used to steal all your accounts.'),
 
         // confirmation
         h('input.large-input', {
