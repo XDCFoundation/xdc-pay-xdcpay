@@ -53,7 +53,7 @@ const getExplorerTokenLinkFor = (tokenAddress, account, network,symbol) => {
 		return `${devLink(prefix)}/tokens/${tokenAddress}`
 	}
 	else if (prefix === 'xinfin') {
-		return `https://xdc.blocksscan.io/address/${account}`
+		return `https://xdc.blocksscan.io/tokens/${account}`
 	}
 	else
 	return `${xdcLink(prefix)}/tokens/${tokenAddress}`
