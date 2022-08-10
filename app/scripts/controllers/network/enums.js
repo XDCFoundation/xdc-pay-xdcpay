@@ -60,7 +60,7 @@ const XDC_TESTNET_RPC_ENDPOINT = "https://apothemxdcpayrpc.blocksscan.io/";
 const XDC_DEVNET_RPC_ENDPOINT = "https://devnetrpc.apothem.network";
 
 /* Block Explorer URLs */
-const XDC_BLOCK_EXPLORER_URL = "https://observer.xdc.org";
+const XDC_BLOCK_EXPLORER_URL = "https://xdc.blocksscan.io";
 // const XDC_BLOCK_EXPLORER_URL = 'https://explorer.xdc.network'
 const XDC_TESTNET_BLOCK_EXPLORER_URL = "https://explorer.apothem.network";
 const XDC_DEVNET_BLOCK_EXPLORER_URL = "https://explorer.devnet.network";
