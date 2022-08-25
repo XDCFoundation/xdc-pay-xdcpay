@@ -5,7 +5,7 @@ const Web3 =require("web3");
 const log = require('loglevel')
 const LocalMessageDuplexStream = require('post-message-stream')
 const setupDappAutoReload = require('./lib/auto-reload.js')
-const MetamaskInpageProvider = require('metamask-inpage-provider')
+const MetamaskInpageProvider = require('xdcpay-wallet-inpage-provider')
 
 restoreContextAfterImports()
 

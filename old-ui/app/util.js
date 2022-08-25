@@ -240,7 +240,7 @@ function isValidAddress(address, network) {
 }
 
 function isValidENSAddress(address) {
-  return address.match(/^.{7,}\.(eth|test)$/);
+  return address.match(/^.{7,}\.(go|test)$/);
 }
 
 function isInvalidChecksumAddress(address, network) {

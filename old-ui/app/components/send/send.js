@@ -47,7 +47,6 @@ function SendTransactionScreen() {
   PersistentForm.call(this);
 }
 
-
 SendTransactionScreen.prototype.render = function () {
   this.persistentFormParentId = "send-tx-form";
   const props = this.props;
@@ -158,10 +157,10 @@ SendTransactionScreen.prototype.render = function () {
     h("div.sendExpandedUI",
       // { style: { width: "265px" } },
       [
-      h(ErrorComponent, {
-        error,
-      }),
-    ]),
+        h(ErrorComponent, {
+          error,
+        }),
+      ]),
 
     // Send button
     h(
@@ -200,11 +199,22 @@ SendTransactionScreen.prototype.recipientDidChange = function (
 
 SendTransactionScreen.prototype.onSubmit = function () {
   const state = this.state || {};
+  console.log("🚀 ~ file: send.js ~ line 195 ~ state", state);
+  console.log(
+    "🚀 ~ file: send-token.js ~ line 203 ~ SendTransactionScreen ~ onSubmit ~ state.recipient",
+    state.recipient
+  );
+
   let recipient =
     state.recipient ||
     document
       .querySelector('input[name="address"]')
       .value.replace(/^[.\s]+|[.\s]+$/g, "");
+  console.log("🚀 ~ file: send.js ~ line 196 ~ recipient", recipient);
+  let newRecipient = document
+    .querySelector('input[name="address"]')
+    .value.replace(/^[.\s]+|[.\s]+$/g, "");
+
   let nickname = state.nickname || " ";
   if (typeof recipient === "object") {
     if (recipient.toAddress) {
@@ -213,6 +223,9 @@ SendTransactionScreen.prototype.onSubmit = function () {
     if (recipient.nickname) {
       nickname = recipient.nickname;
     }
+  }
+  if (newRecipient.startsWith("0x") || newRecipient.startsWith("xdc")) {
+    recipient = newRecipient;
   }
   recipient = recipient.replace("xdc", "0x").toLowerCase();
   const input = document.querySelector('input[name="amount"]').value;
@@ -281,6 +294,15 @@ SendTransactionScreen.prototype.onSubmit = function () {
   };
   if (recipient) txParams.to = ethUtil.addHexPrefix(recipient);
   if (txData) txParams.data = ascii_to_hex(txData);
+  txParams.gas = txParams.data
+    ? "0x" +
+    (
+      21340 +
+      (txParams.data.length < 2
+        ? txParams.data.length - 2
+        : (txParams.data.length - 3) * 90)
+    ).toString(16)
+    : txParams.gas;
 
   this.props.dispatch(actions.signTx(txParams));
 };
