@@ -126,7 +126,7 @@ class ShapeshiftController {
     const index = shapeShiftTxList.indexOf(tx)
     if (index !== -1) {
       shapeShiftTxList[index] = tx
-      this.store.updateState({ shapeShiftTxList })
+      this.store.update({ shapeShiftTxList })
     }
   }
 

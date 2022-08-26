@@ -19,13 +19,13 @@ const BNInput = require("./bn-as-decimal-input");
 const { getEnvironmentType } = require("../../../app/scripts/lib/util");
 const NetworkIndicator = require("../components/network");
 const {
-  ENVIRONMENT_TYPE_NOTIFICATION,
+  ENVIRONMENT_TYPE_NOTIFICATION
 } = require("../../../app/scripts/lib/enums");
 const connect = require("react-redux").connect;
 const abiDecoder = require("abi-decoder");
 const {
   tokenInfoGetter,
-  calcTokenAmount,
+  calcTokenAmount
 } = require("../../../ui/app/token-util");
 const BigNumber = require("bignumber.js");
 const ethNetProps = require("xdc-net-props");
@@ -72,7 +72,7 @@ function PendingTx(props) {
     tokenSymbol: "",
     tokenDecimals: 0,
     tokenDataRetrieved: false,
-    coinName: ethNetProps.props.getNetworkCoinName(props.network),
+    coinName: ethNetProps.props.getNetworkCoinName(props.network)
   };
   this.tokenInfoGetter = tokenInfoGetter();
 }
@@ -88,7 +88,10 @@ function mapStateToProps(state) {
     unapprovedPersonalMsgs: state.metamask.unapprovedPersonalMsgs,
     unapprovedTypedMessages: state.metamask.unapprovedTypedMessages,
     index: state.appState.currentView.pendingTxIndex || 0,
-    networkList: [...state.metamask.networkList, ...state.metamask.frequentRpcList],
+    networkList: [
+      ...state.metamask.networkList,
+      ...state.metamask.frequentRpcList
+    ],
     warning: state.appState.warning,
     network: state.metamask.network,
     provider: state.metamask.provider,
@@ -97,11 +100,11 @@ function mapStateToProps(state) {
     currentCurrency: state.metamask.currentCurrency,
     blockGasLimit: state.metamask.currentBlockGasLimit,
     computedBalances: state.metamask.computedBalances,
-    showGasFields: state.metamask.showGasFields,
+    showGasFields: state.metamask.showGasFields
   };
 }
 
-PendingTx.prototype.render = function () {
+PendingTx.prototype.render = function() {
   const state = this.state;
   if (this.props.isToken) {
     if (!state.tokenDataRetrieved) return null;
@@ -114,7 +117,7 @@ PendingTx.prototype.render = function () {
     provider,
     isUnlocked,
     showGasFields,
-    networkList,
+    networkList
   } = props;
   // const showGasFields = this.state.showGasFields
   const conversionRate = this.state.conversionRate;
@@ -122,7 +125,7 @@ PendingTx.prototype.render = function () {
   const txParams = txMeta.txParams || {};
   let { isToken, tokensToSend, tokensTransferTo } = props;
   let token = {
-    address: txParams.to,
+    address: txParams.to
   };
 
   const decodedData = txParams.data && abiDecoder.decodeMethod(txParams.data);
@@ -137,7 +140,7 @@ PendingTx.prototype.render = function () {
     token = {
       address: txParams.to,
       decimals: state.tokenDecimals,
-      symbol: state.tokenSymbol,
+      symbol: state.tokenSymbol
     };
   }
 
@@ -160,9 +163,9 @@ PendingTx.prototype.render = function () {
   // recipient check
   const isValidAddress =
     !txParams.to || util.isValidAddress(txParams.to, network);
-  
-//Gas
-  const gas =  txParams.gas;
+
+  //Gas
+  const gas = txParams.gas;
   const gasBn = hexToBn(gas);
   // default to 8MM gas limit
   const gasLimit = new BN(parseInt(blockGasLimit) || "8000000");
@@ -207,7 +210,7 @@ PendingTx.prototype.render = function () {
   const dimStyle = {
     // fontFamily: 'Inter-SemiBold',
     // color: '#848484',
-    marginLeft: "2px",
+    margin: "0 0 0 2px"
     // fontSize: '12px',
   };
 
@@ -220,17 +223,17 @@ PendingTx.prototype.render = function () {
   return h(
     "div",
     {
-      key: txMeta.id,
+      key: txMeta.id
     },
     [
       h(ToastComponent, {
-        isSuccess: false,
+        isSuccess: false
       }),
 
       h(
         "form#pending-tx-form",
         {
-          onSubmit: this.onSubmit.bind(this),
+          onSubmit: this.onSubmit.bind(this)
         },
         [
           // tx info
@@ -242,9 +245,9 @@ PendingTx.prototype.render = function () {
                   marginTop: "26px",
                   marginBottom: "14px",
                   fontWeight: "bold",
-                  fontFamily:"Inter-semibold",
-                  marginLeft: !isNotification ? "" : "78px",
-                },
+                  fontFamily: "Inter-semibold",
+                  marginLeft: !isNotification ? "" : "78px"
+                }
               },
               [
                 !isNotification
@@ -254,8 +257,8 @@ PendingTx.prototype.render = function () {
                       style: {
                         position: "absolute",
                         left: "18px",
-                        width: "14px",
-                      },
+                        width: "14px"
+                      }
                     })
                   : null,
                 "Confirm Transaction",
@@ -263,7 +266,7 @@ PendingTx.prototype.render = function () {
                   ? h(NetworkIndicator, {
                       network: network,
                       provider: provider,
-                      isUnlocked: isUnlocked,
+                      isUnlocked: isUnlocked
                     })
                   : null,
 
@@ -271,7 +274,7 @@ PendingTx.prototype.render = function () {
                   ? h(
                       "button.btn-violet",
                       {
-                        onClick: (event) => {
+                        onClick: event => {
                           this.resetGasFields();
                           event.preventDefault();
                         },
@@ -281,12 +284,12 @@ PendingTx.prototype.render = function () {
                           color: "#2149B9",
                           background: "#ffffff",
                           fontWeight: "bold",
-                          fontFamily:"Inter-semibold",
-                        },
+                          fontFamily: "Inter-semibold"
+                        }
                       },
                       "Reset"
                     )
-                  : null,
+                  : null
               ]
             ),
 
@@ -295,6 +298,10 @@ PendingTx.prototype.render = function () {
                   "div",
                   {
                     style: {
+                      display: "flex",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      alignItems: "center"
                       // textAlign: 'center',
                       // position: 'absolute',
                       // top: '25px',
@@ -302,18 +309,18 @@ PendingTx.prototype.render = function () {
                       // width: '100%',
                       // paddingLeft: '30px',
                       // paddingRight: '30px',
-                    },
+                    }
                   },
                   [
                     txMeta.simulationFails
                       ? h(
-                          ".error",
+                          ".error.errorWidth",
                           {
                             style: {
-                              fontSize: "12px",
-                              width: "265px",
-                              marginLeft: "46px",
-                            },
+                              fontSize: "12px"
+                              // width: "265px",
+                              // marginLeft: "46px"
+                            }
                           },
                           "Transaction Error. Exception thrown in contract code."
                         )
@@ -321,13 +328,13 @@ PendingTx.prototype.render = function () {
 
                     !isValidAddress
                       ? h(
-                          ".error1",
+                          ".error1.errorWidth",
                           {
                             style: {
-                              fontSize: "12px",
-                              width: "265px",
-                              marginLeft: "46px",
-                            },
+                              fontSize: "12px"
+                              // width: "265px",
+                              // marginLeft: "46px"
+                            }
                           },
                           "Recipient address is invalid. Sending this transaction will result in a loss of ETH. "
                         )
@@ -335,13 +342,13 @@ PendingTx.prototype.render = function () {
 
                     insufficientBalance
                       ? h(
-                          ".error",
+                          ".error.errorWidth",
                           {
                             style: {
-                              fontSize: "12px",
-                              width: "265px",
-                              marginLeft: "46px",
-                            },
+                              fontSize: "12px"
+                              // width: "265px",
+                              // marginLeft: "46px"
+                            }
                           },
                           "Insufficient balance for transaction. "
                         )
@@ -349,17 +356,17 @@ PendingTx.prototype.render = function () {
 
                     dangerousGasLimit && !gasLimitSpecified
                       ? h(
-                          ".error1",
+                          ".error1.errorWidth",
                           {
                             style: {
-                              fontSize: "12px",
-                              width: "265px",
-                              marginLeft: "46px",
-                            },
+                              fontSize: "12px"
+                              // width: "265px",
+                              // marginLeft: "46px"
+                            }
                           },
                           "Gas limit set dangerously high. Approving this transaction is liable to fail. "
                         )
-                      : null,
+                      : null
                   ]
                 )
               : null,
@@ -371,8 +378,8 @@ PendingTx.prototype.render = function () {
                   maxWidth: "100%",
                   padding: showRejectAll ? "0" : "0",
                   background: "#FFFFFF",
-                  position: "relative",
-                },
+                  position: "relative"
+                }
               },
               [
                 // h(MiniAccountPanel, {
@@ -425,7 +432,7 @@ PendingTx.prototype.render = function () {
 
                 // forwardCarrat(),
 
-                this.miniAccountPanelForRecipient(isToken, tokensTransferTo),
+                this.miniAccountPanelForRecipient(isToken, tokensTransferTo)
               ]
             ),
 
@@ -443,40 +450,63 @@ PendingTx.prototype.render = function () {
               flex-direction: column;
               font-family: Inter-Regular;
               font-size: 14px;
-              padding: 0px 46px;
             }
             .table-box .row .value {
               font-family: Inter-Regular;
             }
-          `
+            `
+              // padding: 0px 46px;
             ),
 
             h(
               ".table-box.confTransaction",
               {
                 style: {
-                  overflowY: "auto",
-                  height: !!("to" in this.props.txData.txParams)
-                    ? dangerousGasLimit
-                      ? dangerousGasLimit && insufficientBalance
-                        ? insufficientBalance
-                          ? "220px"
-                          : "288px"
-                        : "260px"
-                      : insufficientBalance
-                      ? "286px"
-                      : txMeta.simulationFails?"286px":"329px"
-                    : !isNotification
-                    ? insufficientBalance
-                      ? "289px"
-                      : "320px"
-                    : "320px",
+                  overflowY: isNotification ? "" : "auto",
+                  height: showGasFields
+                    ? !!("to" in this.props.txData.txParams)
+                      ? dangerousGasLimit && !txMeta.simulationFails
+                        ? dangerousGasLimit &&
+                          insufficientBalance &&
+                          !txMeta.simulationFails
+                          ? insufficientBalance
+                            ? "220px"
+                            : "288px"
+                          : "260px"
+                        : insufficientBalance && !txMeta.simulationFails
+                        ? "286px"
+                        : txMeta.simulationFails
+                        ? dangerousGasLimit
+                          ? dangerousGasLimit && insufficientBalance
+                            ? insufficientBalance
+                              ? "176px"
+                              : "288px"
+                            : "216px"
+                          : "286px"
+                        : "329px"
+                      : !isNotification
+                      ? insufficientBalance
+                        ? "289px"
+                        : "320px"
+                      : "337px"
+                    : "185px",
                   width: "auto",
-                  margin: "20px 0px 10px 0px",
-                  // display: "flex",
+                  margin: dangerousGasLimit
+                    ? (dangerousGasLimit && insufficientBalance) ||
+                      gasLimitSpecified
+                      ? gasLimitSpecified
+                        ? isNotification
+                          ? "20px auto"
+                          : "20px 0px 10px 20px"
+                        : "20px 0px 10px 20px"
+                      : "20px 0px 10px 20px"
+                    : "20px 0px 10px  0px",
+                  display: isNotification ? "flex" : "",
+                  justifyContent: isNotification ? "center" : "",
+                  minHeight: !showGasFields ? '0px' : ''
                   // flexDirection: "column",
                   // alignItems: "center",
-                },
+                }
               },
               [
                 // Ether Value
@@ -484,7 +514,22 @@ PendingTx.prototype.render = function () {
                 // in the way that gas and gasLimit currently are.
 
                 h(".row", [
-                  h(".cell.label",{style:{fontFamily: navigator.userAgent.indexOf("Firefox") != -1 ?"Inter-semibold":"Inter-regular" ,fontWeight:navigator.userAgent.indexOf("Firefox") != -1 ?"100":"bold"}}, "Amount"),
+                  h(
+                    ".cell.label",
+                    {
+                      style: {
+                        fontFamily:
+                          navigator.userAgent.indexOf("Firefox") != -1
+                            ? "Inter-semibold"
+                            : "Inter-regular",
+                        fontWeight:
+                          navigator.userAgent.indexOf("Firefox") != -1
+                            ? "100"
+                            : "bold"
+                      }
+                    },
+                    "Amount"
+                  ),
                   h(EthBalance, {
                     valueStyle,
                     dimStyle,
@@ -498,7 +543,7 @@ PendingTx.prototype.render = function () {
                     tokenSymbol: this.state.tokenSymbol,
                     showFiat: !isToken,
                     networkList
-                  }),
+                  })
                 ]),
                 // Gas Limit (customizable)
                 showGasFields
@@ -506,20 +551,33 @@ PendingTx.prototype.render = function () {
                       h(".cell.row", [
                         h(
                           ".cell.label",
-                          { style: { marginTop: "20px" ,fontFamily: navigator.userAgent.indexOf("Firefox") != -1 ?"Inter-semibold":"Inter-regular",fontWeight:navigator.userAgent.indexOf("Firefox") != -1 ?"100":"bold"} },
+                          {
+                            style: {
+                              marginTop: "20px",
+                              fontFamily:
+                                navigator.userAgent.indexOf("Firefox") != -1
+                                  ? "Inter-semibold"
+                                  : "Inter-regular",
+                              fontWeight:
+                                navigator.userAgent.indexOf("Firefox") != -1
+                                  ? "100"
+                                  : "bold"
+                            }
+                          },
                           "Gas Limit (Units)"
                         ),
                         h(
-                          ".cell.value",
+                          ".cell.value.sendFields",
                           {
                             style: {
-                              width: "265px",
-                            },
+                              width: "265px"
+                            }
                           },
                           [
                             h(BNInput, {
                               id: "gas_limit",
                               name: "Gas Limit",
+                              className: "sendFields",
                               value: gasBn,
                               precision: 0,
                               scale: 0,
@@ -529,16 +587,16 @@ PendingTx.prototype.render = function () {
                               // suffix: 'UNITS',
                               style: {
                                 position: "relative",
-                                width: "265px",
+                                width: "265px"
                               },
                               onChange: this.gasLimitChanged.bind(this),
 
-                              ref: (hexInput) => {
+                              ref: hexInput => {
                                 this.inputs.push(hexInput);
-                              },
-                            }),
+                              }
+                            })
                           ]
-                        ),
+                        )
                       ]),
 
                       // Gas Price (customizable)
@@ -546,37 +604,50 @@ PendingTx.prototype.render = function () {
                       h(".cell.row", [
                         h(
                           ".cell.label",
-                          { style: { marginTop: "20px" ,fontFamily: navigator.userAgent.indexOf("Firefox") != -1 ?"Inter-semibold":"Inter-regular",fontWeight:navigator.userAgent.indexOf("Firefox") != -1 ?"100":"bold"} },
+                          {
+                            style: {
+                              marginTop: "20px",
+                              fontFamily:
+                                navigator.userAgent.indexOf("Firefox") != -1
+                                  ? "Inter-semibold"
+                                  : "Inter-regular",
+                              fontWeight:
+                                navigator.userAgent.indexOf("Firefox") != -1
+                                  ? "100"
+                                  : "bold"
+                            }
+                          },
                           "Gas Price (GWEI)"
                         ),
                         h(
-                          ".cell.value",
+                          ".cell.value.sendFields",
                           {
                             style: {
-                              width: "265px",
-                            },
+                              width: "265px"
+                            }
                           },
                           [
                             h(BNInput, {
                               id: "gas_price",
                               name: "Gas Price",
                               value: gasPriceBn,
+                              className: "sendFields",
                               precision: 9,
                               scale: 9,
                               // suffix: 'GWEI',
                               min: forceGasMin || MIN_GAS_PRICE_BN,
                               style: {
                                 position: "relative",
-                                width: "265px",
+                                width: "265px"
                               },
                               onChange: this.gasPriceChanged.bind(this),
-                              ref: (hexInput) => {
+                              ref: hexInput => {
                                 this.inputs.push(hexInput);
-                              },
-                            }),
+                              }
+                            })
                           ]
-                        ),
-                      ]),
+                        )
+                      ])
                     ])
                   : null,
 
@@ -584,7 +655,19 @@ PendingTx.prototype.render = function () {
                 h(".cell.row", [
                   h(
                     ".cell.label",
-                    { style: { marginTop: "20px" ,fontFamily: navigator.userAgent.indexOf("Firefox") != -1 ?"Inter-semibold":"Inter-regular",fontWeight:navigator.userAgent.indexOf("Firefox") != -1 ?"100":"bold"} },
+                    {
+                      style: {
+                        marginTop: "20px",
+                        fontFamily:
+                          navigator.userAgent.indexOf("Firefox") != -1
+                            ? "Inter-semibold"
+                            : "Inter-regular",
+                        fontWeight:
+                          navigator.userAgent.indexOf("Firefox") != -1
+                            ? "100"
+                            : "bold"
+                      }
+                    },
                     "Max Transaction Fee"
                   ),
                   h(EthBalance, {
@@ -595,30 +678,42 @@ PendingTx.prototype.render = function () {
                     conversionRate,
                     network,
                     networkList
-                  }),
+                  })
                 ]),
 
                 h(
                   ".cell.row",
                   {
                     style: {
-                      fontFamily: "Inter-Regular",
-                    },
+                      fontFamily: "Inter-Regular"
+                    }
                   },
                   [
                     h(
                       ".cell.label",
-                      { style: { marginTop: "20px" ,fontFamily: navigator.userAgent.indexOf("Firefox") != -1 ?"Inter-semibold":"Inter-regular",fontWeight:navigator.userAgent.indexOf("Firefox") != -1 ?"100":"bold"} },
+                      {
+                        style: {
+                          marginTop: "20px",
+                          fontFamily:
+                            navigator.userAgent.indexOf("Firefox") != -1
+                              ? "Inter-semibold"
+                              : "Inter-regular",
+                          fontWeight:
+                            navigator.userAgent.indexOf("Firefox") != -1
+                              ? "100"
+                              : "bold"
+                        }
+                      },
                       "Max Total"
                     ),
                     h(
-                      ".cell.value",
+                      ".cell.value.sendFields",
                       {
                         style: {
                           display: "flex",
                           alignItems: "center",
-                          width: "265px",
-                        },
+                          width: "265px"
+                        }
                       },
                       [
                         h(EthBalance, {
@@ -632,11 +727,11 @@ PendingTx.prototype.render = function () {
                           labelColor: "black",
                           fontSize: "16px",
                           networkList
-                        }),
+                        })
                       ]
-                    ),
+                    )
                   ]
-                ),
+                )
 
                 // Data size row:
 
@@ -655,7 +750,7 @@ PendingTx.prototype.render = function () {
                 //   }, `Data included: ${dataLength} bytes`),
                 // ]),
               ]
-            ), // End of Table
+            ) // End of Table
           ]),
 
           h(
@@ -669,29 +764,30 @@ PendingTx.prototype.render = function () {
 
           // send + cancel
           h(
-            ".flex-row.flex-space-around",
+            ".flex-row.flex-space-around.btnConf",
             {
               style: {
                 display: "flex",
                 justifyContent: "center",
-              },
+                margin: showGasFields ? "0 0 0 0" : ""
+              }
             },
             [
               h(
-                "button.cancel.btn-red",
+                "button.cancel.btn-red.btn-Width-Conf",
                 {
                   style: {
-                    display: "flex",
+                    //   display: "flex",
                     // position: "absolute",
                     // left: "46px",
-                    height: "40px",
-                    margin: "0px 28px 0px 0px",
-                    width: "119px",
-                    paddingLeft: "37px",
-                    paddingTop: "12px",
-                    background: "#FF0035",
+                    // height: "40px",
+                    // margin: "0px 28px 0px 0px",
+                    // width: "119px",
+                    // paddingLeft: "37px",
+                    // paddingTop: "12px",
+                    background: "#FF0035"
                   },
-                  onClick: props.cancelTransaction,
+                  onClick: props.cancelTransaction
                 },
                 "Reject"
               ),
@@ -699,36 +795,36 @@ PendingTx.prototype.render = function () {
               // Accept Button or Buy Button
               insufficientBalance
                 ? h(
-                    "button.btn-green",
+                    "button.btn-green.btn-Width",
                     {
                       style: {
-                        display: "flex",
+                        // display: "flex",
                         // position: "absolute",
                         // right: "46px",
-                        height: "40px",
-                        width: "119px",
-                        paddingLeft: "37px",
-                        paddingTop: "12px",
-                        background: "#03BE46",
+                        // height: "40px",
+                        // width: "119px",
+                        // paddingLeft: "37px",
+                        // paddingTop: "12px",
+                        background: "#03BE46"
                       },
-                      onClick: props.buyEth,
+                      onClick: props.buyEth
                     },
                     `Buy ${this.state.coinName}`
                   )
-                : h("input.confirm", {
-                    style: {
-                      display: "flex",
-                      // position: "absolute",
-                      // right: "46px",
-                      height: "40px",
-                      width: "119px",
-                      justifyContent: "center",
-                    },
+                : h("input.confirm.btn-Width", {
+                    // style: {
+                    //   display: "flex",
+                    // position: "absolute",
+                    // right: "46px",
+                    // height: "40px",
+                    // width: "119px",
+                    // justifyContent: "center"
+                    // },
                     type: "submit",
                     value: "Submit",
                     // style: { marginLeft: '10px' },
-                    disabled: buyDisabled,
-                  }),
+                    disabled: buyDisabled
+                  })
             ]
           ),
           // showRejectAll ? h('.flex-row.flex-space-around.conf-buttons', {
@@ -753,8 +849,8 @@ PendingTx.prototype.render = function () {
                 color: "#2A2A2A",
                 borderTop: "2px solid #E3E7EB",
                 paddingTop: "11px",
-                display: props.unconfTxListLength > 1 ? "block" : "none",
-              },
+                display: props.unconfTxListLength > 1 ? "block" : "none"
+              }
             },
             [
               h(
@@ -763,8 +859,8 @@ PendingTx.prototype.render = function () {
                   style: {
                     alignSelf: "center",
                     display: props.unconfTxListLength > 1 ? "block" : "none",
-                    fontSize: "14px",
-                  },
+                    fontSize: "14px"
+                  }
                 },
                 [
                   h("img.cursor-pointer", {
@@ -772,9 +868,9 @@ PendingTx.prototype.render = function () {
                     style: {
                       display: props.index === 0 ? "none" : "inline-block",
                       position: "absolute",
-                      left: "15px",
+                      left: "15px"
                     },
-                    onClick: () => props.dispatch(actions.previousTx()),
+                    onClick: () => props.dispatch(actions.previousTx())
                   }),
                   ` ${props.index + 1} of ${props.unconfTxListLength} `,
                   h("img.cursor-pointer", {
@@ -785,21 +881,21 @@ PendingTx.prototype.render = function () {
                           ? "none"
                           : "inline-block",
                       position: "absolute",
-                      right: "15px",
+                      right: "15px"
                     },
-                    onClick: () => props.dispatch(actions.nextTx()),
-                  }),
+                    onClick: () => props.dispatch(actions.nextTx())
+                  })
                 ]
-              ),
+              )
             ]
-          ),
+          )
         ]
-      ),
+      )
     ]
   );
 };
 
-PendingTx.prototype.miniAccountPanelForRecipient = function (
+PendingTx.prototype.miniAccountPanelForRecipient = function(
   isToken,
   tokensTransferTo
 ) {
@@ -815,7 +911,7 @@ PendingTx.prototype.miniAccountPanelForRecipient = function (
       MiniAccountPanel,
       {
         imageSeed: txParams.to,
-        picOrder: "right",
+        picOrder: "right"
       },
       [
         h(
@@ -823,20 +919,26 @@ PendingTx.prototype.miniAccountPanelForRecipient = function (
           {
             style: {
               // marginRight: '10px',
-            },
+            }
           },
           [
             h(
               ".cell.row",
               {
                 style: {
-                  fontFamily: navigator.userAgent.indexOf("Firefox") != -1 ?"Inter-semibold":"Inter-regular",
+                  fontFamily:
+                    navigator.userAgent.indexOf("Firefox") != -1
+                      ? "Inter-semibold"
+                      : "Inter-regular",
                   color: "#2A2A2A",
                   display: "flex",
                   whiteSpace: "nowrap",
                   fontSize: "12px",
-                  fontWeight:navigator.userAgent.indexOf("Firefox") != -1 ?"100":"bold"
-                },
+                  fontWeight:
+                    navigator.userAgent.indexOf("Firefox") != -1
+                      ? "100"
+                      : "bold"
+                }
               },
               "Recipient Address" /*accountSummary(nameForAddress(to, props.identities, props.network)), 6, 4*/
             ),
@@ -845,7 +947,7 @@ PendingTx.prototype.miniAccountPanelForRecipient = function (
             //   value: toChecksumAddress(props.network, to),
             // },[
             h(
-              ".cell.row",
+              ".cell.row.sendFields",
               {
                 style: {
                   fontFamily: "Inter-Regular",
@@ -855,21 +957,21 @@ PendingTx.prototype.miniAccountPanelForRecipient = function (
                   background: "#F8F8F8",
                   border: "2px solid #C7CDD8",
                   borderRadius: "4px",
-                  padding: "8px 0px 0px 8px",
-                },
+                  padding: "8px 0px 0px 8px"
+                }
               },
               addressSummary(props.network, to, 10, 4, false)
-            ),
+            )
             // ]),
           ]
-        ),
+        )
       ]
     );
   } else {
     return h(
       MiniAccountPanel,
       {
-        picOrder: "right",
+        picOrder: "right"
       },
       [
         h(
@@ -878,17 +980,17 @@ PendingTx.prototype.miniAccountPanelForRecipient = function (
             style: {
               display: "none",
               fontFamily: "Inter-SemiBold",
-              color: "#ffffff",
-            },
+              color: "#ffffff"
+            }
           },
           "New Contract"
-        ),
+        )
       ]
     );
   }
 };
 
-PendingTx.prototype.componentWillMount = function () {
+PendingTx.prototype.componentWillMount = function() {
   const txMeta = this.gatherTxMeta();
   const txParams = txMeta.txParams || {};
   if (this.props.isToken) {
@@ -896,47 +998,47 @@ PendingTx.prototype.componentWillMount = function () {
   }
 };
 
-PendingTx.prototype.componentWillUnmount = function () {
+PendingTx.prototype.componentWillUnmount = function() {
   this.setState({
     tokenSymbol: "",
     tokenDecimals: 0,
-    tokenDataRetrieved: false,
+    tokenDataRetrieved: false
   });
 };
 
-PendingTx.prototype.updateTokenInfo = async function (txParams) {
+PendingTx.prototype.updateTokenInfo = async function(txParams) {
   const tokenParams = await this.tokenInfoGetter(txParams.to);
   this.setState({
     tokenSymbol: tokenParams.symbol,
     tokenDecimals: tokenParams.decimals,
-    tokenDataRetrieved: true,
+    tokenDataRetrieved: true
   });
 };
 
-PendingTx.prototype.gasPriceChanged = function (newBN, valid) {
+PendingTx.prototype.gasPriceChanged = function(newBN, valid) {
   log.info(`Gas price changed to: ${newBN.toString(10)}`);
   const txMeta = this.gatherTxMeta();
   txMeta.txParams.gasPrice = "0x" + newBN.toString("hex");
   this.setState({
     txData: clone(txMeta),
-    valid,
+    valid
   });
 };
 
-PendingTx.prototype.gasLimitChanged = function (newBN, valid) {
-  log.info(`Gas limit changed to ${newBN.toString(10)}`,valid);
+PendingTx.prototype.gasLimitChanged = function(newBN, valid) {
+  log.info(`Gas limit changed to ${newBN.toString(10)}`, valid);
   const txMeta = this.gatherTxMeta();
   txMeta.txParams.gas = "0x" + newBN.toString("hex");
   this.setState({
     txData: clone(txMeta),
-    valid,
+    valid
   });
 };
 
-PendingTx.prototype.resetGasFields = function () {
+PendingTx.prototype.resetGasFields = function() {
   log.debug(`pending-tx resetGasFields`);
 
-  this.inputs.forEach((hexInput) => {
+  this.inputs.forEach(hexInput => {
     if (hexInput) {
       hexInput.setValid();
     }
@@ -944,11 +1046,11 @@ PendingTx.prototype.resetGasFields = function () {
 
   this.setState({
     txData: null,
-    valid: true,
+    valid: true
   });
 };
 
-PendingTx.prototype.onSubmit = function (event) {
+PendingTx.prototype.onSubmit = function(event) {
   event.preventDefault();
   const txMeta = this.gatherTxMeta();
   const valid = this.checkValidity();
@@ -961,27 +1063,27 @@ PendingTx.prototype.onSubmit = function (event) {
   }
 };
 
-PendingTx.prototype.checkValidity = function () {
+PendingTx.prototype.checkValidity = function() {
   const form = this.getFormEl();
   const valid = form.checkValidity();
   return valid;
 };
 
-PendingTx.prototype.getFormEl = function () {
+PendingTx.prototype.getFormEl = function() {
   const form = document.querySelector("form#pending-tx-form");
   // Stub out form for unit tests:
   if (!form) {
     return {
       checkValidity() {
         return true;
-      },
+      }
     };
   }
   return form;
 };
 
 // After a customizable state value has been updated,
-PendingTx.prototype.gatherTxMeta = function () {
+PendingTx.prototype.gatherTxMeta = function() {
   log.debug(`pending-tx gatherTxMeta`);
   const props = this.props;
   const state = this.state;
@@ -991,7 +1093,7 @@ PendingTx.prototype.gatherTxMeta = function () {
   return txData;
 };
 
-PendingTx.prototype.verifyGasParams = function () {
+PendingTx.prototype.verifyGasParams = function() {
   // We call this in case the gas has not been modified at all
   if (!this.state) {
     return true;
@@ -1002,11 +1104,11 @@ PendingTx.prototype.verifyGasParams = function () {
   );
 };
 
-PendingTx.prototype._notZeroOrEmptyString = function (obj) {
+PendingTx.prototype._notZeroOrEmptyString = function(obj) {
   return obj !== "" && obj !== "0x0";
 };
 
-PendingTx.prototype.bnMultiplyByFraction = function (
+PendingTx.prototype.bnMultiplyByFraction = function(
   targetBN,
   numerator,
   denominator
@@ -1016,12 +1118,12 @@ PendingTx.prototype.bnMultiplyByFraction = function (
   return targetBN.mul(numBN).div(denomBN);
 };
 
-PendingTx.prototype.goHome = function (event) {
+PendingTx.prototype.goHome = function(event) {
   this.stopPropagation(event);
   this.props.dispatch(actions.goHome());
 };
 
-PendingTx.prototype.stopPropagation = function (event) {
+PendingTx.prototype.stopPropagation = function(event) {
   if (event.stopPropagation) {
     event.stopPropagation();
   }
@@ -1032,7 +1134,7 @@ function forwardCarrat() {
     src: "images/forward-carrat-light.svg",
     style: {
       padding: "0px 20px 0px",
-      height: "62px",
-    },
+      height: "62px"
+    }
   });
 }

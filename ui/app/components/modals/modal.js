@@ -2,10 +2,11 @@ const Component = require('react').Component
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const connect = require('react-redux').connect
-const FadeModal = require('boron').FadeModal
+const FadeModal = require('boron-15').FadeModal
 const actions = require('../../actions')
 const isMobileView = require('../../../lib/is-mobile-view')
 const { getEnvironmentType } = require('../../../../app/scripts/lib/util')
+// const { ENVIRONMENT_TYPE_POPUP } = require("../../../../../xinfin-xinpay-xdcpay/app/scripts/lib/enums")
 const { ENVIRONMENT_TYPE_POPUP } = require('../../../../app/scripts/lib/enums')
 
 // Modal Components

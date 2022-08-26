@@ -8,11 +8,11 @@ const exportAsFile = require('../../util').exportAsFile
 module.exports = connect(mapStateToProps)(CreateVaultCompleteScreen)
 
 inherits(CreateVaultCompleteScreen, Component)
-function CreateVaultCompleteScreen () {
+function CreateVaultCompleteScreen() {
   Component.call(this)
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     seed: state.appState.currentView.seedWords,
     cachedSeed: state.metamask.seedWords,
@@ -43,12 +43,12 @@ CreateVaultCompleteScreen.prototype.render = function () {
       h('h3.flex-center.section-title', {
         style: {
           color: '#333333',
-          fontFamily:"Inter-semiBold",
+          fontFamily: "Inter-semiBold",
         },
       }, [
         h('img', { style: { marginRight: '3px', }, src: "/images/Assets/Check-Green.svg" }),
 
-        'Vault Created',
+        'Wallet Created',
       ]),
 
       h('div', {
@@ -179,13 +179,13 @@ CreateVaultCompleteScreen.prototype.render = function () {
       h('button', {
         onClick: () => {
           this.confirmRecoveryPhrase()
-          exportAsFile(`XDCPay Seed Words`, seed)
+          exportAsFile(`XDCPay Seed Phrase`, seed)
         },
         // .then(seed => {
         //   exportAsFile(`XDCPay Seed Words`, seed)
         // }),
 
-            // this.confirmSeedWords()
+        // this.confirmSeedWords()
         // exportAsFile(`XDCPay Seed Words`, seed)
         // .then(account => this.showAccountDetail(account)),
         style: {
@@ -202,26 +202,29 @@ CreateVaultCompleteScreen.prototype.render = function () {
           paddingTop: '7px',
         },
       },
-      [
-        h('img', {
-        style:{
-          marginRight: '12px',
-          width:'20px',
-          height:'21px',
-        },
-         src: "/images/Assets/Download.svg"}),
-         h('div',{style: {
-            marginTop: '3px',
-         },},
-      'Save as CSV file'),]),
+        [
+          h('img', {
+            style: {
+              marginRight: '12px',
+              width: '20px',
+              height: '21px',
+            },
+            src: "/images/Assets/Download.svg"
+          }),
+          h('div', {
+            style: {
+              marginTop: '3px',
+            },
+          },
+            'Save as CSV file'),]),
 
       h('button', {
         onClick: () => {
           this.confirmRecoveryPhrase()
-            // this.confirmSeedWords()
+          // this.confirmSeedWords()
 
         },
-          // this.confirmSeedWords()
+        // this.confirmSeedWords()
         style: {
           marginTop: '28px',
           fontSize: '14px',
@@ -229,7 +232,7 @@ CreateVaultCompleteScreen.prototype.render = function () {
           width: '265px',
           height: '40px',
           border: 'none',
-          fontFamily:"Inter-medium"
+          fontFamily: "Inter-medium"
         },
       }, 'I have copied it somewhere safe'),
 
@@ -247,7 +250,7 @@ CreateVaultCompleteScreen.prototype.confirmRecoveryPhrase = function () {
 }
 
 CreateVaultCompleteScreen.prototype.exportAsFile = function (seed) {
-  return this.props.dispatch(actions.exportAsFile(`XDCPay Seed Words`, seed))
+  return this.props.dispatch(actions.exportAsFile(`XDCPay Seed Pharse`, seed))
 }
 
 

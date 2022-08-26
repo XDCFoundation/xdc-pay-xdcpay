@@ -8,11 +8,11 @@ const log = require('loglevel')
 module.exports = connect(mapStateToProps)(RevealSeedConfirmation)
 
 inherits(RevealSeedConfirmation, Component)
-function RevealSeedConfirmation () {
+function RevealSeedConfirmation() {
   Component.call(this)
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     warning: state.appState.warning,
   }
@@ -24,7 +24,7 @@ RevealSeedConfirmation.prototype.render = function () {
   return (
 
     h('.initialize-screen.flex-column.flex-center.flex-grow', {
-      style: { maxWidth: '420px' },
+      style: { maxWidth: '100%' },
     }, [
 
       h('h3.flex-center.section-title', {
@@ -37,7 +37,21 @@ RevealSeedConfirmation.prototype.render = function () {
           fontFamily: 'Nunito  bold',
         },
       }, [
-        h('.page-subtitle', 'Reveal Seed Words'),
+        h('img.image-display2', {
+          src: '/images/Assets/Close.svg',
+          onClick: () =>
+                  props.dispatch(
+                    actions.goConfig()
+            ),
+          style:{
+            position: 'absolute',
+            left: '23px',
+            height: '14px',
+            width:'14px',
+          },
+          
+        },),
+        h('.page-subtitle', 'Secret Seed Phrase'),
       ]),
 
       h('div.cover', {
@@ -49,7 +63,7 @@ RevealSeedConfirmation.prototype.render = function () {
         },
       }, [
 
-        h('.error1', 'Do not recover your seed words in a public place! These words can be used to steal all your accounts.'),
+        h('.errorReveal', 'Do not recover your seed phrase in a public place! These words can be used to steal all your accounts.'),
 
         // confirmation
         h('input.large-input', {
@@ -61,7 +75,7 @@ RevealSeedConfirmation.prototype.render = function () {
             marginTop: '20px',
             border: '2px solid #C7CDD8',
             height: '40px',
-            font: navigator.userAgent.indexOf("Firefox") != -1 ?'icon':''
+            font: navigator.userAgent.indexOf("Firefox") != -1 ? 'icon' : ''
           },
         }),
 
@@ -69,8 +83,8 @@ RevealSeedConfirmation.prototype.render = function () {
           style: {
             display: warning ? 'block' : 'none',
             marginTop: '20px',
-          }, 
-        }, 'Incorrect Password',warning),
+          },
+        }, 'Incorrect Password', warning),
 
         // (props.warning) && (
         //   h('span.error', {
@@ -88,34 +102,40 @@ RevealSeedConfirmation.prototype.render = function () {
           style: {
             marginTop: 30,
             width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between'
           },
         }, [
           // cancel
-          h('button.btn-violet', {
-            style:{
-              display: 'flex',
-                    position: 'absolute',
-                    left: '46px',
-                    height: '40px',
-                    width: '119px',
-                    paddingLeft: '37px',
-                    paddingTop: '12px',
-                    background: '#FF0035',
+          h('button.btn-violet.btn-Width', {
+            style: {
+              // position: 'absolute',
+              // left: '46px',
+              // display: 'flex',
+              // justifyContent: 'center',
+              // alignItems:'center',
+              // height: '40px',
+              // width: '119px',
+              // paddingLeft: '37px',
+              // paddingTop: '12px',
+              background: '#FF0035',
             },
             onClick: this.goHome.bind(this),
           }, 'Cancel'),
 
           // submit
-          h('button', {
-            style:{
-              display: 'flex',
-                    position: 'absolute',
-                    right: '46px',
-                    height: '40px',
-                    width: '119px',
-                    paddingLeft: '51px',
-                    paddingTop: '12px',
-            },
+          h('button.btn-Width', {
+            // style: {
+            //   display: 'flex',
+              // position: 'absolute',
+              // right: '46px',
+              // justifyContent: 'center',
+              // alignItems:'center',
+              // height: '40px',
+              // width: '119px',
+              // paddingLeft: '51px',
+              // paddingTop: '12px',
+            // },
             onClick: this.revealSeedWords.bind(this),
           }, 'OK'),
 
@@ -130,7 +150,8 @@ RevealSeedConfirmation.prototype.componentDidMount = function () {
 }
 
 RevealSeedConfirmation.prototype.goHome = function () {
-  this.props.dispatch(actions.showConfigPage(false))
+  // this.props.onAddContactClicked ? this.props.onAddContactClicked() :
+    this.props.dispatch(actions.goConfig())
 }
 
 // create vault
@@ -147,7 +168,7 @@ RevealSeedConfirmation.prototype.revealSeedWords = function () {
   console.log(password, '12345')
   try {
     this.props.dispatch(actions.requestRevealSeed1(password))
-  }catch (e) {
+  } catch (e) {
     log.error(e)
   }
 }

@@ -3,7 +3,7 @@ const actions = require('../../../../ui/app/actions')
 const React = require('react')
 
 class ConfirmRecoveryPhrase extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       seed1: this.randomInteger(1, 4),
@@ -17,11 +17,11 @@ class ConfirmRecoveryPhrase extends React.Component {
     // this.state = {value: ''};
   }
 
-  randomInteger (min, max) {
+  randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
   }
 
-  render () {
+  render() {
     const state = this.props
     const seed = state.seed || state.cachedSeed || ''
     const seedArr = seed.split(' ')
@@ -30,38 +30,38 @@ class ConfirmRecoveryPhrase extends React.Component {
     return (
       <div>
         <div>
-          <img style={{position: 'absolute', left: '18px', cursor: 'pointer'}} src={'/images/Assets/BackArrow.svg'}
-               onClick={() => this.props.dispatch(actions.showSeedWords())}
+          <img style={{ position: 'absolute', left: '18px', cursor: 'pointer' }} src={'/images/Assets/BackArrow.svg'}
+            onClick={() => this.props.dispatch(actions.showSeedWords())}
           />
           <row className="h3 flex-center section-title" style={{
             color: '#333333',
             fontWeight: '600',
             justifyContent: 'center',
             margin: '29px 0 36px 0 ',
-            fontSize:"15px",
+            fontSize: "15px",
           }}>
 
-            Confirm Recovery Phrase
+            Confirm Seed Phrase
           </row>
         </div>
 
-        <div style={{marginLeft: '19px'}}>
+        <div style={{ marginLeft: '19px' }}>
 
           <div>
             <label className="word">
               {`Word ${this.state.seed1 + 1}`}
 
-            </label><br/>
-            <div style={{marginBottom: '24px', border: '1px solid #e2e2e2', borderRadius: '4px'}}>
+            </label><br />
+            <div style={{ marginBottom: '24px', border: '1px solid #e2e2e2', borderRadius: '4px' }}>
               <input className="input large-input" type="text" placeholder="word" id="password-box1"
-                     style={{width: '265px', border: 'none', color: '#2A2A2A'}}
-                     onChange={(e) => {this.setState({firstWord: e.target.value});this.warningUpdate()}}
+                style={{ width: '265px', border: 'none', color: '#2A2A2A' }} autoComplete="off"
+                onChange={(e) => { this.setState({ firstWord: e.target.value }); this.warningUpdate() }}
               />
               {this.state.firstWord === seedArr[this.state.seed1] ? <img src="/images/Assets/Check-Green.svg" style={{
                 position: 'absolute',
                 right: '13%',
                 marginTop: '9px',
-              }}/> : ' '}
+              }} /> : ' '}
             </div>
           </div>
 
@@ -69,16 +69,16 @@ class ConfirmRecoveryPhrase extends React.Component {
           <div>
             <label className="word">
               {`Word ${this.state.seed2 + 1}`}
-            </label><br/>
-            <div style={{marginBottom: '24px', border: '1px solid #e2e2e2', borderRadius: '4px'}}>
-              <input className="input large-input" type="text" placeholder="word" id="password-box2"
-                     style={{width: '265px', border: 'none', color: '#2A2A2A'}}
-                     onChange={(e) =>{ this.setState({secondWord: e.target.value});this.warningUpdate()}}/>
+            </label><br />
+            <div style={{ marginBottom: '24px', border: '1px solid #e2e2e2', borderRadius: '4px' }}>
+              <input className="input large-input" type="text" placeholder="word" id="password-box2" autoComplete="off"
+                style={{ width: '265px', border: 'none', color: '#2A2A2A' }}
+                onChange={(e) => { this.setState({ secondWord: e.target.value }); this.warningUpdate() }} />
               {this.state.secondWord === seedArr[this.state.seed2] ? <img src="/images/Assets/Check-Green.svg" style={{
                 position: 'absolute',
                 right: '13%',
                 marginTop: '9px',
-              }}/> : ' '}
+              }} /> : ' '}
             </div>
           </div>
 
@@ -86,21 +86,21 @@ class ConfirmRecoveryPhrase extends React.Component {
           <div>
             <label className="word">
               {`Word ${this.state.seed3}`}
-            </label><br/>
-            <div style={{marginBottom: '24px', border: '1px solid #e2e2e2', borderRadius: '4px'}}>
-              <input className="input large-input" type="text" placeholder="word" id="password-box3"
-                     style={{width: '265px', border: 'none', color: '#2A2A2A'}}
-                     onChange={(e) =>{ this.setState({thirdWord: e.target.value});this.warningUpdate()}}/>
+            </label><br />
+            <div style={{ marginBottom: '24px', border: '1px solid #e2e2e2', borderRadius: '4px' }}>
+              <input className="input large-input" type="text" placeholder="word" id="password-box3" autoComplete="off"
+                style={{ width: '265px', border: 'none', color: '#2A2A2A' }}
+                onChange={(e) => { this.setState({ thirdWord: e.target.value }); this.warningUpdate() }} />
               {this.state.thirdWord === seedArr[this.state.seed3 - 1] ? <img src="/images/Assets/Check-Green.svg"
-                                                                             style={{
-                                                                               position: 'absolute',
-                                                                               right: '13%',
-                                                                               marginTop: '9px',
-                                                                             }}/> : ' '}
+                style={{
+                  position: 'absolute',
+                  right: '13%',
+                  marginTop: '9px',
+                }} /> : ' '}
             </div>
           </div>
           <div>
-            {state.warning ? <div style={{width: '260px', padding: '20px 0 0'}}>
+            {state.warning ? <div style={{ width: '260px', padding: '20px 0 0' }}>
               <div className="error">{state.warning}</div>
             </div> : null}
 
@@ -108,21 +108,21 @@ class ConfirmRecoveryPhrase extends React.Component {
 
           <div className="button"
             //
-               style={{
+            style={{
 
-                 marginTop: '34px',
-                 fontSize: '14px',
-                 background: '#03BE46',
-                 width: '265px',
-                 height: '40px',
-                 border: 'none',
-                 padding: '8px 48px',
+              marginTop: '34px',
+              fontSize: '14px',
+              background: '#03BE46',
+              width: '265px',
+              height: '40px',
+              border: 'none',
+              padding: '8px 48px',
 
-               }}
+            }}
             // disabled={!isValid}
 
 
-               onClick={() => this.confirmSeedWords()}> Confirm Recovery Phrase
+            onClick={() => this.confirmSeedWords()}> Confirm Seed Phrase
           </div>
         </div>
       </div>
@@ -131,7 +131,7 @@ class ConfirmRecoveryPhrase extends React.Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     seed: state.appState.currentView.seedWords,
     cachedSeed: state.metamask.seedWords,
@@ -141,10 +141,9 @@ function mapStateToProps (state) {
 
 module.exports = connect(mapStateToProps)(ConfirmRecoveryPhrase)
 
-ConfirmRecoveryPhrase.prototype.warningUpdate=function()
-{
-    this.warning=null
-    this.props.dispatch(actions.displayWarning(this.warning))
+ConfirmRecoveryPhrase.prototype.warningUpdate = function () {
+  this.warning = null
+  this.props.dispatch(actions.displayWarning(this.warning))
 }
 
 ConfirmRecoveryPhrase.prototype.confirmSeedWords = function () {
@@ -178,7 +177,7 @@ ConfirmRecoveryPhrase.prototype.showAccountDetail = function (account) {
 }
 
 ConfirmRecoveryPhrase.prototype.exportAsFile = function (seed) {
-  return this.props.dispatch(actions.exportAsFile(`XDCPay Seed Words`, seed))
+  return this.props.dispatch(actions.exportAsFile(`XDCPay Seed Phrase`, seed))
 }
 
 // ConfirmRecoveryPhrase.prototype.confirmSeedWords = function () {

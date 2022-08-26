@@ -77,6 +77,7 @@ const AddContactComponent = (props) => {
             type="text"
             name="contactAddress"
             value={contactAddress}
+            autoComplete='off'
             placeholder="Contact's Wallet Address"
             onChange={onStateChange}
             style={{ width: "100%", border: "none", color: "#2A2A2A" }}
@@ -92,7 +93,7 @@ const AddContactComponent = (props) => {
         <br />
         <div
           style={{
-            marginBottom: "45px",
+            // marginBottom: "45px",
             border: "1px solid #e2e2e2",
             borderRadius: "4px",
           }}
@@ -102,13 +103,17 @@ const AddContactComponent = (props) => {
             placeholder="Contact's Name"
             type="text"
             name="contactName"
+            autoComplete='off'
             value={contactName}
             onChange={onStateChange}
             style={{ width: "100%", border: "none", color: "#2A2A2A" }}
           />
         </div>
-        {warningMsg && <div className="error">{warningMsg}</div>}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {warningMsg && <div className="error" style={{
+          margin:'9px 0 -9px 0'
+        }}>{warningMsg}</div>}
+        
+        <div style={{ display: "flex", justifyContent: "space-between",margin:'18px 0' }}>
           <div
             className="button"
             // onClick={onBackClick}

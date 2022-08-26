@@ -28,23 +28,25 @@ class NetworkSettings extends React.Component {
       >
         <div
           className="section-title flex-row"
-          style={{borderBottom: '1px solid #E3E7EB', paddingBottom: '17px'}}
+          style={{borderBottom: '1px solid #E3E7EB', padding: '0 0 17px 14px',display:'flex',justifyContent:'space-between'}}
         >
           <img
             src="/images/Assets/BackArrow.svg"
-            className="image-display"
-            style={{marginLeft: '12px', cursor: 'pointer'}}
+            // className="image-display"
+            style={{cursor: 'pointer',}}
             onClick={() => {
+              state.backToSetting ? state.backToSetting() :
               state.dispatch(actions.goConfig())
             }}
           />
-          <h2 className="titleAdd" style={{marginLeft: '80px', fontFamily: 'Inter-bold'}}>{`${t(
+          <h2 style={{fontFamily: 'Inter-bold'}}>{`${t(
             'networkSettings',
           )}`}</h2>
           <img
             src="/images/Assets/Add.svg"
-            style={{cursor: 'pointer', position: 'absolute', right: '21px'}}
+            style={{cursor: 'pointer', marginRight:'16px'}}
             onClick={() => {
+              this.props.dispatch(actions.displayWarning(''))
               state.onAddNetworkClicked ? state.onAddNetworkClicked() : state.dispatch(actions.showAddNetworkPage())
             }}
           />

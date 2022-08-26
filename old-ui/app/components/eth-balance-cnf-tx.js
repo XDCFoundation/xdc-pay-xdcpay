@@ -1,36 +1,39 @@
 const Component = require('react').Component
 const h = require('react-hyperscript')
+import React from "react";
+import { Tooltip as ReactTooltip } from "react-tippy";
+
 const inherits = require('util').inherits
 const formatBalance = require('../util').formatBalance
 const generateBalanceObject = require('../util').generateBalanceObject
-const Tooltip = require('./tooltip.js')
+// const Tooltip = require('./tooltip.js')
 const FiatValue = require('./fiat-value1.js')
 
 module.exports = EthBalanceComponent
 
 inherits(EthBalanceComponent, Component)
-function EthBalanceComponent () {
+function EthBalanceComponent() {
   Component.call(this)
 }
 
 EthBalanceComponent.prototype.render = function () {
   var props = this.props
   let { value } = props
-  const { style, width, network, isToken, tokenSymbol,networkList } = props
+  const { style, width, network, isToken, tokenSymbol, networkList } = props
   var needsParse = this.props.needsParse
-    // !== undefined ? this.props.needsParse : true
-  value = value ? formatBalance(value, 6, needsParse, network, isToken, tokenSymbol,networkList) : '...'
+  // !== undefined ? this.props.needsParse : true
+  value = value ? formatBalance(value, 6, needsParse, network, isToken, tokenSymbol, networkList) : '...'
 
   return (
 
-    h('.ether-balance.ether-balance-amount', {
+    h('.ether-balance.ether-balance-amount.sendFields', {
       style: {
         border: '2px solid #C7CDD8',
         borderRadius: '4px',
         height: '32px',
         width: '265px',
         padding: '10px',
-    },
+      },
     }, [
       h('div', {
         style: {
@@ -74,27 +77,31 @@ EthBalanceComponent.prototype.renderBalance = function (value) {
   }
 
   return (
-    h(Tooltip, {
-      position: 'bottom',
-      title: `${balance}`,
-    }, h('div', {style:{display: 'flex', justifyContent: 'space-between'}}, [
+    h('div', { style: { display: 'flex', justifyContent: 'space-between' } }, [
       h('.flex-row', {
         style: {
-        //   alignItems: 'flex-end',
-        //   textRendering: 'geometricPrecision',
-        // position: 'absolute',
-        // right : '48px',
+          //   alignItems: 'flex-end',
+          //   textRendering: 'geometricPrecision',
+          // position: 'absolute',
+          // right : '48px',
         },
       }, [
-        h('div', {
-          style: valueStyle,
-        }, incoming ? `+${balance}` : balance),
-        h('div', {
-          style: dimStyle,
-        }, label),
+        <ReactTooltip
+          arrow={true}
+          trigger={'mouseenter focus'}
+          position='bottom'
+          size='small'
+          theme='dark'
+          title={`${balance + " " + label}`}
+        >
+          <div style={{ display: "flex" }}>
+            <div style={valueStyle} >{incoming ? `+${balance}` : balance}</div>
+            <div style={dimStyle} >{label}</div>
+          </div>
+        </ReactTooltip>,
       ]),
 
       showFiat ? h(FiatValue, { valueStyle, dimStyle, value: props.value, conversionRate, currentCurrency, network: props.network }) : null,
     ]))
-  )
+  // )
 }

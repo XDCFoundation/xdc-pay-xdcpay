@@ -4,16 +4,14 @@ const PersistentForm = require('../../../lib/persistent-form')
 const connect = require('react-redux').connect
 const h = require('react-hyperscript')
 const actions = require('../../../../ui/app/actions')
-import {props} from 'bluebird'
-import {construct} from 'ramda'
-import React, {useState, useEffect} from 'react'
-import PasswordStrengthMeter, {checkPassword} from '../../components/PasswordStrengthMeter'
+import React from 'react'
+import PasswordStrengthMeter, { checkPassword } from '../../components/PasswordStrengthMeter'
 
 
 // RestoreVaultScreen.prototype.render = function () {
 class RestoreVaultScreen extends React.Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.animationEventEmitter = new EventEmitter()
     this.state = {
@@ -23,15 +21,15 @@ class RestoreVaultScreen extends React.Component {
   }
 
   onPasswordChange = (e) => {
-    this.setState({password: e.target.value})
-    this.setState({passwordStrength: checkPassword(e.target.value)})
+    this.setState({ password: e.target.value })
+    this.setState({ passwordStrength: checkPassword(e.target.value) })
   }
 
-  warningUpdate=()=>{
-    this.warning=null
+  warningUpdate = () => {
+    this.warning = null
     this.props.dispatch(actions.displayWarning(this.warning))
   }
-  render () {
+  render() {
 
 
     var state = this.props
@@ -51,7 +49,7 @@ class RestoreVaultScreen extends React.Component {
           marginTop: '-43px',
         }
       },
-        h('img', { style: { marginTop: '9px', marginLeft: '9px' ,width:"22px",height:"22px"}, src: "/images/Assets/XDC-Icon-48X48.png" }),
+        h('img', { style: { marginTop: '9px', marginLeft: '9px', width: "22px", height: "22px" }, src: "/images/Assets/XDC-Icon-48X48.png" }),
       ),
       h('.initialize-screen.flex-column.flex-center.flex-grow.cover', {
         style: {
@@ -69,7 +67,7 @@ class RestoreVaultScreen extends React.Component {
             paddingTop: 40,
           },
         }, [
-          h('.page-subtitle', {style: {fontWeight: 600,fontFamily:"Inter-semibold"}}, 'Restore Vault'),
+          h('.page-subtitle', { style: { fontWeight: 600, fontFamily: "Inter-semibold" } }, 'Restore Wallet'),
         ]),
 
         // wallet seed entry
@@ -81,15 +79,22 @@ class RestoreVaultScreen extends React.Component {
         //   },
         // }, 'Wallet Seed'),
         h('textarea.twelve-word-phrase1', {
-          style: {marginTop: '24px'},
-          placeholder: 'Enter your secret twelve word phrase here to restore your vault.',
+          style: { marginTop: '24px' },
+          // id: 'seed-words',
+          // type: 'seedPhrase',
+          // value: 'SecuritySeedWords',
+          placeholder: 'Enter Seed Phrase',
         }),
+        // h('input', {
+        //   type: 'checkbox',
+        //   onClick: this.myFunction.bind(this),
+        // },'Show Seed'),
 
         // password
         h('input.large-input', {
           type: 'password',
           id: 'password-box',
-          onChange: ((e)=>(this.onPasswordChange(e),this.warningUpdate(e))),
+          onChange: ((e) => (this.onPasswordChange(e), this.warningUpdate(e))),
           placeholder: 'New Password (min 8 chars)',
           dataset: {
             persistentFormId: 'password',
@@ -99,21 +104,23 @@ class RestoreVaultScreen extends React.Component {
             height: '40px',
             marginTop: 20,
             border: '2px solid #C7CDD8',
-            font: navigator.userAgent.indexOf("Firefox") != -1 ?'icon':''
+            font: navigator.userAgent.indexOf("Firefox") != -1 ? 'icon' : '' ,
+            fontSize : 14,
           },
         }),
+        
 
         h(
           PasswordStrengthMeter, {
-            password: password,
-          },
+          password: password,
+        },
         ),
 
         // confirm password
         h('input.large-input', {
           type: 'password',
           id: 'password-box-confirm',
-          onChange: ((e)=>(this.warningUpdate(e))),
+          onChange: ((e) => (this.warningUpdate(e))),
           placeholder: 'Confirm Password',
           onKeyPress: this.createOnEnter.bind(this),
           dataset: {
@@ -124,7 +131,8 @@ class RestoreVaultScreen extends React.Component {
             height: '40px',
             marginTop: 20,
             border: '2px solid #C7CDD8',
-            font: navigator.userAgent.indexOf("Firefox") != -1 ?'icon':''
+            font: navigator.userAgent.indexOf("Firefox") != -1 ? 'icon' : '',
+            fontSize : 14,
           },
         }),
 
@@ -158,7 +166,7 @@ class RestoreVaultScreen extends React.Component {
               background: '#E3E7EB',
               color: '#2A2A2A',
               marginRight: '25px',
-              fontFamily:"Inter-Medium"
+              fontFamily: "Inter-Medium"
             },
           }, 'Cancel'),
 
@@ -169,7 +177,7 @@ class RestoreVaultScreen extends React.Component {
               width: '120px',
               height: '40px',
               background: '#03BE46',
-              fontFamily:"Inter-Medium"
+              fontFamily: "Inter-Medium"
             },
           }, 'Restore'),
 
@@ -179,6 +187,14 @@ class RestoreVaultScreen extends React.Component {
   }
 }
 
+// RestoreVaultScreen.prototype.myFunction = function () {
+//   var x = document.getElementById("seed-words")
+//   if (x.type === "seedPhrase") {
+//     x.type = "text"
+//   } else {
+//     x.type = "seedPhrase"
+//   }
+// }
 
 RestoreVaultScreen.prototype.showInitializeMenu = function () {
   if (this.props.forgottenPassword) {
@@ -200,8 +216,13 @@ RestoreVaultScreen.prototype.createNewVaultAndRestore = function () {
   const password = passwordBox.value
   var passwordConfirmBox = document.getElementById('password-box-confirm')
   var passwordConfirm = passwordConfirmBox.value
-  if (this.state.passwordStrength < 2) {
+  if (this.state.passwordStrength > 0 && this.state.passwordStrength < 2) {
     this.warning = 'Password strength is poor'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
+  if (password.trim().length === 0) {
+    this.warning = 'Enter Password'
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }
@@ -217,6 +238,11 @@ RestoreVaultScreen.prototype.createNewVaultAndRestore = function () {
   // true if the string has more than a space between words.
   if (seed.split('  ').length > 1) {
     this.warning = 'There can only be a space between words'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
+  if (seed.length === 0) {
+    this.warning = 'Please enter seed words'
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }
@@ -246,7 +272,7 @@ module.exports = connect(mapStateToProps)(RestoreVaultScreen)
 //   PersistentForm.call(this)
 // }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     currentView: state.appState.currentView,
     warning: state.appState.warning,

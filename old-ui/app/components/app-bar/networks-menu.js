@@ -51,7 +51,7 @@ class NetworksMenu extends Component {
       >
         <div className="select-network-list">
           Select Network
-          <img className="select-network-close-icon" src="/images/Assets/Close.svg"
+          <img className="select-network-close-icon dropdownCloseImage" src="/images/Assets/Close.svg"
                onClick={() => this.props.updateNetworksMenuOpenState(!isOpen)}/>
         </div>
         <div style={{maxHeight: isOpen ? '166px' : '0px',overflowY:'auto'}}>

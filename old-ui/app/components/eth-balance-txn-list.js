@@ -1,12 +1,12 @@
 const Component = require("react").Component;
 const h = require("react-hyperscript");
-
+import React from "react";
 const inherits = require("util").inherits;
 const formatBalance = require("../util").formatBalance;
 const generateBalanceObject = require("../util").generateBalanceObject;
-const Tooltip = require("./tooltip.js");
+import { Tooltip as ReactTooltip } from "react-tippy";
 const FiatValue = require("./fiat-value.js");
-// import {useEffect,useState} from 'react'
+
 
 module.exports = EthBalanceComponent;
 
@@ -20,11 +20,11 @@ function EthBalanceComponent() {
 EthBalanceComponent.prototype.render = function () {
   var props = this.props;
   let { value } = props;
-  const { style, width, network, isToken, tokenSymbol,networkList } = props;
+  const { style, width, network, isToken, tokenSymbol, networkList } = props;
   var needsParse =
     this.props.needsParse !== undefined ? this.props.needsParse : true;
   value = value
-    ? formatBalance(value, 6, needsParse, network, isToken, tokenSymbol,networkList)
+    ? formatBalance(value, 6, needsParse, network, isToken, tokenSymbol, networkList)
     : "...";
 
   return h(
@@ -68,72 +68,66 @@ EthBalanceComponent.prototype.renderBalance = function (value) {
   const valueStyle = props.valueStyle
     ? props.valueStyle
     : {
-        color: "#1F1F1F",
-        width: "100%",
-        fontSize: "30px",
-        textAlign: "right",
-        // fontFamily: "Inter",
+      color: "#1F1F1F",
+      width: "100%",
+      fontSize: "30px",
+      textAlign: "right",
+      // fontFamily: "Inter",
       fontWeight: "600",
-        
-      };
+
+    };
   const dimStyle = props.dimStyle
     ? props.dimStyle
     : {
-        color: " #1F1F1F",
-        fontSize: "30px",
-        marginLeft: "5px",
-        // fontFamily: "Inter",
-        fontWeight: "600",
-      };
+      color: " #1F1F1F",
+      fontSize: "30px",
+      marginLeft: "5px",
+      // fontFamily: "Inter",
+      fontWeight: "600",
+    };
+  const randomnumber = Math.floor(Math.random() * 1000000);
 
-  // return h(
-  //   Tooltip,
-  //   {
-  //     position: "bottom",
-  //     title: `${ethNumber} ${ethSuffix}`,
-  //   },
-    return h("div.flex-column", [
-      h(
-        ".flex-row",
-        {
-          style: {
-            alignItems: "flex-end",
-            lineHeight: "20px",
-            textRendering: "geometricPrecision",
-            marginRight: "auto",
-            marginLeft: "auto",
-            // paddingLeft: "12px",
-          },
+
+  return h("div.flex-column", [
+    h(
+      ".flex-row",
+      {
+        style: {
+          alignItems: "flex-end",
+          lineHeight: "20px",
+          textRendering: "geometricPrecision",
+          marginRight: "auto",
+          marginLeft: "auto",
+          // paddingLeft: "12px",
         },
-        [
-          h(
-            "div",
-            {
-              style: valueStyle,
-              
-            },
-            incoming ? `+${balance}` :  `${balance}` 
-          ),
-          h(
-            "div",
-            {
-              style: dimStyle,
-            },
-            label
-          ),
-        ]
-      ),
+      },
+      [
+        <ReactTooltip
+          arrow={true}
+          trigger={'mouseenter focus'}
+          position='bottom'
+          size='small'
+          title={`${balance} ${label}`}
+          theme='dark'
+        >
+          <div style={{ display: "flex" }}>
+            <div style={valueStyle} >{incoming ? `+${balance}` : balance}</div>
+            <div style={dimStyle} >{label}</div>
+          </div>
+        </ReactTooltip>
+      ]
+    ),
 
-      showFiat
-        ? h(FiatValue, {
-            valueStyle,
-            dimStyle,
-            value: props.value,
-            conversionRate,
-            currentCurrency,
-            network: props.network,
-          })
-        : null,
-    ])
+    showFiat
+      ? h(FiatValue, {
+        valueStyle,
+        dimStyle,
+        value: props.value,
+        conversionRate,
+        currentCurrency,
+        network: props.network,
+      })
+      : null,
+  ])
   // );
 };

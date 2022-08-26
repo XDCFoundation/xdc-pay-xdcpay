@@ -1,15 +1,17 @@
 const Component = require('react').Component
 const h = require('react-hyperscript')
+import React from "react";
 const inherits = require('util').inherits
 const formatBalance = require('../util').formatBalance
 const generateBalanceObject = require('../util').generateBalanceObject
-const Tooltip = require('./tooltip.js')
+import { Tooltip as ReactTooltip } from "react-tippy";
+
 const FiatValue = require('./fiat-value.js')
 
 module.exports = EthBalanceComponent
 
 inherits(EthBalanceComponent, Component)
-function EthBalanceComponent () {
+function EthBalanceComponent() {
   Component.call(this)
 }
 
@@ -53,12 +55,11 @@ EthBalanceComponent.prototype.renderBalance = function (value) {
   }
 
   var label = balanceObj.label
+  const randomnumber = Math.floor(Math.random() * 1000000);
+
 
   return (
-    h(Tooltip, {
-      position: 'bottom',
-      title: `${ethNumber} ${ethSuffix}`,
-    }, h('div.flex-column', [
+    h('div.flex-column', [
       h('.flex-row', {
         style: {
           alignItems: 'flex-end',
@@ -67,22 +68,26 @@ EthBalanceComponent.prototype.renderBalance = function (value) {
           textRendering: 'geometricPrecision',
         },
       }, [
-        h('div', {
-          style: {
-            width: '100%',
-            textAlign: 'right',
-          },
-        }, this.props.incoming ? `+${balance}` : balance),
-        h('div', {
-          style: {
-            color: ' #AEAEAE',
-            fontSize: '12px',
-            marginLeft: '5px',
-          },
-        }, label),
+        <ReactTooltip
+          arrow={true}
+          trigger={'mouseenter focus'}
+          position='bottom'
+          size='small'
+          title={`${balance} ${label}`}
+          theme='dark'
+        >
+          <div>{this.props.incoming ? `+${balance}` : balance}</div>
+          <div
+            style={{
+              color: ' #AEAEAE',
+              fontSize: '12px',
+              marginLeft: '5px',
+            }}
+          > {label}</div>
+        </ReactTooltip>
       ]),
 
       showFiat ? h(FiatValue, { value: props.value, network: props.network }) : null,
-    ]))
+    ])
   )
 }

@@ -6,10 +6,9 @@ const h = require('react-hyperscript')
 const connect = require('react-redux').connect
 const actions = require('../../ui/app/actions')
 const LoadingIndicator = require('./components/loading')
-const Web3 = require('web3')
 import ConfigScreenExpanded from './configExpanded'
 import React, {useState} from 'react'
-import PropTypes from 'prop-types'
+import propTypes from 'prop-types'
 
 const infuraCurrencies = require('./infura-conversion.json').objects.sort(
   (a, b) => {
@@ -18,11 +17,7 @@ const infuraCurrencies = require('./infura-conversion.json').objects.sort(
       .localeCompare(b.quote.name.toLocaleLowerCase())
   },
 )
-const validUrl = require('valid-url')
-const exportAsFile = require('./util').exportAsFile
 const Modal = require('../../ui/app/components/modals/index').Modal
-const ethNetProps = require('xdc-net-props')
-const {networks} = require('../../app/scripts/controllers/network/util')
 
 module.exports = connect(mapStateToProps)(ConfigScreen)
 

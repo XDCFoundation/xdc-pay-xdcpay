@@ -71,16 +71,16 @@ class SendTransactionScreen extends PersistentForm {
           />
         </section>
         
-        <section className="flex-column flex-center">
-        <div style={{ 
+        <section className="flex-column flex-center ">
+        <div className='sendFields' style={{ 
           marginTop:'16px',
           fontSize: '12px', 
           fontWeight: 'bold',
           lineHeight: 1,
-          marginRight: '219px',
+          // marginRight: '219px',
           }}>Amount
         </div>
-          <input className="large-input"
+          <input className="large-input sendFields"
             name="amount"
             value={amount}
             onChange={(e) => this.amountDidChange(e.target.value)}

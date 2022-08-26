@@ -1,20 +1,20 @@
 const PropTypes = require('prop-types')
-const {PureComponent} = require('react')
+const { PureComponent } = require('react')
 const h = require('react-hyperscript')
-const {qrcode: qrCode} = require('qrcode-npm')
-const {connect} = require('react-redux')
-const {isHexPrefixed} = require('ethereumjs-util')
+const { qrcode: qrCode } = require('qrcode-npm')
+const { connect } = require('react-redux')
+const { isHexPrefixed } = require('ethereumjs-util')
 const CopyButton = require('./components/copy/copy-button')
 const { toChecksumAddress, ifXDC } = require('./util')
-import ethNetProps from "xdc-net-props";
+import ethNetProps from "../../xdc-net-props/helpers/get-explorer-links";
 
 function shorten(b, amountL = 7, /*amountR = 4,*/ stars = 3) {
 
   return `${b.slice(0, amountL)}${".".repeat(stars)}${b.slice(
 
-      b.length - 4,
+    b.length - 4,
 
-      b.length
+    b.length
 
   )}`;
 }
@@ -30,12 +30,12 @@ class AccountQrScreen extends PureComponent {
     network: PropTypes.string,
   }
 
-  render () {
-    const {Qr, warning, network,} = this.props
+  render() {
+    const { Qr, warning, network, } = this.props
     const addressChecksum = toChecksumAddress(network, Qr.data)
     const address = ifXDC ? addressChecksum : `${isHexPrefixed(Qr.data) ? 'ethereum:' : ''}${Qr.data}`
     const qrImage = qrCode(4, 'M')
-    const url = ethNetProps.explorerLinks.getExplorerAccountLinkFor(addressChecksum,network)
+    const url = ethNetProps.getExplorerAccountLinkFor(addressChecksum, network)
     qrImage.addData(address)
     qrImage.make()
 
@@ -61,7 +61,7 @@ class AccountQrScreen extends PureComponent {
         },
       }),
       h('.flex-row', [
-        h('h3',"Share QR Code"),
+        h('h3', "Share QR Code"),
         h(CopyButton, {
           value: url,
         }),
@@ -81,7 +81,7 @@ class AccountQrScreen extends PureComponent {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     Qr: state.appState.Qr,
     warning: state.appState.warning,

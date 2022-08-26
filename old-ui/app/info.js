@@ -32,9 +32,10 @@ InfoScreen.prototype.render = function () {
       
       // subtitle and nav
      h('.section-title.flex-row.flex-center', [
-        h('img.cursor-pointer.image-display', {
+        h('img.cursor-pointer', {
           src: "/images/Assets/BackArrow.svg",
           onClick: (event) => {
+            state.backToSetting ? state.backToSetting() :
             state.dispatch(actions.goHome())
           },
           style: {
@@ -53,17 +54,17 @@ InfoScreen.prototype.render = function () {
       h('.flex-column.flex-justify-center.flex-grow.select-none', [
         h('.flex-space-around', {
           style: {
-            padding: '25px 38px',
+            padding: '25px 28px',
           },
         }, [
           // current version number
             
           h('.info', [
             h('div', { style: { fontSize: '12px', fontWeight: '600', }, }, 'XDCPay Version'),
-            h('div', { style: { color: '#848484', fontSize: '12', }, }, `${version}`),
+            h('div', { style: { color: '#848484', fontSize: 12, }, }, `${version}`),
             h('.infoDesc','The XDCPay is an extension for accessing XDC’s XDPoS enabled distributed applications, or “Dapps” in your browser!'),
           ]),
-          h('div', {style:{fontSize:'12',}},[
+          h('div', {style:{fontSize:12,}},[
             h('div', { style: {fontWeight:'600', }, },'Link: '),
             h('div', {
               onClick: () => {

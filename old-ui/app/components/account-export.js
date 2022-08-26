@@ -18,14 +18,15 @@ function ExportAccountView() {
 function mapStateToProps(state) {
   return {
     warning: state.appState.warning,
+    accounts: state.metamask.accounts,
   };
 }
 
 ExportAccountView.prototype.render = function () {
   const state = this.props;
   const accountDetail = state.accountDetail;
-  const nickname = state.identities[state.address].name;
 
+  const nickname = state.identities[state.address].name;
   if (!accountDetail) return h("div");
   const accountExport = accountDetail.accountExport;
 
@@ -57,12 +58,12 @@ ExportAccountView.prototype.render = function () {
           },
           [
             h(
-              "p.error",
+              "div.error.importError",
               {
                 style: {
                   color: "#333333",
-                  marginBottom: "0px",
-                  marginTop: "30px",
+                  // marginBottom: "0px",
+                  // marginTop: "30px",
                 },
               },
               warning
@@ -88,12 +89,15 @@ ExportAccountView.prototype.render = function () {
           {
             key: "buttons",
             style: {
-              marginTop: "30px",
+              // marginTop: "30px",
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: '30px 46px 0 46px'
             },
           },
           [
             h(
-              "button.btn-violet",
+              "button.btn-violet.btn-Width",
               {
                 onClick: () =>
                   this.props.dispatch(
@@ -101,33 +105,33 @@ ExportAccountView.prototype.render = function () {
                   ),
                 style: {
                   display: "flex",
-                  position: "absolute",
-                  left: "46px",
+                  // position: "absolute",
+                  // left: "46px",
                   height: "40px",
-                  width: "119px",
-                  paddingLeft: "37px",
-                  paddingTop: "12px",
+                  // width: "119px",
+                  // paddingLeft: "37px",
+                  // paddingTop: "12px",
                   background: "#FF0035",
                 },
               },
               "Cancel"
             ),
             h(
-              "button",
+              "button.btn-Width",
               {
                 onClick: () =>
                   this.onExportKeyPress({
                     key: "Enter",
-                    preventDefault: () => {},
+                    preventDefault: () => { },
                   }),
                 style: {
                   display: "flex",
-                  position: "absolute",
-                  right: "46px",
+                  // position: "absolute",
+                  // right: "46px",
                   height: "40px",
-                  width: "119px",
-                  paddingLeft: "39px",
-                  paddingTop: "12px",
+                  // width: "119px",
+                  // paddingLeft: "39px",
+                  // paddingTop: "12px",
                   // background: '#FF0035',
                 },
               },
@@ -136,41 +140,41 @@ ExportAccountView.prototype.render = function () {
           ]
         ),
         this.props.warning &&
-          h(
-            "div",
-            {
-              style: {
-                margin: "0 30px",
-              },
+        h(
+          "div",
+          {
+            style: {
+              // margin: "0 30px",
+              padding:'24px 44px 0 46px ',
             },
-            [
-              h(
-                "div.error",
-                {
-                  style: {
-                    marginTop: "92px",
-                    marginLeft: "16px",
-                    width: "265px",
-                  },
+          },
+          [
+            h(
+              "div.error.importError",
+              {
+                style: {
+                  // marginTop: "92px",
+                  // marginLeft: "16px",
+                  // width: "265px",
                 },
-                this.props.warning.split("-")
-              ),
-            ]
-          ),
+              },
+              this.props.warning.split("-")
+            ),
+          ]
+        ),
       ]
     );
   }
 
   if (accountExported) {
+
     const plainKey = ethUtil.stripHexPrefix(accountDetail.privateKey);
     let parsedata, stringifydata;
-      const input = document.getElementById("exportAccount").value;
-      var wallet = new ethers.Wallet(accountDetail.privateKey);
-      wallet.encrypt(input).then(function (json) {
-        parsedata = JSON.parse(json);
-        stringifydata = JSON.stringify(parsedata, null, 2);
-      });
-
+    var wallet = new ethers.Wallet(accountDetail.privateKey);
+    wallet.encrypt(accountDetail.pass).then(function (json) {
+      parsedata = JSON.parse(json);
+      stringifydata = JSON.stringify(parsedata, null, 2);
+    });
     return h(
       "div.privateKey",
       {
@@ -191,7 +195,7 @@ ExportAccountView.prototype.render = function () {
           },
           "Your private key"
         ),
-        h("div.flex-row", [
+        h("div.flex-center", [
           h(
             "p",
             {
@@ -224,7 +228,8 @@ ExportAccountView.prototype.render = function () {
           "div",
           {
             style: {
-              textAlign: "right",
+              display: 'flex',
+              justifyContent: 'space-evenly',
               marginTop: "30px",
             },
           },
@@ -236,6 +241,7 @@ ExportAccountView.prototype.render = function () {
                   exportAsFile(
                     `XDCPay ${nickname} Private Key.json`,
                     stringifydata
+                    // plainKey
                   );
                   this.props.dispatch(actions.goHome());
                 },
@@ -248,7 +254,7 @@ ExportAccountView.prototype.render = function () {
                   height: "40px",
                   border: "1px solid #0CBE46",
                   display: "flex",
-                  position: "absolute",
+                  // position: "absolute",
                   paddingLeft: "8px",
                   paddingTop: "7px",
                 },
@@ -279,8 +285,8 @@ ExportAccountView.prototype.render = function () {
               {
                 style: {
                   display: "flex",
-                  position: "absolute",
-                  right: "30px",
+                  // position: "absolute",
+                  // right: "30px",
                   height: "40px",
                   width: "122px",
                   paddingLeft: "45px",
@@ -298,6 +304,7 @@ ExportAccountView.prototype.render = function () {
         ),
       ]
     );
+
   }
 };
 
@@ -305,10 +312,19 @@ ExportAccountView.prototype.componentWillUnmount = function () {
   this.props.dispatch(actions.displayWarning(""));
 };
 
+
 ExportAccountView.prototype.onExportKeyPress = function (event) {
+  // const accounts = this.props.identities
+  //   var accLength = Object.keys(accounts).length
+
+  //   console.log(accLength,accounts, 'privatekey',
   if (event.key !== "Enter") return;
   event.preventDefault();
-
+  // while (accLength != 0)
+  // {
+  // var expAccount = accounts[accLength].address
   const input = document.getElementById("exportAccount").value;
   this.props.dispatch(actions.exportAccount(input, this.props.address));
+  //   accLength=-1
+  // }
 };

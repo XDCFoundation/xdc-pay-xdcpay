@@ -1,22 +1,18 @@
-const Component = require('react').Component
-const h = require('react-hyperscript')
-const inherits = require('util').inherits
-const ReactTooltip = require('react-tooltip-component')
+import React from "react";
+import { Tooltip as ReactTooltip } from "react-tippy";
 
-module.exports = Tooltip
+export default function Tooltip({ message, value, children }) {
 
-inherits(Tooltip, Component)
-function Tooltip () {
-  Component.call(this)
-}
-
-Tooltip.prototype.render = function () {
-  const props = this.props
-  const { position, title, children } = props
-
-  return h(ReactTooltip, {
-    position: position || 'bottom',
-    title,
-    fixed: true,
-  }, children)
+  return (
+    <ReactTooltip
+      arrow={true}
+      trigger={'mouseenter focus'}
+      position='bottom'
+      size='small'
+      title={message}
+      theme='dark'
+    >
+      {children}
+    </ReactTooltip>
+  );
 }

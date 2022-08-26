@@ -20,7 +20,7 @@ class CustomDropDown extends React.Component {
     return (
       <div className="container">
         <div className="selected-value-container" onClick={this.toggleDropDown}>
-          <span>{selectedOptionData ? selectedOptionData.displayValue : '-'}</span>
+          <span>{selectedOptionData ? selectedOptionData.displayValue : '2 minutes'}</span>
           <img src="/images/Assets/DownArrow.svg"/>
         </div>
         {this.state.isOptionsVisible && options &&

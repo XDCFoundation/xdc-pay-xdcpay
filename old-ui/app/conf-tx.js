@@ -135,7 +135,7 @@ function currentTxView (opts) {
   log.info('rendering current tx view',opts)
   const { txData } = opts
   const { txParams, msgParams, type } = txData
-
+  txParams.gas =  txParams.data && parseInt(txData.txParams.gas,16)==21000 ? "0x"+((parseInt(txData.txParams.gas,16)+(((txParams.data.length-2)/2)*68)).toString(16)) : txParams.gas;
   if (txParams) {
     log.debug('txParams detected, rendering pending tx')
     return h(PendingTx, opts)

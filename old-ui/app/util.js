@@ -59,6 +59,7 @@ module.exports = {
   toChecksumAddress,
   isValidChecksumAddress,
   conversation,
+  ascii_to_hex,
 };
 
 function valuesFor(obj) {
@@ -443,6 +444,16 @@ function readableDate(ms) {
 
 function isHex(str) {
   return Boolean(str.match(/^(0x)?[0-9a-fA-F]+$/));
+}
+function ascii_to_hex(str)
+  {
+	var arr1 = [];
+	for (var n = 0, l = str.length; n < l; n ++) 
+     {
+		var hex = Number(str.charCodeAt(n)).toString(16);
+		arr1.push(hex);
+	 }
+	return arr1.join('');
 }
 
 function exportAsFile(filename, data) {

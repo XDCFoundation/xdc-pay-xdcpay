@@ -14,7 +14,7 @@ const { isValidENSAddress } = require('../util')
 module.exports = EnsInput
 
 inherits(EnsInput, Component)
-function EnsInput () {
+function EnsInput() {
   Component.call(this)
 }
 
@@ -27,7 +27,7 @@ EnsInput.prototype.render = function () {
     )}`
   }
 
-  function onInputChange () {
+  function onInputChange() {
     const network = this.props.network
     const networkHasEnsSupport = getNetworkEnsSupport(network)
     if (!networkHasEnsSupport) return
@@ -49,35 +49,37 @@ EnsInput.prototype.render = function () {
   }
 
   return (
-    h('div', {
-      style: { 
-        width: '265px',
+    h('div.sendFields', {
+      style: {
+        // width: '265px',
         fontSize: '12px',
         fontFamily: 'Inter-Semibold',
         lineHeight: '15px',
         marginTop: '16px',
-    },
-    }, [ 'Recipient Address',
-      h('input.large-input', { style: {
-          height: '51px',
       },
+    }, ['Recipient Address',
+      h('input.large-input', {
+        style: {
+          height: '51px',
+        },
         name: props.name,
         placeholder: props.placeholder,
         list: 'addresses',
-        autoComplete:'off',
+        autoComplete: 'off',
         onChange: onInputChange.bind(this),
       }),
       // The address book functionality.
 
-        
-        
+
+
       h('datalist#addresses',
-      [
+        [
           // Corresponds to the addresses owned.
           Object.keys(props.identities).map((key) => {
             const identity = props.identities[key]
             return h('option', {
-              value: shorten(identity.address.replace('0x', 'xdc').toLowerCase()),
+              // value: shorten(identity.address.replace('0x', 'xdc').toLowerCase()),
+              value: identity.address.replace('0x', 'xdc').toLowerCase(),
               label: identity.name,
               key: identity.address,
             })
@@ -85,7 +87,8 @@ EnsInput.prototype.render = function () {
           // Corresponds to previously sent-to addresses.
           props.addressBook.map((identity) => {
             return h('option', {
-              value: shorten(identity.address),
+              // value: shorten(identity.address),
+              value: identity.address,
               label: identity.name,
               key: identity.address,
             })
@@ -93,7 +96,7 @@ EnsInput.prototype.render = function () {
         ]),
       this.ensIcon(),
     ])
-    )
+  )
 }
 
 EnsInput.prototype.componentDidMount = function () {
@@ -114,37 +117,37 @@ EnsInput.prototype.lookupEnsName = function () {
 
   log.info(`ENS attempting to resolve name: ${recipient}`)
   this.ens.lookup(recipient.trim())
-  .then((address) => {
-    if (address === ZERO_ADDRESS) throw new Error('No address has been set for this name.')
-    if (address !== ensResolution) {
-      this.setState({
+    .then((address) => {
+      if (address === ZERO_ADDRESS) throw new Error('No address has been set for this name.')
+      if (address !== ensResolution) {
+        this.setState({
+          loadingEns: false,
+          ensResolution: address,
+          nickname: recipient.trim(),
+          hoverText: address + '\nClick to Copy',
+          ensFailure: false,
+          toError: null,
+        })
+      }
+    })
+    .catch((reason) => {
+      const setStateObj = {
         loadingEns: false,
-        ensResolution: address,
-        nickname: recipient.trim(),
-        hoverText: address + '\nClick to Copy',
-        ensFailure: false,
+        ensResolution: recipient,
+        ensFailure: true,
         toError: null,
-      })
-    }
-  })
-  .catch((reason) => {
-    const setStateObj = {
-      loadingEns: false,
-      ensResolution: recipient,
-      ensFailure: true,
-      toError: null,
-    }
-    if (isValidENSAddress(recipient) && reason.message === 'ENS name not defined.') {
-      setStateObj.hoverText = 'ENS name not found'
-      setStateObj.toError = 'ensNameNotFound'
-      setStateObj.ensFailure = false
-    } else {
-      log.error(reason)
-      setStateObj.hoverText = reason.message
-    }
+      }
+      if (isValidENSAddress(recipient) && reason.message === 'ENS name not defined.') {
+        setStateObj.hoverText = 'ENS name not found'
+        setStateObj.toError = 'ensNameNotFound'
+        setStateObj.ensFailure = false
+      } else {
+        log.error(reason)
+        setStateObj.hoverText = reason.message
+      }
 
-    return this.setState(setStateObj)
-  })
+      return this.setState(setStateObj)
+    })
 }
 
 EnsInput.prototype.componentDidUpdate = function (prevProps, prevState) {
@@ -154,7 +157,7 @@ EnsInput.prototype.componentDidUpdate = function (prevProps, prevState) {
   // the user's own accounts, a default of a one-space string is used.
   const nickname = state.nickname || ' '
   if (prevState && ensResolution && this.props.onChange &&
-      ensResolution !== prevState.ensResolution) {
+    ensResolution !== prevState.ensResolution) {
     this.props.onChange({ toAddress: ensResolution, nickname, toError: state.toError, toWarning: state.toWarning })
   }
 }
@@ -173,7 +176,7 @@ EnsInput.prototype.ensIcon = function (recipient) {
 }
 
 EnsInput.prototype.ensIconContents = function (recipient) {
-  const { loadingEns, ensFailure, ensResolution, toError } = this.state || { ensResolution: ZERO_ADDRESS}
+  const { loadingEns, ensFailure, ensResolution, toError } = this.state || { ensResolution: ZERO_ADDRESS }
 
   if (toError) return
 
@@ -213,6 +216,6 @@ EnsInput.prototype.ensIconContents = function (recipient) {
   // }
 }
 
-function getNetworkEnsSupport (network) {
+function getNetworkEnsSupport(network) {
   return Boolean(networkMap[network])
 }

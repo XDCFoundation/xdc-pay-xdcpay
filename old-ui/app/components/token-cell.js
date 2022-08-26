@@ -14,7 +14,7 @@ import { countSignificantDecimals, toChecksumAddress } from '../util'
 const tokenCellDropDownPrefix = 'token-cell_dropdown_'
 
 inherits(TokenCell, Component)
-function TokenCell () {
+function TokenCell() {
   Component.call(this)
 
   this.state = {
@@ -29,10 +29,10 @@ TokenCell.prototype.render = function () {
   const { optionsMenuActive } = this.state
 
   const tokenBalanceRaw = Number.parseFloat(string)
-  const tokenBalance = (parseFloat(tokenBalanceRaw.toFixed(countSignificantDecimals(tokenBalanceRaw, 2)))).toLocaleString('en-US', {valute: 'USD'});
-  
+  const tokenBalance = (parseFloat(tokenBalanceRaw.toFixed(countSignificantDecimals(tokenBalanceRaw, 2)))).toLocaleString('en-US', { valute: 'USD' });
 
-  
+
+
   return (
     h(`li#token-cell_${ind}.token-cell`, {
       style: {
@@ -56,7 +56,7 @@ TokenCell.prototype.render = function () {
           fontSize: '14px',
           fontWeight: '700',
           height: '17px',
-          width: '50%',
+          width: '65%',
 
         },
       }, `${tokenBalance || 0} ${symbol}`),
@@ -82,7 +82,7 @@ TokenCell.prototype.render = function () {
       }, 'SEND'),
       */
     ])
-    
+
   )
 }
 
@@ -103,7 +103,7 @@ TokenCell.prototype.renderTokenOptions = function (menuToTop, ind) {
       //   bottom: '18px',
       //   left: '20px'
       // },
-      
+
       isOpen: optionsMenuActive,
       onClickOutside: (event) => {
         const { classList, id: targetID } = event.target
@@ -116,66 +116,66 @@ TokenCell.prototype.renderTokenOptions = function (menuToTop, ind) {
     },
     [
       h('div',
-        {className: 'token-options-list'},
+        { className: 'token-options-list' },
         [`Token Options`,
-        h('img',
-          {className: 'token-options-close-icon', src: "/images/Assets/Close.svg"}
-        ),]
+          h('img',
+            { className: 'token-options-close-icon dropdownCloseImage', src: "/images/Assets/Close.svg" }
+          ),]
       ),
-    
+
       h(
         DropdownMenuItem,
         {
-          closeMenu: () => {},
+          closeMenu: () => { },
           onClick: () => {
             showSendTokenPage(address)
           },
         },
         [
           h('img',
-            {className: 'token-options-icon', src: "/images/Assets/Send.svg"},
+            { className: 'token-options-icon', src: "/images/Assets/Send.svg" },
           ),
-        `Send`,]
+          `Send`,]
       ),
       h(
         DropdownMenuItem,
         {
-          closeMenu: () => {},
+          closeMenu: () => { },
           onClick: () => {
             const { network } = this.props
-            const url = ethNetProps.explorerLinks.getExplorerTokenLinkFor(address.replace("0x", "xdc"),userAddress, network,symbol)
+            const url = ethNetProps.explorerLinks.getExplorerTokenLinkFor(address.replace("0x", "xdc"), userAddress, network, symbol)
             global.platform.openWindow({ url })
           },
-        },[
-          h('img',
-          {className: 'token-options-icon', src: "/images/Assets/ViewOnExplorer.svg"},
-          ),
-        network==50?`View token on observer`:'View token on block explorer',]
+        }, [
+        h('img',
+          { className: 'token-options-icon', src: "/images/Assets/ViewOnExplorer.svg" },
+        ),
+        network == 50 ? `View token on observer` : 'View token on block explorer',]
       ),
       h(
         DropdownMenuItem,
         {
-          closeMenu: () => {},
+          closeMenu: () => { },
           onClick: () => {
             copyToClipboard(address.replace("0x", "xdc"))
           },
-        },[
-          h('img',
-            {className: 'token-options-icon', src: "/images/Assets/CopyClipboard.svg"},
-          ),
+        }, [
+        h('img',
+          { className: 'token-options-icon', src: "/images/Assets/CopyClipboard.svg" },
+        ),
         'Copy Address to clipboard',]
       ),
       h(
         DropdownMenuItem,
         {
-          closeMenu: () => {},
+          closeMenu: () => { },
           onClick: () => {
             this.props.removeToken({ address, symbol, string, network, userAddress })
           },
-        },[
-          h('img',
-            {className: 'token-options-icon', src: "/images/Assets/Remove.svg"},
-          ),
+        }, [
+        h('img',
+          { className: 'token-options-icon', src: "/images/Assets/Remove.svg" },
+        ),
         'Remove',]
       ),
     ]
@@ -190,18 +190,18 @@ TokenCell.prototype.send = function (address, event) {
 }
 
 TokenCell.prototype.view = function (address, userAddress, network, event) {
-  const {symbol} = this.props
-  const url = ethNetProps.explorerLinks.getExplorerTokenLinkFor(address.replace('0x', 'xdc'), userAddress, network,symbol)
+  const { symbol } = this.props
+  const url = ethNetProps.explorerLinks.getExplorerTokenLinkFor(address.replace('0x', 'xdc'), userAddress, network, symbol)
   if (url) {
     navigateTo(url)
   }
 }
 
-function navigateTo (url) {
+function navigateTo(url) {
   global.platform.openWindow({ url })
 }
 
-function tokenFactoryFor (tokenAddress) {
+function tokenFactoryFor(tokenAddress) {
   return `https://tokenfactory.surge.sh/#/token/${tokenAddress}`
 }
 

@@ -2,19 +2,20 @@ const Component = require('react').Component
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const connect = require('react-redux').connect
-
+import React from "react";
+import ReactTooltip from "react-tooltip";
 const EthBalance = require('./eth-balance-txn-list')
 const addressSummary = require('../util').addressSummary
 const CopyButton = require('./copy/copy-button')
 const vreme = new (require('vreme'))()
-const Tooltip = require('./tooltip')
+// const Tooltip = require('./tooltip')
 const numberToBN = require('number-to-bn')
 const actions = require('../../../ui/app/actions')
 const ethNetProps = require('xdc-net-props')
 
 const TransactionIcon = require('./transaction-list-item-icon')
 const ShiftListItem = require('./shift-list-item')
-const {ifXDC} = require('../util')
+const { ifXDC } = require('../util')
 
 const {
   POA_CODE,
@@ -40,13 +41,13 @@ module.exports = connect(null, mapDispatchToProps)(TransactionListItem)
 
 inherits(TransactionListItem, Component)
 
-function TransactionListItem () {
+function TransactionListItem() {
   Component.call(this)
 }
 
 TransactionListItem.prototype.showRetryButton = function () {
-  const {transaction = {}, transactions} = this.props
-  const {submittedTime, txParams} = transaction
+  const { transaction = {}, transactions } = this.props
+  const { submittedTime, txParams } = transaction
 
   if (!txParams) {
     return false
@@ -84,12 +85,12 @@ TransactionListItem.prototype.showRetryButton = function () {
 }
 
 TransactionListItem.prototype.render = function () {
-  const { transaction, network, conversionRate, currentCurrency ,networkList} = this.props;
+  const { transaction, network, conversionRate, currentCurrency, networkList } = this.props;
   const { status } = transaction;
   if (transaction.key === "shapeshift") {
     if (Number(network) === MAINNET_CODE) return h(ShiftListItem, transaction);
   }
-  var date = formatDate(transaction.submittedTime||transaction.time);
+  var date = formatDate(transaction.submittedTime || transaction.time);
 
   let isLinkable = false
   const numericNet = isNaN(network) ? network : parseInt(network)
@@ -149,7 +150,7 @@ TransactionListItem.prototype.render = function () {
         // global.platform.openWindow({ url })
       },
       style: {
-        padding: '10px 0',
+        padding: '10px 10px 0 0 ',
         alignItems: 'center',
       },
     },
@@ -164,7 +165,7 @@ TransactionListItem.prototype.render = function () {
         [
           h('div.flex-row', {}, [
             h('.identicon-wrapper.flex-column.flex-center.select-none', [
-              h(TransactionIcon, {txParams, transaction, isTx, isMsg}),
+              h(TransactionIcon, { txParams, transaction, isTx, isMsg }),
             ]),
 
             // h(Tooltip, {
@@ -214,21 +215,21 @@ TransactionListItem.prototype.render = function () {
 
           isTx
             ? h(EthBalance, {
-                valueStyle,
-                dimStyle,
-                value: txParams.value,
-                conversionRate,
-                currentCurrency,
-                // width: '55px',
-                shorten: true,
-                showFiat: false,
-                network,
-                networkList,
-                style: {
-                  // margin: '0px auto 0px 65px',
-                  // fontFamily: 'Inter',
-                },
-              })
+              valueStyle,
+              dimStyle,
+              value: txParams.value,
+              conversionRate,
+              currentCurrency,
+              // width: '55px',
+              shorten: true,
+              showFiat: false,
+              network,
+              networkList,
+              style: {
+                // margin: '0px auto 0px 65px',
+                // fontFamily: 'Inter',
+              },
+            })
             : h(".flex-column"),
         ]
       ),
@@ -278,11 +279,11 @@ TransactionListItem.prototype.render = function () {
 }
 
 TransactionListItem.prototype.resubmit = function () {
-  const {transaction} = this.props
+  const { transaction } = this.props
   this.props.retryTransaction(transaction.id)
 }
 
-function domainField (txParams) {
+function domainField(txParams) {
   return h(
     'div',
     {
@@ -298,13 +299,13 @@ function domainField (txParams) {
   )
 }
 
-function recipientField (txParams, transaction, isTx, isMsg, network) {
+function recipientField(txParams, transaction, isTx, isMsg, network) {
   let message
 
   if (isMsg) {
     message = 'Signature Requested'
   } else if (txParams.to) {
-    message = addressSummary(network, txParams.to)
+    message = addressSummary(network, transaction.hash)
   } else {
     message = 'Contract Deployment'
   }
@@ -314,32 +315,35 @@ function recipientField (txParams, transaction, isTx, isMsg, network) {
     {
       style: {
         fontSize: '14px',
+        display: "flex",
         color: '#333333',
       },
     },
     [
       h(
         'span',
-        !txParams.to ? {style: {whiteSpace: 'nowrap'}} : null,
+        !txParams.to ? { style: { whiteSpace: 'nowrap' } } : null,
         message,
       ),
       // Places a copy button if tx is successful, else places a placeholder empty div.
       transaction.hash
-        ? h(CopyButton, {value: transaction.hash, display: 'inline'})
-        : h('div', {
-          style: {display: 'flex', alignItems: 'center', width: '26px'},
+        ? h(CopyButton, { value: transaction.hash, display: 'inline' })
+        :
+        h('div', {
+          style: { display: 'flex', alignItems: 'center', width: '26px' },
         }),
       renderErrorOrWarning(transaction, network),
     ],
   )
 }
 
-function formatDate (date) {
+function formatDate(date) {
   return date ? vreme.format(new Date(date), 'Mar 16 2014, 02:30 PM') : ''
 }
 
-function renderErrorOrWarning (transaction, network) {
-  const {status, err, warning} = transaction
+function renderErrorOrWarning(transaction, network) {
+  const { status, err, warning } = transaction
+  const randomnumber = Math.floor(Math.random() * 1000000);
 
   // show dropped
   if (status === 'dropped') {
@@ -354,14 +358,18 @@ function renderErrorOrWarning (transaction, network) {
   // show error
   if (err) {
     const message = err.message || ''
-    return h(
-      Tooltip,
-      {
-        title: err.rpc.message,
-        position: 'bottom',
-      },
-      [h(`div`, ` (Failed)`)],
-    )
+
+    return <div>
+      < div data-tip data-for={`${randomnumber}`} ><div>{`(Failed)`}</div></div>
+      <ReactTooltip
+        id={`${randomnumber}`}
+        place="bottom"
+        type="dark"
+        effect="solid"
+      >
+        {`${err.rpc.message}`}
+      </ReactTooltip>
+    </div>
   }
 
   // show warning
@@ -373,13 +381,16 @@ function renderErrorOrWarning (transaction, network) {
       !warning.error.includes('[ethjs-rpc] rpc error with payload'))
   ) {
     const message = warning.message
-    return h(
-      Tooltip,
-      {
-        title: message,
-        position: 'bottom',
-      },
-      [h(`div`, ` (Warning)`)],
-    )
+    return < div >
+      < div data-tip data-for={`${randomnumber}`} ><div>{`(Warning)`}</div></div>
+      <ReactTooltip
+        id={`${randomnumber}`}
+        place="bottom"
+        type="dark"
+        effect="solid"
+      >
+        {`${message}`}
+      </ReactTooltip>
+    </div >
   }
 }

@@ -1,24 +1,24 @@
 const Component = require('react').Component
+import React from "react";
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const formatBalance = require('../util').formatBalance
 const generateBalanceObject = require('../util').generateBalanceObject
-const Tooltip = require('./tooltip.js')
 const FiatValue = require('./fiat-value2.js')
 
 module.exports = EthBalanceComponent
 
 inherits(EthBalanceComponent, Component)
-function EthBalanceComponent () {
+function EthBalanceComponent() {
   Component.call(this)
 }
 
 EthBalanceComponent.prototype.render = function () {
   var props = this.props
   let { value } = props
-  const { style, width, network, isToken, tokenSymbol,networkList } = props
+  const { style, width, network, isToken, tokenSymbol, networkList } = props
   var needsParse = this.props.needsParse !== undefined ? this.props.needsParse : true
-  value = value ? formatBalance(value, 6, needsParse, network, isToken, tokenSymbol,networkList) : '...'
+  value = value ? formatBalance(value, 6, needsParse, network, isToken, tokenSymbol, networkList) : '...'
 
   return (
 
@@ -28,20 +28,21 @@ EthBalanceComponent.prototype.render = function () {
       }
 
     }, [
-        h('div',{
-            style: {
-                marginBottom: '15px',
-                fontSize: '12px',
-                color: '#848484',
-                marginRight: '4px',
-            }
-        },'Available:'),
+      h('div', {
+        style: {
+          marginBottom: '15px',
+          fontSize: '12px',
+          color: '#848484',
+          marginRight: '4px',
+        }
+      }, 'Available:'),
       h('div', {
         style: {
           display: 'inline',
           width,
         },
       }, this.renderBalance(value)),
+
     ])
 
   )
@@ -78,26 +79,21 @@ EthBalanceComponent.prototype.renderBalance = function (value) {
   }
 
   return (
-    h(Tooltip, {
-      position: 'bottom',
-      title: `${ethNumber} ${ethSuffix}`,
-    }, h('div.flex-column', [
-      h('.flex-row', {
-        style: {
-          alignItems: 'flex-end',
-          lineHeight: '20px',
-          textRendering: 'geometricPrecision',
-        },
-      }, [
-        h('div', {
-          style: valueStyle,
-        }, incoming ? `+${balance}` : balance),
-        h('div', {
-          style: dimStyle,
-        }, label),
-      ]),
+    <div>
+      <div className={'flex-column'}>
+        <div className={'flex-row'}
+          style={{
+            alignItems: 'flex-end',
+            lineHeight: '20px',
+            textRendering: 'geometricPrecision',
+          }}>
+          <div style={valueStyle} >{incoming ? `+${balance}` : balance}</div>
+          <div style={dimStyle} >{label}</div>
+        </div>
 
-      showFiat ? h(FiatValue, { valueStyle, dimStyle, value: props.value, conversionRate, currentCurrency, network: props.network }) : null,
-    ]))
+
+        {showFiat ? h(FiatValue, { valueStyle, dimStyle, value: props.value, conversionRate, currentCurrency, network: props.network }) : null}
+      </div>
+    </div>
   )
 }

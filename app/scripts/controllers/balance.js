@@ -56,6 +56,7 @@ class BalanceController {
     })
   }
 
+
   /**
    * Sets up listeners and subscriptions which should trigger an update of ethBalance. These updates include:
    * - when a transaction changes state to 'submitted', 'confirmed' or 'failed'

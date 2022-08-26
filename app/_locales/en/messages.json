@@ -219,10 +219,10 @@
     "message": "Copy"
   },
   "copyAddress": {
-    "message": "Copy Address to clipboard"
+    "message": "Copy Address to Clipboard"
   },
   "copyToClipboard": {
-    "message": "Copy to clipboard"
+    "message": "Copy to Clipboard"
   },
   "copyButton": {
     "message": " Copy "
@@ -618,7 +618,7 @@
     "message": "Loose"
   },
   "loweCaseWords": {
-    "message": "seed words only have lowercase characters"
+    "message": "seed phrase only have lowercase characters"
   },
   "mainnet": {
     "message": "Main Ethereum Network"
@@ -633,7 +633,7 @@
     "message": "XDCPay is a secure identity vault for Ethereum."
   },
   "metamaskSeedWords": {
-    "message": "XDCPay Seed Words"
+    "message": "XDCPay Seed Phrase"
   },
   "metamaskVersion": {
     "message": "XDCPay Version"
@@ -882,7 +882,7 @@
     "message": "Restore"
   },
   "revealSeedWords": {
-    "message": "Reveal Seed Words"
+    "message": "Reveal Seed Phrase"
   },
   "revealSeedWordsTitle": {
     "message": "Seed Phrase"
@@ -891,7 +891,7 @@
     "message": "If you ever change browsers or move computers, you will need this seed phrase to access your accounts. Save them somewhere safe and secret."
   },
   "getYourSeedWords": {
-    "message": "Get your secret seed words by entering your password."
+    "message": "Get your secret seed phrase by entering your password."
   },
   "revealSeedWordsWarningTitle": {
     "message": "DO NOT share this phrase with anyone!"
@@ -947,7 +947,7 @@
     "description": "Account export process"
   },
   "saveSeedAsFile": {
-    "message": "Save Seed Words As File"
+    "message": "Save Seed Phrase As File"
   },
   "scanInstructions": {
     "message": "Place the QR code in front of your camera"
@@ -1424,10 +1424,10 @@
     "message": "Connected Sites"
   },
   "advancedGasControls": {
-    "message": "Advanced gas controls"
+    "message": "Advanced Gas Controls"
   },
   "advancedGasControlsDesc": {
-    "message": "Select this to show gas price and limit controls directly on the send and confirm screens."
+    "message": "Select this to show gas price and limit controls directly on the confirm screen."
   },
   "infoDesc": {
     "message": "The XDCPay is an extension for accessing XDC’s XDPoS enabled distributed applications or “Dapps” in your browser!"

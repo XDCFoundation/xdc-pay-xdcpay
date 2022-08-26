@@ -98,13 +98,13 @@ module.exports = class AppBar extends Component {
             zIndex: 12,
           }}
         >
-          <div className="app-bar-left-menu-section"
-            style={{
-              background: '#ffffff',
-              borderRadius: '15px',
-              width: '118px',
-              height: '29px',
-            }}
+          <div className="app-bar-left-menu-section network-name-container"
+            // style={{
+            //   background: '#ffffff',
+            //   borderRadius: '15px',
+            //   width: '118px',
+            //   height: '29px',
+            // }}
           >
             <img
               height={24}

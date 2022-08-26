@@ -47,7 +47,7 @@ class MainMenu extends Component {
       >
         <div className='wallet-options-list'>
           Wallet Options
-          <img className='wallet-options-close-icon' onClick={() => this.props.changeState(isMainMenuOpen)} src='/images/Assets/Close.svg'></img>
+          <img className='wallet-options-close-icon dropdownCloseImage' onClick={() => this.props.changeState(isMainMenuOpen)} src='/images/Assets/Close.svg'></img>
         </div>
         <DropdownMenuItem
           closeMenu={() => this.props.changeState(isMainMenuOpen)}

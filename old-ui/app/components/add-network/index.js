@@ -29,7 +29,8 @@ export default class AddNetwork extends React.Component {
 
   onBackClick = () => {
     // eslint-disable-next-line react/prop-types
-    this.props.backToNetwork ? this.props.backToNetwork() :this.props.dispatch(actions.networkSettings())
+    this.props.dispatch(actions.displayWarning(''))
+    this.props.backToNetwork ? this.props.backToNetwork() : this.props.dispatch(actions.networkSettings())
   }
 
   onStateChange = (event) => {
@@ -64,7 +65,7 @@ export default class AddNetwork extends React.Component {
           this.props.dispatch(actions.displayWarning('Invalid RPC endpoint'))
         }
         else if (chainId === '') {
-          return this.props.dispatch(actions.displayWarning('Invalid chainId'))
+          return this.props.dispatch(actions.displayWarning('Invalid chain ID'))
         } else {
           if ((frequentRpcList && frequentRpcList.length) || networkList.length) {
              const isRPCAlreadyExists = frequentRpcList.find(netObj => netObj.rpcURL === rpcUrl)

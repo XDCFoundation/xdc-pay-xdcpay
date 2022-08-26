@@ -1,6 +1,7 @@
 const extend = require('xtend')
 const EventEmitter = require('events')
 const ObservableStore = require('obs-store')
+const EthQuery = require('ethjs-query')
 const ethUtil = require('ethereumjs-util')
 const log = require('loglevel')
 const txStateHistoryHelper = require('./lib/tx-state-history-helper')
@@ -29,13 +30,13 @@ const { getFinalStates } = require('./lib/util')
   @class
 */
 class TransactionStateManager extends EventEmitter {
-  constructor ({ initState, txHistoryLimit, getNetwork }) {
+  constructor({ initState, txHistoryLimit, getNetwork, provider }) {
     super()
-
+    this.query = new EthQuery(provider);
     this.store = new ObservableStore(
       extend({
         transactions: [],
-    }, initState))
+      }, initState))
     this.txHistoryLimit = txHistoryLimit
     this.getNetwork = getNetwork
   }
@@ -44,7 +45,7 @@ class TransactionStateManager extends EventEmitter {
     @param opts {object} - the object to use when overwriting defaults
     @returns {txMeta} the default txMeta object
   */
-  generateTxMeta (opts) {
+  generateTxMeta(opts) {
     return extend({
       id: createId(),
       time: (new Date()).getTime(),
@@ -54,26 +55,206 @@ class TransactionStateManager extends EventEmitter {
     }, opts)
   }
 
+  /** 
+   This function is for Add the (Inbound or incoming) transactions
+   from a specific address
+    @param data {object} - the object is getting the latest block details
+  */
+
+  // async addInboundTx(data) {
+  //   // this Obj provide the template for the adding an inbound transaction 
+  //   // in the List of transaction of observale store
+  //   var obj = {
+  //     estimatedGas: null,
+  //     firstRetryBlockNumber: null,
+  //     gasLimitSpecified: false,
+  //     gasPriceSpecified: false,
+  //     hash: null,
+  //     history: null,
+  //     id: createId(),
+  //     loadingDefaults: false,
+  //     metamaskNetworkId: this.getNetwork(),
+  //     nonceDetails: null,
+  //     origin: "Unknown",
+  //     rawTx: null,
+  //     simpleSend: true,
+  //     status: "confirmed",
+  //     submittedTime: (new Date()).getTime(),
+  //     time: (new Date()).getTime(),
+  //     txParams: {
+  //       from: null,
+  //       gas: null,
+  //       gasPrice: null,
+  //       nonce: null,
+  //       to: null,
+  //       value: null
+  //     },
+  //     txReceipt: {},
+  //     type: "standard"
+  //   };
+
+  //   if (typeof data !== "undefined") {
+  //     const txReceipt = await this.query.getTransactionReceipt(data.hash);
+  //     const gasUsed = typeof txReceipt.gasUsed !== 'string'
+  //       ? txReceipt.gasUsed.toString(16)
+  //       : txReceipt.gasUsed
+
+  //     const value = typeof data.value !== "number"
+  //       ? data.value.toString(16)
+  //       : data.value
+
+  //     obj.txReceipt = {
+  //       ...txReceipt,
+  //       gasUsed,
+  //     }
+
+  //     /* txParams */
+  //     obj.txParams.from = txReceipt.from,
+  //       obj.txParams.gas = txReceipt.gas,
+  //       obj.txParams.gasPrice = `0x${gasUsed}`,
+  //       obj.txParams.nonce = `0x${data.nonce.toString(16)}`,
+  //       obj.txParams.to = txReceipt.to,
+  //       obj.txParams.value = `0x${value}`,
+  //       obj.estimatedGas = `0x${gasUsed}`,
+  //       obj.hash = data.hash
+
+
+  //     const transactions = this.getFullTxList()
+  //     const txCount = transactions.length
+  //     const txHistoryLimit = this.txHistoryLimit
+
+  //     // checks if the length of the tx history is
+  //     // longer then desired persistence limit
+  //     // and then if it is removes only confirmed
+  //     // or rejected tx's.
+  //     // not tx's that are pending or unapproved
+  //     const indexTx = transactions.findIndex(tx => {
+  //       tx.hash == obj.hash
+  //     })
+
+  //     if (txCount > txHistoryLimit - 1) {
+  //       const index = transactions.findIndex((metaTx) => {
+  //         return getFinalStates().includes(metaTx.status)
+  //       })
+  //       if (index !== -1) {
+  //         transactions.splice(index, 1)
+  //       }
+  //     }
+  //     if (indexTx == -1) {
+  //       transactions.push(obj)
+  //       this._saveTxList(transactions)
+  //     }
+  //   }
+  // }
+
+  /** 
+  This function is for Add the (Inbound or incoming) transactions
+  from a specific address
+   @param data {object} - the object is getting the latest block details
+ */
+
+  async addInboundTx(data) {
+    var obj = {
+      estimatedGas: null,
+      firstRetryBlockNumber: null,
+      gasLimitSpecified: false,
+      gasPriceSpecified: false,
+      hash: null,
+      history: null,
+      id: createId(),
+      loadingDefaults: false,
+      metamaskNetworkId: "50",
+      nonceDetails: null,
+      origin: "Unknown",
+      rawTx: null,
+      simpleSend: true,
+      status: "confirmed",
+      submittedTime: (new Date()).getTime(),
+      time: (new Date()).getTime(),
+      txParams: {
+        from: null,
+        gas: null,
+        gasPrice: null,
+        nonce: null,
+        to: null,
+        value: null
+      },
+      txReceipt: {},
+      type: "standard"
+    };
+    if (typeof data != "undefined") {
+      data.forEach(async (item) => {
+        const txReceipt = await this.query.getTransactionReceipt(item.hash);
+
+        const gasUsed = typeof txReceipt.gasUsed !== 'string'
+          ? txReceipt.gasUsed.toString(16)
+          : txReceipt.gasUsed
+
+        obj.txReceipt = {
+          ...txReceipt,
+          gasUsed,
+        }
+
+        obj.txParams.from = txReceipt.from,
+          obj.txParams.gas = `0x${gasUsed}`,
+          obj.txParams.value = `0x${parseFloat(item.value).toString(16)}`
+        obj.txParams.gasPrice = `0x${parseFloat(item.gasPrice).toString(16)}`,
+          obj.txParams.nonce = `0x${item.nonce.toString(16)}`,
+          obj.txParams.to = txReceipt.to,
+          obj.estimatedGas = `0x${gasUsed}`,
+          obj.hash = item.hash,
+          obj.time = Date.parse(item.createdAt),
+          obj.submittedTime = Date.parse(item.updatedAt)
+
+        const transactions = this.getFullTxList()
+        const txCount = transactions.length
+        const txHistoryLimit = this.txHistoryLimit
+
+        // checks if the length of the tx history is
+        // longer then desired persistence limit
+        // and then if it is removes only confirmed
+        // or rejected tx's.
+        // not tx's that are pending or unapproved
+        const indexTx = transactions.findIndex(tx => {
+          return tx.hash == obj.hash
+        })
+        if (txCount > txHistoryLimit - 1) {
+          const index = transactions.findIndex((metaTx) => {
+            return getFinalStates().includes(metaTx.status)
+          })
+          if (index !== -1) {
+            transactions.splice(index, 1)
+          }
+        }
+        if (indexTx == -1) {
+          transactions.push(obj)
+          this._saveTxList(transactions)
+        }
+      });
+    }
+  }
+
   /**
     @returns {array} of txMetas that have been filtered for only the current network
   */
-  getTxList () {
+  getTxList() {
     const network = this.getNetwork()
     const fullTxList = this.getFullTxList()
+
     return fullTxList.filter((txMeta) => txMeta.metamaskNetworkId === network)
   }
 
   /**
     @returns {array} of all the txMetas in store
   */
-  getFullTxList () {
+  getFullTxList() {
     return this.store.getState().transactions
   }
 
   /**
     @returns {array} the tx list whos status is unapproved
   */
-  getUnapprovedTxList () {
+  getUnapprovedTxList() {
     const txList = this.getTxsByMetaData('status', 'unapproved')
     return txList.reduce((result, tx) => {
       result[tx.id] = tx
@@ -86,7 +267,7 @@ class TransactionStateManager extends EventEmitter {
     @returns {array} the tx list whos status is submitted if no address is provide
     returns all txMetas who's status is submitted for the current network
   */
-  getPendingTransactions (address) {
+  getPendingTransactions(address) {
     const opts = { status: 'submitted' }
     if (address) opts.from = address
     return this.getFilteredTxList(opts)
@@ -97,11 +278,12 @@ class TransactionStateManager extends EventEmitter {
     @returns {array} the tx list whos status is confirmed if no address is provide
     returns all txMetas who's status is confirmed for the current network
   */
-  getConfirmedTransactions (address) {
+  getConfirmedTransactions(address) {
     const opts = { status: 'confirmed' }
     if (address) opts.from = address
     return this.getFilteredTxList(opts)
   }
+
 
   /**
     Adds the txMeta to the list of transactions in the store.
@@ -112,7 +294,7 @@ class TransactionStateManager extends EventEmitter {
     @param txMeta {Object}
     @returns {object} the txMeta
   */
-  addTx (txMeta) {
+  addTx(txMeta) {
     this.once(`${txMeta.id}:signed`, function (txId) {
       this.removeAllListeners(`${txMeta.id}:rejected`)
     })
@@ -151,7 +333,7 @@ class TransactionStateManager extends EventEmitter {
     @returns {object} the txMeta who matches the given id if none found
     for the network returns undefined
   */
-  getTx (txId) {
+  getTx(txId) {
     const txMeta = this.getTxsByMetaData('id', txId)[0]
     return txMeta
   }
@@ -161,7 +343,7 @@ class TransactionStateManager extends EventEmitter {
     @param txMeta {Object} - the txMeta to update
     @param [note] {string} - a note about the update for history
   */
-  updateTx (txMeta, note) {
+  updateTx(txMeta, note) {
     // validate txParams
     if (txMeta.txParams) {
       if (typeof txMeta.txParams.data === 'undefined') {
@@ -194,7 +376,7 @@ class TransactionStateManager extends EventEmitter {
     @param txId {number} - the id of the txMeta
     @param txParams {object} - the updated txParams
   */
-  updateTxParams (txId, txParams) {
+  updateTxParams(txId, txParams) {
     const txMeta = this.getTx(txId)
     txMeta.txParams = extend(txMeta.txParams, txParams)
     this.updateTx(txMeta, `txStateManager#updateTxParams`)
@@ -204,7 +386,7 @@ class TransactionStateManager extends EventEmitter {
     validates txParams members by type
     @param txParams {object} - txParams to validate
   */
-  validateTxParams (txParams) {
+  validateTxParams(txParams) {
     Object.keys(txParams).forEach((key) => {
       const value = txParams[key]
       // validate types
@@ -220,18 +402,18 @@ class TransactionStateManager extends EventEmitter {
     })
   }
 
-/**
-  @param opts {object} -  an object of fields to search for eg:<br>
-  let <code>thingsToLookFor = {<br>
-    to: '0x0..',<br>
-    from: '0x0..',<br>
-    status: 'signed',<br>
-    err: undefined,<br>
-  }<br></code>
-  @param [initialList=this.getTxList()]
-  @returns a {array} of txMeta with all
-  options matching
-  */
+  /**
+    @param opts {object} -  an object of fields to search for eg:<br>
+    let <code>thingsToLookFor = {<br>
+      to: '0x0..',<br>
+      from: '0x0..',<br>
+      status: 'signed',<br>
+      err: undefined,<br>
+    }<br></code>
+    @param [initialList=this.getTxList()]
+    @returns a {array} of txMeta with all
+    options matching
+    */
   /*
   ****************HINT****************
   | `err: undefined` is like looking |
@@ -246,7 +428,7 @@ class TransactionStateManager extends EventEmitter {
   or for filltering for all txs from one account
   and that have been 'confirmed'
   */
-  getFilteredTxList (opts, initialList) {
+  getFilteredTxList(opts, initialList) {
     let filteredTxList = initialList
     Object.keys(opts).forEach((key) => {
       filteredTxList = this.getTxsByMetaData(key, opts[key], filteredTxList)
@@ -261,7 +443,7 @@ class TransactionStateManager extends EventEmitter {
     from txStateManager#getTxList
     @returns {array} a list of txMetas who matches the search params
   */
-  getTxsByMetaData (key, value, txList = this.getTxList()) {
+  getTxsByMetaData(key, value, txList = this.getTxList()) {
     return txList.filter((txMeta) => {
       if (key in txMeta.txParams) {
         return txMeta.txParams[key] === value
@@ -277,7 +459,7 @@ class TransactionStateManager extends EventEmitter {
     @param txId {number} - the txMeta Id
     @return {string} the status of the tx.
   */
-  getTxStatus (txId) {
+  getTxStatus(txId) {
     const txMeta = this.getTx(txId)
     return txMeta.status
   }
@@ -286,7 +468,7 @@ class TransactionStateManager extends EventEmitter {
     should update the status of the tx to 'rejected'.
     @param txId {number} - the txMeta Id
   */
-  setTxStatusRejected (txId) {
+  setTxStatusRejected(txId) {
     this._setTxStatus(txId, 'rejected')
     this._removeTx(txId)
   }
@@ -295,14 +477,14 @@ class TransactionStateManager extends EventEmitter {
     should update the status of the tx to 'unapproved'.
     @param txId {number} - the txMeta Id
   */
-  setTxStatusUnapproved (txId) {
+  setTxStatusUnapproved(txId) {
     this._setTxStatus(txId, 'unapproved')
   }
   /**
     should update the status of the tx to 'approved'.
     @param txId {number} - the txMeta Id
   */
-  setTxStatusApproved (txId) {
+  setTxStatusApproved(txId) {
     this._setTxStatus(txId, 'approved')
   }
 
@@ -310,7 +492,7 @@ class TransactionStateManager extends EventEmitter {
     should update the status of the tx to 'signed'.
     @param txId {number} - the txMeta Id
   */
-  setTxStatusSigned (txId) {
+  setTxStatusSigned(txId) {
     this._setTxStatus(txId, 'signed')
   }
 
@@ -319,7 +501,7 @@ class TransactionStateManager extends EventEmitter {
     and add a time stamp for when it was called
     @param txId {number} - the txMeta Id
   */
-  setTxStatusSubmitted (txId) {
+  setTxStatusSubmitted(txId) {
     const txMeta = this.getTx(txId)
     txMeta.submittedTime = (new Date()).getTime()
     this.updateTx(txMeta, 'txStateManager - add submitted time stamp')
@@ -330,7 +512,7 @@ class TransactionStateManager extends EventEmitter {
     should update the status of the tx to 'confirmed'.
     @param txId {number} - the txMeta Id
   */
-  setTxStatusConfirmed (txId) {
+  setTxStatusConfirmed(txId) {
     this._setTxStatus(txId, 'confirmed')
   }
 
@@ -338,7 +520,7 @@ class TransactionStateManager extends EventEmitter {
     should update the status of the tx to 'dropped'.
     @param txId {number} - the txMeta Id
   */
-  setTxStatusDropped (txId) {
+  setTxStatusDropped(txId) {
     this._setTxStatus(txId, 'dropped')
   }
 
@@ -349,7 +531,7 @@ class TransactionStateManager extends EventEmitter {
     @param txId {number} - the txMeta Id
     @param err {erroObject} - error object
   */
-  setTxStatusFailed (txId, err) {
+  setTxStatusFailed(txId, err) {
     const txMeta = this.getTx(txId)
     txMeta.err = {
       message: (err ? (err.message || err.error || err) : '').toString(),
@@ -365,7 +547,7 @@ class TransactionStateManager extends EventEmitter {
     from the txList
     @param address {string} - hex string of the from address on the txParams to remove
   */
-  wipeTransactions (address) {
+  wipeTransactions(address) {
     // network only tx
     const txs = this.getFullTxList()
     const network = this.getNetwork()
@@ -376,9 +558,9 @@ class TransactionStateManager extends EventEmitter {
     // Update state
     this._saveTxList(otherAccountTxs)
   }
-//
-//           PRIVATE METHODS
-//
+  //
+  //           PRIVATE METHODS
+  //
 
   // STATUS METHODS
   // statuses:
@@ -398,7 +580,7 @@ class TransactionStateManager extends EventEmitter {
     @emits ${txMeta.id}:finished - if it is a finished state. Passes the txMeta
     @emits update:badge
   */
-  _setTxStatus (txId, status) {
+  _setTxStatus(txId, status) {
     const txMeta = this.getTx(txId)
 
     if (!txMeta) {
@@ -426,11 +608,11 @@ class TransactionStateManager extends EventEmitter {
     @param transactions {array} - the list of transactions to save
   */
   // Function is intended only for internal use
-  _saveTxList (transactions) {
+  _saveTxList(transactions) {
     this.store.updateState({ transactions })
   }
 
-  _removeTx (txId) {
+  _removeTx(txId) {
     const transactionList = this.getFullTxList()
     this._saveTxList(transactionList.filter((txMeta) => txMeta.id !== txId))
   }

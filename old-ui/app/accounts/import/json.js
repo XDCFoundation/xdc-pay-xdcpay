@@ -6,7 +6,7 @@ const FileInput = require('react-simple-file-input').default
 const PropTypes = require('prop-types')
 
 class JsonImportSubview extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -15,7 +15,7 @@ class JsonImportSubview extends Component {
     }
   }
 
-  render () {
+  render() {
     const { error } = this.props
 
     return (
@@ -28,7 +28,7 @@ class JsonImportSubview extends Component {
         },
       }, [
 
-        h('p',{style:{fontSize: '14.5px', fontfamily: 'Inter-Regular'}}, 'Used by a variety of different clients'),
+        h('p', { style: { fontSize: '14.5px', fontfamily: 'Inter-Regular' } }, 'Used by a variety of different clients'),
 
         h(FileInput, {
           readAs: 'text',
@@ -43,14 +43,15 @@ class JsonImportSubview extends Component {
 
         h('input.large-input', {
           type: 'password',
-          placeholder: 'Enter password',
+          placeholder: 'Enter current password',
           id: 'json-password-box',
           onKeyPress: this.createKeyringOnEnter.bind(this),
           style: {
             width: '100%',
             marginTop: '25px',
-            border: '2px solid #C7CDD8',
-            font: navigator.userAgent.indexOf("Firefox") != -1 ?'icon':''
+            height: '36px',
+            border: '1px solid #C7CDD8',
+            font: navigator.userAgent.indexOf("Firefox") != -1 ? 'icon' : ''
           },
         }),
 
@@ -63,23 +64,23 @@ class JsonImportSubview extends Component {
           },
         }, 'Import'),
 
-        error ? h('span.error',{style: {marginTop: '20px',}}, error) : null,
+        error ? h('span.error.importError', { style: { marginTop: '20px', } }, error) : null,
       ])
     )
   }
 
-  onLoad (event, file) {
-    this.setState({file: file, fileContents: event.target.result})
+  onLoad(event, file) {
+    this.setState({ file: file, fileContents: event.target.result })
   }
 
-  createKeyringOnEnter (event) {
+  createKeyringOnEnter(event) {
     if (event.key === 'Enter') {
       event.preventDefault()
       this.createNewKeychain()
     }
   }
 
-  createNewKeychain () {
+  createNewKeychain() {
     const { fileContents } = this.state
 
     if (!fileContents) {
@@ -95,7 +96,7 @@ class JsonImportSubview extends Component {
       return this.props.displayWarning(message)
     }
 
-    this.props.importNewAccount([ fileContents, password ])
+    this.props.importNewAccount([fileContents, password])
       // JS runtime requires caught rejections but failures are handled by Redux
       .catch()
   }

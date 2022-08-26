@@ -54,8 +54,8 @@ class AdvanceSettings extends React.Component{
         overflowY: "auto",}}>
             <div className="section-title flex-row"
                  style={{ borderBottom: "1px solid #E3E7EB", paddingBottom: "17px",display:'flex', justifyContent:'center' } }>
-            <img src="/images/Assets/BackArrow.svg" className='image-display' style={{margin:'0 -14px 0 -90px', cursor:'pointer' ,width:"19px",height:"17px"}} onClick={() => { state.dispatch(actions.goConfig()) }} />
-            <h2 style={{ marginLeft:'88px',fontFamily: navigator.userAgent.indexOf("Firefox") != -1 ?"Inter-semiBold":"Inter-Bold" }}>{`${t('advanceSettings')}`}</h2>
+            <img src="/images/Assets/BackArrow.svg" className='image-display' style={{position:'absolute', left:'20px', cursor:'pointer' ,width:"19px",height:"17px"}} onClick={() => { state.dispatch(actions.goConfig()) }} />
+            <h2 style={{ fontFamily: navigator.userAgent.indexOf("Firefox") != -1 ?"Inter-semiBold":"Inter-Bold" }}>{`${t('advanceSettings')}`}</h2>
             </div>
             <div style={{
                 padding: ' 14px 17px 14px 17px ',

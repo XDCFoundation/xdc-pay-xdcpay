@@ -8,10 +8,20 @@
 .accs-dd-menu-item-account-name {
 	margin-left: 16px;
 	font-size: 14px;
-	max-width: 95px;
+	max-width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+@media only screen and (max-width:600px){
+	.accs-dd-menu-item-account-name {
+		margin-left: 16px;
+		font-size: 14px;
+		max-width: 95px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 }
 
 .acc-dd-menu-item-text {

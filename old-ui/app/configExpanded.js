@@ -49,14 +49,14 @@ export default class ConfigScreenExpanded extends React.Component {
               cursor: "pointer",
               height: "14px",
               width: "14px",
-              margin: "0 0 0 5px",
+              margin: "2px 0 0 5px",
             }}
             src="/images/Assets/Close.svg"
             onClick={() => {
               state.dispatch(actions.goHome());
             }}
           />
-          <h2 style={{ margin: "-3px 0px 0px 27px", fontFamily: "Inter-Bold" }}>
+          <h2 style={{ margin: "-3px 0px 0px 15px", fontFamily: "Inter-Bold" }}>
             Settings
           </h2>
         </div>
@@ -64,7 +64,7 @@ export default class ConfigScreenExpanded extends React.Component {
         <div
           style={{
             display: "flex",
-            width: "20%",
+            width: "21%",
             position: "absolute",
             left: "0",
             height: "100%",
@@ -79,7 +79,7 @@ export default class ConfigScreenExpanded extends React.Component {
                 this.setState({ selectedComponent: "generalSettings" })
               }
             >
-              <h2> General Settings </h2>
+              <h2 style={{color:  this.state.selectedComponent === "generalSettings"   ? '#2049B9' : '#2a2a2a'}}> General Settings </h2>
             </div>
             <div
               className="settings"
@@ -88,18 +88,19 @@ export default class ConfigScreenExpanded extends React.Component {
                 this.setState({ selectedComponent: "advanceSettings" })
               }
             >
-              <h2>Advance Settings</h2>
+              <h2 style={{color:  this.state.selectedComponent === "advanceSettings"  ? '#2049B9' : '#2a2a2a'}}>Advance Settings</h2>
             </div>
             <div
               className="settings"
               id={"securityAndPrivacySettings"}
+             
               onClick={() =>
                 this.setState({
-                  selectedComponent: "securityAndPrivacySettings",
+                  selectedComponent: "securityAndPrivacySettings", selectorActive: true
                 })
               }
             >
-              <h2>Security and Privacy Settings</h2>
+              <h2  style={{color:  this.state.selectedComponent === "securityAndPrivacySettings"  ? '#2049B9' : '#2a2a2a'}}>Security and Privacy Settings</h2>
             </div>
 
             <div
@@ -107,21 +108,20 @@ export default class ConfigScreenExpanded extends React.Component {
               id={"addContact"}
               onClick={() =>
                 this.setState({
-                  selectedComponent: "Contacts",
-                  expandedUI: true,
+                  selectedComponent: "Contacts"
                 })
               }
             >
-              <h2>Contacts</h2>
+              <h2 style={{color:  this.state.selectedComponent === "Contacts"  ? '#2049B9' : '#2a2a2a'}}>Contacts</h2>
             </div>
             <div
               className="settings"
               id={"addNetwork"}
               onClick={() =>
-                this.setState({ selectedComponent: "NetworkSettings" })
+                this.setState({ selectedComponent: "NetworkSettings", selectorActive: true })
               }
             >
-              <h2>Network Settings</h2>
+              <h2 style={{color:  this.state.selectedComponent === "NetworkSettings"  ? '#2049B9' : '#2a2a2a'}}>Network Settings</h2>
             </div>
 
             <div
@@ -129,14 +129,14 @@ export default class ConfigScreenExpanded extends React.Component {
               id={"infoScreen"}
               onClick={() => this.setState({ selectedComponent: "infoScreen" })}
             >
-              <h2>About</h2>
+              <h2 style={{color:  this.state.selectedComponent === "infoScreen"  ? '#2049B9' : '#2a2a2a'}}>About</h2>
             </div>
           </div>
         </div>
 
         <div
           style={{
-            width: "80%",
+            width: "79%",
             display: "flex",
             position: "absolute",
             right: "0",
@@ -173,7 +173,8 @@ export default class ConfigScreenExpanded extends React.Component {
           )}
           {this.state.selectedComponent === "NetworkSettings" && (
             <NetworkSettings
-              onAddNetworkClicked={(networkObj) => this.setComponent("AddNetwork",networkObj)}
+              onAddNetworkClicked={(networkObj) => this.setComponent("AddNetwork", networkObj)}
+              backToSetting={() => this.setComponent('generalSettings')}
             />
           )}
           {this.state.selectedComponent === "AddNetwork" && (
@@ -182,7 +183,9 @@ export default class ConfigScreenExpanded extends React.Component {
             />
           )}
 
-          {this.state.selectedComponent === "infoScreen" && <InfoScreen />}
+          {this.state.selectedComponent === "infoScreen" && <InfoScreen
+            backToSetting = {()=> this.setComponent('generalSettings')}
+          />}
         </div>
       </div>
     );

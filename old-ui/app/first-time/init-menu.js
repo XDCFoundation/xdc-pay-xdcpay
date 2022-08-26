@@ -94,6 +94,20 @@ const RenderMenu = (props) => {
     warningUpdate,
   } = props;
   return h(".initialize-screen.flex-column.flex-center.flex-grow.cover", [
+   
+    h('img',  {
+        onClick: () => {
+          state.dispatch(actions.createWalletScreen())
+        },
+          style: {
+            position: 'absolute',
+            top: 26,
+            left: 22,
+            cursor: 'pointer',
+          },
+          src: '/images/Assets/BackArrow.svg'
+
+      }),
     h(".logo"),
     h(
       "div",
@@ -102,7 +116,8 @@ const RenderMenu = (props) => {
           marginTop: "40px",
           display: "flex",
           flexDirection: "row-reverse",
-          marginLeft: "-22px",
+          width: '265px',
+          justifyContent: 'center',
         },
       },
       [
@@ -116,23 +131,23 @@ const RenderMenu = (props) => {
               fontWeight: "bold",
             },
           },
-          "Create a Wallet"
+          "Create a New Wallet"
         ),
-        h("div", { className: "tooltip" }, [
-          h("img", {
-            src: "/images/Assets/QuestionMark.svg",
-            style: {
-              marginRight: "-22px",
-              paddingTop: "3px",
-              paddingLeft: "5px",
-            },
-          }),
-          h(
-            "span",
-            { className: "tooltiptext" },
-            "Your DEN is your password-encrypted Storage within XDC Pay"
-          ),
-        ]),
+        // h("div", { className: "tooltip" }, [
+        //   h("img", {
+        //     src: "/images/Assets/QuestionMark.svg",
+        //     style: {
+        //       marginRight: "-22px",
+        //       paddingTop: "3px",
+        //       paddingLeft: "5px",
+        //     },
+        //   }),
+        //   h(
+        //     "span",
+        //     { className: "tooltiptext" },
+        //     "Your DEN is your password-encrypted Storage within XDC Pay"
+        //   ),
+        // ]),
       ]
     ),
 
@@ -198,20 +213,20 @@ const RenderMenu = (props) => {
       "Create"
     ),
 
-    h(".flex-row.flex-center.flex-grow", [
-      h(
-        "p.pointer",
-        {
-          onClick: showRestoreVault,
-          style: {
-            fontSize: "14px",
-            color: "#2149B9",
-            marginTop: "74px",
-          },
-        },
-        "Import wallet"
-      ),
-    ]),
+    // h(".flex-row.flex-center.flex-grow", [
+    //   h(
+    //     "p.pointer",
+    //     {
+    //       onClick: showRestoreVault,
+    //       style: {
+    //         fontSize: "14px",
+    //         color: "#2149B9",
+    //         marginTop: "74px",
+    //       },
+    //     },
+    //     "Import wallet"
+    //   ),
+    // ]),
   ]);
 };
 
