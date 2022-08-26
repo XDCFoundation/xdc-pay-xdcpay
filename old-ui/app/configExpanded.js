@@ -6,7 +6,7 @@ import React from "react";
 import GeneralSettings from "../../old-ui/app/general-settings";
 import AdvanceSettings from "../../old-ui/app/advance-settings";
 import SecurityAndPrivacySettings from "./components/security-and-privacy/security-and-privacy";
-import Contacts from "./Contacts";
+import Contacts from "./contacts";
 import NetworkSettings from "./network-settings";
 import InfoScreen from "./info";
 import AddContact from "./components/add-contacts";
@@ -162,22 +162,30 @@ export default class ConfigScreenExpanded extends React.Component {
             />
           )}
           {this.state.selectedComponent === "AddContact" && (
-            <AddContact detailObj={this.state.detailObj} backToContacts={() => this.setComponent("Contacts")} />
+            <AddContact
+              detailObj={this.state.detailObj}
+              backToContacts={() => this.setComponent("Contacts")}
+            />
           )}
           {this.state.selectedComponent === "ContactDetails" && (
             <ContactDetails
               detailObj={this.state.detailObj}
               backToContacts={() => this.setComponent("Contacts")}
-              onAddContactClicked={(contactObj) => this.setComponent("AddContact",contactObj)}
+              onAddContactClicked={(contactObj) =>
+                this.setComponent("AddContact", contactObj)
+              }
             />
           )}
           {this.state.selectedComponent === "NetworkSettings" && (
             <NetworkSettings
-              onAddNetworkClicked={(networkObj) => this.setComponent("AddNetwork",networkObj)}
+              onAddNetworkClicked={(networkObj) =>
+                this.setComponent("AddNetwork", networkObj)
+              }
             />
           )}
           {this.state.selectedComponent === "AddNetwork" && (
-            <AddNetwork detailObj={this.state.detailObj}
+            <AddNetwork
+              detailObj={this.state.detailObj}
               backToNetwork={() => this.setComponent("NetworkSettings")}
             />
           )}

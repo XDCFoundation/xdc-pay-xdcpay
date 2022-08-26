@@ -9,7 +9,10 @@ import {
 } from '../../util'
 import EnsInput from '../ens-input'
 import ethUtil from 'ethereumjs-util'
-import { tokenInfoGetter, calcTokenAmountWithDec } from '../../../../ui/app/token-util'
+import {
+  tokenInfoGetter,
+  calcTokenAmountWithDec,
+} from '../../../../ui/app/token-util'
 import TokenTracker from 'eth-token-watcher'
 import Loading from '../loading'
 import BigNumber from 'bignumber.js'
@@ -38,49 +41,50 @@ class SendTransactionScreen extends PersistentForm {
   render () {
     const { isLoading, token, amount } = this.state
     if (isLoading) {
-      return (
-        <Loading isLoading={isLoading} loadingMessage="Loading..." />
-      )
+      return <Loading isLoading={isLoading} loadingMessage="Loading..." />
     }
     this.persistentFormParentId = 'send-tx-form'
 
     const props = this.props
-    const {
-      network,
-      identities,
-      addressBook,
-      error,
-    } = props
+    const { network, identities, addressBook, error } = props
     const nextDisabled = token.balance <= 0
 
     return (
-
       <div className="send-screen flex-column flex-grow">
         <SendHeader title={`Send ${this.state.token.symbol} Tokens`} />
         <SendProfile isToken={true} token={token} />
-        
-      
+
         <section className="flex-row flex-center">
           <EnsInput
             name="address"
             placeholder="Wallet Address"
-            onChange={() => this.recipientDidChange.bind(this)}
+            onChange={(e) => {
+            console.log('🚀 ~ file: send-token.js ~ line 64 ~ SendTransactionScreen ~ render ~ e', e)
+              console.log('address changed')
+              console.log(this)
+              console.log(this.recipientDidChange)
+              return this.recipientDidChange(e, e.nickname)
+            }}
             network={network}
             identities={identities}
             addressBook={addressBook}
           />
         </section>
-        
+
         <section className="flex-column flex-center">
-        <div style={{ 
-          marginTop:'16px',
-          fontSize: '12px', 
-          fontWeight: 'bold',
-          lineHeight: 1,
-          marginRight: '219px',
-          }}>Amount
-        </div>
-          <input className="large-input"
+          <div
+            style={{
+              marginTop: '16px',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              lineHeight: 1,
+              marginRight: '219px',
+            }}
+          >
+            Amount
+          </div>
+          <input
+            className="large-input"
             name="amount"
             value={amount}
             onChange={(e) => this.amountDidChange(e.target.value)}
@@ -90,15 +94,20 @@ class SendTransactionScreen extends PersistentForm {
               width: '265px',
             }}
           />
-           <div style={{width:'265px'}}> <ErrorComponent error={error} /></div>
-          <button style={{
+          <div style={{ width: '265px' }}>
+            {' '}
+            <ErrorComponent error={error} />
+          </div>
+          <button
+            style={{
               width: '265px',
               height: '40px',
               marginTop: '35px',
             }}
             onClick={() => this.onSubmit()}
             disabled={nextDisabled}
-          >Next
+          >
+            Next
           </button>
         </section>
       </div>
@@ -106,17 +115,18 @@ class SendTransactionScreen extends PersistentForm {
   }
 
   componentDidMount () {
-    this.getTokensMetadata()
-    .then(() => {
+    this.getTokensMetadata().then(() => {
       this.createFreshTokenTracker()
     })
   }
 
   async getTokensMetadata () {
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true })
     this.tokenInfoGetter = tokenInfoGetter()
     const { tokenAddress, network } = this.props
-    const { symbol = '', decimals = 0 } = await this.tokenInfoGetter(tokenAddress)
+    const { symbol = '', decimals = 0 } = await this.tokenInfoGetter(
+      tokenAddress,
+    )
     this.setState({
       token: {
         address: tokenAddress,
@@ -138,7 +148,7 @@ class SendTransactionScreen extends PersistentForm {
   }
 
   createFreshTokenTracker () {
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true })
     const { address, tokenAddress, network } = this.props
     if (!isValidAddress(tokenAddress, network)) return
     if (this.tracker) {
@@ -157,7 +167,6 @@ class SendTransactionScreen extends PersistentForm {
       pollingInterval: 8000,
     })
 
-
     // Set up listener instances for cleaning up
     this.balanceUpdater = this.updateBalances.bind(this)
     this.showError = (error) => {
@@ -166,24 +175,27 @@ class SendTransactionScreen extends PersistentForm {
     this.tracker.on('update', this.balanceUpdater)
     this.tracker.on('error', this.showError)
 
-    this.tracker.updateBalances()
-    .then(() => {
-      this.updateBalances(this.tracker.serialize())
-    })
-    .catch((reason) => {
-      log.error(`Problem updating balances`, reason)
-      this.setState({ isLoading: false })
-    })
+    this.tracker
+      .updateBalances()
+      .then(() => {
+        this.updateBalances(this.tracker.serialize())
+      })
+      .catch((reason) => {
+        log.error(`Problem updating balances`, reason)
+        this.setState({ isLoading: false })
+      })
   }
 
   updateBalances (tokens) {
     if (!this.tracker.running) {
       return
     }
-    this.setState({ token: (tokens && tokens[0]), isLoading: false })
+    this.setState({ token: tokens && tokens[0], isLoading: false })
   }
 
   recipientDidChange (recipient, nickname) {
+    console.log('🚀 ~ file: send-token.js ~ line 198 ~ SendTransactionScreen ~ recipientDidChange ~ nickname', nickname)
+    console.log('🚀 ~ file: send-token.js ~ line 198 ~ SendTransactionScreen ~ recipientDidChange ~ recipient', recipient)
     this.setState({
       recipient,
       nickname,
@@ -198,8 +210,21 @@ class SendTransactionScreen extends PersistentForm {
 
   async onSubmit () {
     const state = this.state || {}
+    console.log(
+      '🚀 ~ file: send-token.js ~ line 201 ~ SendTransactionScreen ~ onSubmit ~ state',
+      state,
+    )
     const { token, amount } = state
-    let recipient = state.recipient || document.querySelector('input[name="address"]').value.replace(/^[.\s]+|[.\s]+$/g, '')
+    console.log(
+      '🚀 ~ file: send-token.js ~ line 203 ~ SendTransactionScreen ~ onSubmit ~ state.recipient',
+      state.recipient,
+    )
+    let recipient =
+      state.recipient ||
+      document
+        .querySelector('input[name="address"]')
+        .value.replace(/^[.\s]+|[.\s]+$/g, '')
+    console.log('🚀 ~ file: send.js ~ line 196 ~ recipient', recipient)
     let nickname = state.nickname || ' '
     if (typeof recipient === 'object') {
       if (recipient.toAddress) {
@@ -209,30 +234,32 @@ class SendTransactionScreen extends PersistentForm {
         nickname = recipient.nickname
       }
     }
-    recipient = recipient.replace('xdc', '0x').toLowerCase();
+    recipient = recipient.replace('xdc', '0x').toLowerCase()
     const parts = amount.split('.')
 
     let message
 
     if (isNaN(amount) || amount === '') {
-      message = 'Invalid token\'s amount.'
+      message = "Invalid token's amount."
       return this.props.displayWarning(message)
     }
 
     if (parts[1]) {
       const decimal = parts[1]
       if (decimal.length > 18) {
-        message = 'Token\'s amount is too precise.'
+        message = "Token's amount is too precise."
         return this.props.displayWarning(message)
       }
     }
 
     const tokenAddress = ethUtil.addHexPrefix(token.address)
     const tokensValueWithoutDec = new BigNumber(amount)
-    const tokensValueWithDec = new BigNumber(calcTokenAmountWithDec(amount, token.decimals))
+    const tokensValueWithDec = new BigNumber(
+      calcTokenAmountWithDec(amount, token.decimals),
+    )
 
     if (tokensValueWithDec.gt(token.balance)) {
-      message = 'Insufficient token\'s balance.'
+      message = "Insufficient token's balance."
       return this.props.displayWarning(message)
     }
 
@@ -241,12 +268,12 @@ class SendTransactionScreen extends PersistentForm {
       return this.props.displayWarning(message)
     }
 
-    if ((isInvalidChecksumAddress(recipient, this.props.network))) {
+    if (isInvalidChecksumAddress(recipient, this.props.network)) {
       message = 'Recipient address checksum is invalid.'
       return this.props.displayWarning(message)
     }
 
-    if (!isValidAddress(recipient, this.props.network) || (!recipient)) {
+    if (!isValidAddress(recipient, this.props.network) || !recipient) {
       message = 'Recipient address is invalid.'
       return this.props.displayWarning(message)
     }
@@ -265,7 +292,10 @@ class SendTransactionScreen extends PersistentForm {
     txParams.to = tokenAddress
 
     const tokensAmount = `0x${amount.toString(16)}`
-    const encoded = this.generateTokenTransferData({toAddress, amount: tokensAmount})
+    const encoded = this.generateTokenTransferData({
+      toAddress,
+      amount: tokensAmount,
+    })
     txParams.data = encoded
 
     const confTxScreenParams = {
@@ -275,20 +305,32 @@ class SendTransactionScreen extends PersistentForm {
       tokensTransferTo: toAddress,
     }
 
-    this.props.signTokenTx(tokenAddress, toAddress, tokensValueWithDec, txParams, confTxScreenParams)
+    this.props.signTokenTx(
+      tokenAddress,
+      toAddress,
+      tokensValueWithDec,
+      txParams,
+      confTxScreenParams,
+    )
   }
 
   generateTokenTransferData ({ toAddress = '0x0', amount = '0x0' }) {
     const TOKEN_TRANSFER_FUNCTION_SIGNATURE = '0xa9059cbb'
     const abi = require('ethereumjs-abi')
-    return TOKEN_TRANSFER_FUNCTION_SIGNATURE + Array.prototype.map.call(
-      abi.rawEncode(['address', 'uint256'], [toAddress, ethUtil.addHexPrefix(amount)]),
-      x => ('00' + x.toString(16)).slice(-2)
-    ).join('')
+    return (
+      TOKEN_TRANSFER_FUNCTION_SIGNATURE +
+      Array.prototype.map
+        .call(
+          abi.rawEncode(
+            ['address', 'uint256'],
+            [toAddress, ethUtil.addHexPrefix(amount)],
+          ),
+          (x) => ('00' + x.toString(16)).slice(-2),
+        )
+        .join('')
+    )
   }
-
 }
-
 
 const mapStateToProps = (state) => {
   const accounts = getMetaMaskAccounts(state)
@@ -305,25 +347,40 @@ const mapStateToProps = (state) => {
   result.error = result.warning && result.warning.split('.')[0]
 
   result.account = result.accounts[result.address]
-  result.balance = result.account ? numericBalance(result.account.balance) : null
+  result.balance = result.account
+    ? numericBalance(result.account.balance)
+    : null
 
   return result
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     showAccountsPage: () => dispatch(actions.showAccountsPage()),
-    displayWarning: warning => dispatch(actions.displayWarning(warning)),
+    displayWarning: (warning) => dispatch(actions.displayWarning(warning)),
     hideWarning: () => dispatch(actions.hideWarning()),
-    addToAddressBook: (recipient, nickname) => dispatch(actions.addToAddressBook(recipient, nickname)),
+    addToAddressBook: (recipient, nickname) =>
+      dispatch(actions.addToAddressBook(recipient, nickname)),
     signTokenTx: (
       tokenAddress,
       toAddress,
       tokensValueWithDec,
       txParams,
-      confTxScreenParams
-    ) => dispatch(actions.signTokenTx(tokenAddress, toAddress, tokensValueWithDec, txParams, confTxScreenParams)),
+      confTxScreenParams,
+    ) =>
+      dispatch(
+        actions.signTokenTx(
+          tokenAddress,
+          toAddress,
+          tokensValueWithDec,
+          txParams,
+          confTxScreenParams,
+        ),
+      ),
   }
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(SendTransactionScreen)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SendTransactionScreen)

@@ -294,7 +294,7 @@ function setupController (initState, initLangCode) {
     createStreamSink(persistData),
     (error) => {
       log.error('XDCPay - Persistence pipeline failed', error)
-    }
+    },
   )
 
   /**
@@ -468,6 +468,6 @@ function showWatchAssetUi () {
           resolve()
         }
       }, 1000)
-    }
+    },
   )
 }
