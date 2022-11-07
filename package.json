@@ -213,7 +213,7 @@
     "web3": "^0.20.1",
     "web3-eth": "^1.6.0",
     "web3-eth-abi": "^1.0.0-beta.36",
-    "web3-stream-provider": "^3.0.1",
+    "web3-stream-provider": "^4.0.0",
     "xdc-net-props": "^1.0.0",
     "xdcpay-wallet-inpage-provider": "^1.2.6",
     "xns-resolver": "git+https://github.com/yodaplus/xns-resolver.git#master",
